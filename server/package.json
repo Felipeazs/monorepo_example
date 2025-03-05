@@ -20,5 +20,5 @@
         "eslint-plugin-format": "^0.1.3"
     },
     "engines": { "pnpm": "8.x" },
-    "packageManager": "pnpm@8"
+    "packageManager": "pnpm@^8.6.1"
 }
