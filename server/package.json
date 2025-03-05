@@ -1,0 +1,21 @@
+{
+    "name": "@monorepo/server",
+    "type": "module",
+    "private": true,
+    "version": "1.0.0",
+    "exports": {
+        "./routes": "./src/routes/index.ts"
+    },
+    "scripts": {
+        "dev": "bun run --hot src/index.ts"
+    },
+    "dependencies": {
+        "hono": "^4.7.2",
+        "@monorepo/eslint-config": "workspace:^"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "eslint": "^9.17.0",
+        "eslint-plugin-format": "^0.1.3"
+    }
+}
