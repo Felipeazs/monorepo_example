@@ -9,5 +9,6 @@
     },
     "author": "Felipe Zapata <felipeazs@gmail.com>",
     "license": "MIT",
-    "packageManager": "pnpm@8"
+    "engines": { "pnpm": "8.x" },
+    "packageManager": "pnpm"
 }
