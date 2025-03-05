@@ -8,5 +8,6 @@
         "build": "pnpm run -r build"
     },
     "author": "Felipe Zapata <felipeazs@gmail.com>",
-    "license": "MIT"
+    "license": "MIT",
+    "packageManager": "pnpm@8"
 }
