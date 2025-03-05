@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
+        "start": "pnpm --stream -r start",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "pnpm run -r --parallel --aggregate-output dev",
         "build": "pnpm run -r build"

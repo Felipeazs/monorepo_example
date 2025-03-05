@@ -3,12 +3,12 @@
     "type": "module",
     "private": true,
     "version": "1.0.0",
-    "exports": {
-        "./routes": "./src/routes/index.ts"
-    },
     "scripts": {
         "start": "bun src/index.ts",
         "dev": "bun run --hot src/index.ts"
+    },
+    "exports": {
+        "./routes": "./src/routes/index.ts"
     },
     "dependencies": {
         "hono": "^4.7.2",
