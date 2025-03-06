@@ -13,6 +13,7 @@ export function registerRoutes(app: AppAPI) {
         .route("/hello", hello_route)
 }
 
+// to use in client api
 export const router = registerRoutes(
     new Hono<AppEnv>({
         strict: false,

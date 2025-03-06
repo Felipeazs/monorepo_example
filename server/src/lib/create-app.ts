@@ -4,8 +4,8 @@ import { serveStatic } from "@hono/node-server/serve-static"
 import { BASE_PATH } from "./constants"
 import { cors } from "hono/cors"
 import { cspMiddleware } from "../middlewares/csp"
-import { logger } from "../middlewares/pino"
 import notFound from "../middlewares/not-found"
+import { logger } from "hono/logger"
 // import onError from "../middlewares/on-error"
 
 export function createRouter() {
