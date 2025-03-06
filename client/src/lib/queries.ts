@@ -1,6 +1,6 @@
 import hcClient from "./api"
 
-const client = hcClient(import.meta.env.VITE_API_URL)
+const client = hcClient("/")
 
 export async function getHello() {
     return await client.api.hello
