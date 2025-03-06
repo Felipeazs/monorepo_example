@@ -15,18 +15,15 @@ export function createRouter() {
 
 export function createApp() {
     const app = createRouter()
-        .use("*", serveStatic({ root: "./public" }))
+        .use("/*", serveStatic({ root: "public/" }))
+        .use("/vite.svg", serveStatic({ root: "public/" }))
 
         .use("*", async (c, next) => {
             if (c.req.path.startsWith(BASE_PATH)) {
                 return next()
             }
 
-            serveStatic({ root: "./public", path: "index.html" })
-
-            const requestURL = new URL(c.req.raw.url).origin
-            console.log(requestURL)
-            return c.env.ASSETS.fetch(`${requestURL}/public/index.html`)
+            return
         })
         .basePath(BASE_PATH) as AppAPI
 
