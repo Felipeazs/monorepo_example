@@ -6,6 +6,7 @@ import { BASE_PATH } from "./lib/constants"
 import { cors } from "hono/cors"
 
 import { serveStatic } from "@hono/node-server/serve-static"
+import { cspMiddleware } from "./middlewares/csp"
 
 export function createRouter() {
     return new Hono<AppEnv>({
@@ -28,6 +29,7 @@ export function createApp() {
         .basePath(BASE_PATH) as AppAPI
 
     app.use(cors())
+    app.use(cspMiddleware)
 
     return app
 }
