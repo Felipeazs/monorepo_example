@@ -7,14 +7,14 @@
     "scripts": {
         "start": "bun src/index.ts",
         "dev": "bun --hot src/index.ts",
-        "clean": "rm -rf public tsconfig.tsbuildinfo"
+        "clean": "rm -rf node_modules public tsconfig.tsbuildinfo"
     },
     "exports": {
         "./routes": "./src/routes/index.ts"
     },
     "dependencies": {
         "@hono/node-server": "^1.13.8",
-        "@monorepo/eslint-config": "workspace:^",
+        "@monorepo/eslint-config": "workspace:*",
         "hono": "^4.7.2"
     },
     "devDependencies": {

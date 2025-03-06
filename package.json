@@ -3,13 +3,14 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start": "pnpm --stream -r start",
+        "start": "bun run --filter start",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "pnpm run -r --parallel --aggregate-output dev",
-        "build": "pnpm run -r build",
-        "clean": "pnpm run -r clean"
+        "dev": "bun --filter '*' dev",
+        "build": "bun run --filter '*' build",
+        "clean": "sudo rm -rf node_modules && bun run --filter '*' clean"
     },
+    "workspaces": ["client", "server", "packages/*"],
+    "packageManager": "bun",
     "author": "Felipe Zapata <felipeazs@gmail.com>",
-    "license": "MIT",
-    "packageManager": "pnpm@8.15.7"
+    "license": "MIT"
 }

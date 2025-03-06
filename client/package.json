@@ -7,11 +7,12 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "clean": "rm -rf node_modules"
     },
     "dependencies": {
-        "@monorepo/eslint-config": "workspace:^",
-        "@monorepo/server": "workspace:^",
+        "@monorepo/eslint-config": "workspace:*",
+        "@monorepo/server": "workspace:*",
         "@tanstack/react-query": "^5.62.7",
         "@tanstack/react-router": "^1.90.0",
         "hono": "^4.7.2",
