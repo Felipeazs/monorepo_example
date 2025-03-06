@@ -10,5 +10,6 @@ export const cspMiddleware = async (c: Context, next: Next) => {
     ].join("; ")
 
     c.header("Content-Security-Policy", rules)
+    c.header("Permissions-Policy", "browsing-topics")
     await next()
 }
