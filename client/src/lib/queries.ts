@@ -1,6 +1,10 @@
+"use server"
+
 import hcClient from "./api"
 
-const client = hcClient("/")
+const isProd = import.meta.env.PROD
+
+const client = hcClient(isProd ? "/" : "http://localhost:3000")
 
 export async function getHello() {
     return await client.api.hello
