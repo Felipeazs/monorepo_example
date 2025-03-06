@@ -1,5 +1,3 @@
-"use server"
-
 import hcClient from "./api"
 
 const isProd = import.meta.env.PROD

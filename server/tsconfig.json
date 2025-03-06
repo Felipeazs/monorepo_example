@@ -5,9 +5,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "baseUrl": "./",
-    "outDir": "./build",
     "paths": {
-      "@/server": [
+      "@/server/*": [
         "./src/*"
       ]
     }
