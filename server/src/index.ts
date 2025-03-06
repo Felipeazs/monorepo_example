@@ -25,6 +25,7 @@ export function createApp() {
             serveStatic({ root: "./public", path: "index.html" })
 
             const requestURL = new URL(c.req.raw.url).origin
+            console.log(requestURL)
             return c.env.ASSETS.fetch(`${requestURL}/public/index.html`)
         })
         .basePath(BASE_PATH) as AppAPI

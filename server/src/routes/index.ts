@@ -5,7 +5,10 @@ import { AppAPI, AppEnv } from "../lib/types"
 import { BASE_PATH } from "../lib/constants"
 
 export function registerRoutes(app: AppAPI) {
-    return app.route("hello", hello_route)
+    app.get("/health", (c) => c.json("API live and running"))
+    app.route("/hello", hello_route)
+
+    return app
 }
 
 export const router = registerRoutes(
