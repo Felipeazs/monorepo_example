@@ -4,6 +4,8 @@ import { createRootRouteWithContext, Link, Outlet } from "@tanstack/react-router
 import React, { Suspense } from "react"
 import { Toaster } from "sonner"
 
+import { PostHogPageviewTracker } from "../components/views-tracker"
+
 type RouterContext = {
 	queryClient: QueryClient
 }
@@ -29,6 +31,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			</div>
 			<hr />
 			<Outlet />
+			<PostHogPageviewTracker />
 			<Suspense>
 				<TanStackRouterDevtools />
 			</Suspense>
