@@ -2,8 +2,6 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/53862c2a473e971a4d0a/maintainability)](https://codeclimate.com/github/Felipeazs/monorepo_example/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/Felipeazs/monorepo_example/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Felipeazs/monorepo_example?targetFile=package.json)
 
-![Security Headers](https://img.shields.io/security-headers?url=https%3A%2F%2Fserver-production-a1a7.up.railway.app%2F)
-
 ![image](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
 
 # Monorepo Template - React (Vite) / Hono.dev
