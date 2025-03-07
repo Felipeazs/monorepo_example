@@ -19,7 +19,8 @@ export default function createConfig(options, ...userConfigs) {
                 "no-console": ["warn"],
                 "antfu/no-top-level-await": ["off"],
                 "node/prefer-global/process": ["off"],
-                "node/no-process-env": ["error"],
+                // "node/no-process-env": ["error"],
+                "eslint-comments/no-unlimited-disable": "warn",
                 "perfectionist/sort-imports": [
                     "error",
                     {

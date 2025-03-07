@@ -1,7 +1,8 @@
-import { hc } from "hono/client"
-import { router } from "@monorepo/server/routes"
+import type { AppRouter } from "@monorepo/server/routes"
 
-const client = hc<typeof router>("")
+import { hc } from "hono/client"
+
+export const client = hc<AppRouter>("")
 export type Client = typeof client
 
-export default (...args: Parameters<typeof hc>): Client => hc<typeof router>(...args)
+export default (...args: Parameters<typeof hc>): Client => hc<AppRouter>(...args)

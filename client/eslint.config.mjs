@@ -1,5 +1,5 @@
+import createConfig from "@monorepo/eslint-config/create-config"
 import pluginQuery from "@tanstack/eslint-plugin-query"
-import createConfig from "@tasks-app/eslint-config/create-config"
 
 export default createConfig(
     {
@@ -9,7 +9,9 @@ export default createConfig(
         plugins: {
             "@tanstack/query": pluginQuery,
         },
+        ignores: ["**/routeTree.gen.ts"],
         rules: {
+            "ts/ban-ts-comment": "off",
             "antfu/top-level-function": "off",
             "@tanstack/query/exhaustive-deps": "error",
             "unicorn/filename-case": [

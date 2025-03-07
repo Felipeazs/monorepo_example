@@ -1,33 +1,37 @@
 {
     "name": "@monorepo/server",
     "type": "module",
-    "private": true,
     "version": "1.0.0",
+    "private": true,
+    "packageManager": "bun",
+    "exports": {
+        "./routes": "./src/routes/index.ts"
+    },
     "main": "src/index.ts",
     "scripts": {
         "start": "bun src/index.ts",
         "dev": "bun --hot src/index.ts",
-        "clean": "rm -rf node_modules public tsconfig.tsbuildinfo"
-    },
-    "exports": {
-        "./routes": "./src/routes/index.ts"
+        "lint": "eslint .",
+        "lint:fix": "bun run lint --fix",
+        "typecheck": "tsc --noEmit",
+        "clean": "rm -rf node_modules build tsconfig.tsbuildinfo"
     },
     "dependencies": {
         "@hono/node-server": "^1.13.8",
         "@monorepo/eslint-config": "workspace:*",
+        "@t3-oss/env-core": "^0.12.0",
         "hono": "^4.7.2",
         "hono-pino": "^0.7.2",
         "pino": "^9.6.0",
-        "pino-pretty": "^13.0.0"
+        "pino-pretty": "^13.0.0",
+        "zod": "^3.24.2"
     },
     "devDependencies": {
-        "@cloudflare/workers-types": "^4.20250303.0",
         "@types/bun": "latest",
         "@types/node": "^22.13.9",
         "eslint": "^9.17.0",
         "eslint-plugin-format": "^0.1.3",
         "tsx": "^4.19.3",
         "vite": "^6.2.0"
-    },
-    "packageManager": "bun"
+    }
 }

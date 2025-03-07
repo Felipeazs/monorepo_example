@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { toast } from "sonner"
 
 import { getHello } from "@/client/lib/queries"
-import { toast } from "sonner"
 
 export const Route = createFileRoute("/")({
     component: Index,
@@ -20,7 +20,10 @@ function Index() {
 
     return (
         <div className="p-2">
-            <h3>Welcome {data?.message}!</h3>
+            <h3>
+                {"Welcome "}
+                {data?.message}
+            </h3>
         </div>
     )
 }

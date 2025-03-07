@@ -1,7 +1,8 @@
-import { Hono } from "hono"
-import { BASE_PATH } from "./constants"
+import type { Hono } from "hono"
 
-interface Fetcher {
+import type { BASE_PATH } from "./constants"
+
+type Fetcher = {
     fetch: typeof fetch
 }
 
@@ -12,4 +13,4 @@ export type AppEnv = {
     }
 }
 
-export type AppAPI = Hono<AppEnv, {}, typeof BASE_PATH>
+export type AppAPI = Hono<AppEnv, any, typeof BASE_PATH>

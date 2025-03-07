@@ -5,12 +5,12 @@
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "jsx": "react-jsx",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
-        "allowImportingTsExtensions": true,
-        "noEmit": true,
         "baseUrl": ".",
         "paths": {
             "@/client/*": ["./src/*"]
-        }
+        },
+        "allowImportingTsExtensions": true,
+        "noEmit": true
     },
     "include": ["src"]
 }

@@ -1,6 +1,6 @@
-import { Context, Next } from "hono"
+import type { Context, Next } from "hono"
 
-export const cspMiddleware = async (c: Context, next: Next) => {
+export async function cspMiddleware(c: Context, next: Next) {
     const rules = [
         "default-src 'self'",
         "script-src 'self'",

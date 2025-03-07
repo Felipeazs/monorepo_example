@@ -1,8 +1,9 @@
 import { Hono } from "hono"
 
-import hello_route from "./hello"
-import { AppAPI, AppEnv } from "../lib/types"
+import type { AppAPI, AppEnv } from "../lib/types"
+
 import { BASE_PATH } from "../lib/constants"
+import hello_route from "./hello"
 
 export function registerRoutes(app: AppAPI) {
     return app
@@ -20,4 +21,4 @@ export const router = registerRoutes(
     }).basePath(BASE_PATH),
 )
 
-export type router = typeof router
+export type AppRouter = typeof router
