@@ -1,19 +1,19 @@
 {
-    "name": "monorepo",
-    "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "start": "bun --filter '*' start",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "bun --filter '*' dev",
-        "build": "bun --filter '*' build",
-        "lint": "bun run --filter '*' lint",
-        "lint:fix": "bun run --filter '*' lint:fix",
-        "typecheck": "bun run --filter '*' typecheck",
-        "clean": "sudo rm -rf node_modules && bun run --filter '*' clean"
-    },
-    "workspaces": ["client", "server", "packages/*"],
-    "packageManager": "bun",
-    "author": "Felipe Zapata <felipeazs@gmail.com>",
-    "license": "MIT"
+	"name": "monorepo",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "bun --filter '*' start",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun --filter '*' dev",
+		"build": "bun --filter '*' build",
+		"lint": "bun run --filter '*' lint",
+		"lint:fix": "bun run --filter '*' lint:fix",
+		"typecheck": "bun run --filter '*' typecheck",
+		"clean": "sudo rm -rf node_modules && bun run --filter '*' clean"
+	},
+	"workspaces": ["client", "server", "packages/*"],
+	"packageManager": "bun",
+	"author": "Felipe Zapata <felipeazs@gmail.com>",
+	"license": "MIT"
 }
