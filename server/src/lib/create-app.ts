@@ -21,7 +21,7 @@ export function createRouter() {
 
 export function createApp() {
     const app = createRouter()
-        .use("/*", serveStatic({ root: "public/" }))
+        .use("*", serveStatic({ root: "public/" }))
         .use("/vite.svg", serveStatic({ root: "public/" }))
 
         .use("*", async (c, next) => {
@@ -31,9 +31,10 @@ export function createApp() {
         })
         .basePath(BASE_PATH) as AppAPI
 
-    app.use(secureHeaders())
+    app.use("*", secureHeaders())
 
     app.use(
+        "/api/*",
         cors({
             origin: [env.ORIGIN_URL],
         }),
