@@ -4,13 +4,17 @@ import { createRootRouteWithContext, Link, Outlet } from "@tanstack/react-router
 import React, { Suspense } from "react"
 import { Toaster } from "sonner"
 
+import { env } from "../t3-env"
+
 type RouterContext = {
 	queryClient: QueryClient
 }
 
-const env = import.meta.env.PROD
+const options = {
+	api_host: env.VITE_PUBLIC_POSTHOG_HOST,
+}
 
-const TanStackRouterDevtools = env
+const TanStackRouterDevtools = import.meta.env.PROD
 	? () => null
 	: React.lazy(() =>
 			import("@tanstack/router-devtools").then((res) => ({
@@ -18,10 +22,18 @@ const TanStackRouterDevtools = env
 			})),
 		)
 
+const PostHogProvider = import.meta.env.PROD
+	? () => null
+	: React.lazy(() =>
+			import("posthog-js/react").then((res) => ({
+				default: res.PostHogProvider,
+			})),
+		)
+
 export const Route = createRootRouteWithContext<RouterContext>()({
 	component: () => (
 		<>
-			<div className="p-2 flex gap-2">
+			<div className="flex gap-2 p-2">
 				<Link to="/" className="[&.active]:font-bold">
 					Home
 				</Link>
@@ -30,7 +42,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 				</Link>
 			</div>
 			<hr />
-			<Outlet />
+			<PostHogProvider apiKey={env.VITE_PUBLIC_POSTHOG_KEY} options={options}>
+				<Outlet />
+			</PostHogProvider>
 			<Suspense>
 				<TanStackRouterDevtools />
 			</Suspense>
