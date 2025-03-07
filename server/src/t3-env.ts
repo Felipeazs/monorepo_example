@@ -3,13 +3,9 @@ import { z } from "zod"
 
 export const env = createEnv({
     server: {
-        PORT: z.string(),
         ORIGIN_URL: z.string(),
     },
-    runtimeEnv: {
-        PORT: process.env.PORT,
-        ORIGIN_URL: process.env.ORIGIN_URL,
-    },
+    runtimeEnv: process.env,
     skipValidation: false,
     emptyStringAsUndefined: true,
 })

@@ -3,7 +3,7 @@ import hcClient from "./api"
 
 const isProd = import.meta.env.PROD
 
-const client = hcClient(isProd ? "/" : env.VITE_LOCAL_URL)
+const client = hcClient(isProd ? "/" : env.VITE_API_URL)
 
 export async function getHello() {
     return await client.api.hello
