@@ -1,6 +1,6 @@
 [![Deployment production pipeline](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml/badge.svg)](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml)
 
-![image]({https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white})
+![image](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
 
 # Monorepo Template - React (Vite) / Hono.dev
 
