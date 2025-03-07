@@ -1,15 +1,14 @@
-import { serveStatic } from "@hono/node-server/serve-static"
 import { Hono } from "hono"
+import { AppAPI, AppEnv } from "./types"
+import { serveStatic } from "@hono/node-server/serve-static"
+import { BASE_PATH } from "./constants"
 import { cors } from "hono/cors"
-import { showRoutes } from "hono/dev"
-import { logger } from "hono/logger"
-
-import type { AppAPI, AppEnv } from "./types"
-
 import { cspMiddleware } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
+import { logger } from "hono/logger"
+import { showRoutes } from "hono/dev"
 import { env } from "../t3-env"
-import { BASE_PATH } from "./constants"
+import { secureHeaders } from "hono/secure-headers"
 // import onError from "../middlewares/on-error"
 
 export function createRouter() {
@@ -27,8 +26,12 @@ export function createApp() {
             if (c.req.path.startsWith(BASE_PATH)) {
                 return next()
             }
+
+            return
         })
         .basePath(BASE_PATH) as AppAPI
+
+    app.use(secureHeaders())
 
     app.use(
         cors({
