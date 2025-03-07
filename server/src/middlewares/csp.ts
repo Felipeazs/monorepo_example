@@ -2,7 +2,12 @@ export const CSP_RULES = {
 	strictTransportSecurity: "max-age=31536000; includeSubDomains; preload",
 	contentSecurityPolicy: {
 		scriptSrc: ["'self'"],
-		scriptSrcElem: ["'self'", "'sha256-8eohedfRaQoWnH7igD20HvjedM7lPcYbqukJ7DEpMOk='"],
+		scriptSrcElem: [
+			"'self'",
+			"'sha256-8eohedfRaQoWnH7igD20HvjedM7lPcYbqukJ7DEpMOk='",
+			"https://us-assets.i.posthog.com",
+			"https://us.i.posthog.com",
+		],
 		styleSrc: ["'self'", "https:"],
 		styleSrcElem: [
 			"'self'",
