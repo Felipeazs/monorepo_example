@@ -18,6 +18,7 @@ export default function createConfig(options, ...userConfigs) {
                 "ts/consistent-type-definitions": ["error", "type"],
                 "no-console": ["warn"],
                 "antfu/no-top-level-await": ["off"],
+                "@typescript-eslint/no-empty-object-type": "off",
                 "node/prefer-global/process": ["off"],
                 // "node/no-process-env": ["error"],
                 "eslint-comments/no-unlimited-disable": "warn",
