@@ -6,10 +6,10 @@ import type { BASE_PATH } from "./constants"
 type Variables = SecureHeadersVariables
 
 export type AppEnv = {
-    Variables: Variables
-    Bindings: {
-        AUTH_SECRET: string
-    }
+	Variables: Variables
+	Bindings: {
+		AUTH_SECRET: string
+	}
 }
 
 export type AppAPI = Hono<AppEnv, {}, typeof BASE_PATH>

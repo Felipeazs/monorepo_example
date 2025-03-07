@@ -5,25 +5,25 @@ import { toast } from "sonner"
 import { getHello } from "@/client/lib/queries"
 
 export const Route = createFileRoute("/")({
-    component: Index,
+	component: Index,
 })
 
 function Index() {
-    const { data, isError } = useQuery({
-        queryKey: ["hello"],
-        queryFn: getHello,
-    })
+	const { data, isError } = useQuery({
+		queryKey: ["hello"],
+		queryFn: getHello,
+	})
 
-    if (isError) {
-        toast("Error fetching hello")
-    }
+	if (isError) {
+		toast("Error fetching hello")
+	}
 
-    return (
-        <div className="p-2">
-            <h3>
-                {"Welcome "}
-                {data?.message}
-            </h3>
-        </div>
-    )
+	return (
+		<div className="p-2">
+			<h3>
+				{"Welcome "}
+				{data?.message}
+			</h3>
+		</div>
+	)
 }
