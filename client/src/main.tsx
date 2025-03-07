@@ -22,7 +22,7 @@ declare module "@tanstack/react-router" {
 
 const options = {
 	api_host: env.VITE_PUBLIC_POSTHOG_HOST,
-	capture_pageview: true,
+	capture_pageview: false,
 	capture_pageleave: true,
 }
 
