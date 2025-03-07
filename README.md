@@ -1,8 +1,6 @@
-[![Deployment production pipeline](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml/badge.svg)](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Felipeazs/monorepo_example) ![GitHub repo size](https://img.shields.io/github/repo-size/Felipeazs/monorepo_example) [![Deployment production pipeline](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml/badge.svg)](https://github.com/Felipeazs/monorepo_example/actions/workflows/ci.yml)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Felipeazs/monorepo_example)
-
-![GitHub package.json version](https://img.shields.io/github/package-json/v/Felipeazs/monorepo_example)
+[![Maintainability](https://api.codeclimate.com/v1/badges/53862c2a473e971a4d0a/maintainability)](https://codeclimate.com/github/Felipeazs/monorepo_example/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/Felipeazs/monorepo_example/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Felipeazs/monorepo_example?targetFile=package.json)
 
 ![image](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
 
