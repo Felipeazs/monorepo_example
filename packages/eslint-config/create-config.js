@@ -21,7 +21,7 @@ export default function createConfig(options, ...userConfigs) {
                 "@typescript-eslint/no-empty-object-type": "off",
                 "node/prefer-global/process": ["off"],
                 // "node/no-process-env": ["error"],
-                "eslint-comments/no-unlimited-disable": "warn",
+                "eslint-comments/no-unlimited-disable": "off",
                 "perfectionist/sort-imports": [
                     "error",
                     {
@@ -36,6 +36,7 @@ export default function createConfig(options, ...userConfigs) {
                     },
                 ],
             },
+            ignores: ["**/route-tree.gen.ts"],
         },
         ...userConfigs,
     )

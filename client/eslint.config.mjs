@@ -9,7 +9,6 @@ export default createConfig(
         plugins: {
             "@tanstack/query": pluginQuery,
         },
-        ignores: ["**/routeTree.gen.ts"],
         rules: {
             "ts/ban-ts-comment": "off",
             "antfu/top-level-function": "off",

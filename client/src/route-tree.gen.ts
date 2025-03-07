@@ -1,3 +1,6 @@
+/* eslint-disable style/quote-props */
+/* eslint-disable object-shorthand */
+
 // @ts-nocheck
 
 // noinspection JSUnusedGlobalSymbols
@@ -29,7 +32,7 @@ const IndexRoute = IndexImport.update({
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
-    type FileRoutesByPath = {
+    interface FileRoutesByPath {
         "/": {
             id: "/"
             path: "/"
@@ -49,23 +52,23 @@ declare module "@tanstack/react-router" {
 
 // Create and export the route tree
 
-export type FileRoutesByFullPath = {
+export interface FileRoutesByFullPath {
     "/": typeof IndexRoute
     "/about": typeof AboutRoute
 }
 
-export type FileRoutesByTo = {
+export interface FileRoutesByTo {
     "/": typeof IndexRoute
     "/about": typeof AboutRoute
 }
 
-export type FileRoutesById = {
-    "__root__": typeof rootRoute
+export interface FileRoutesById {
+    __root__: typeof rootRoute
     "/": typeof IndexRoute
     "/about": typeof AboutRoute
 }
 
-export type FileRouteTypes = {
+export interface FileRouteTypes {
     fileRoutesByFullPath: FileRoutesByFullPath
     fullPaths: "/" | "/about"
     fileRoutesByTo: FileRoutesByTo
@@ -74,14 +77,14 @@ export type FileRouteTypes = {
     fileRoutesById: FileRoutesById
 }
 
-export type RootRouteChildren = {
+export interface RootRouteChildren {
     IndexRoute: typeof IndexRoute
     AboutRoute: typeof AboutRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-    IndexRoute,
-    AboutRoute,
+    IndexRoute: IndexRoute,
+    AboutRoute: AboutRoute,
 }
 
 export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
