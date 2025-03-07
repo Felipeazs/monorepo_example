@@ -20,8 +20,7 @@ export default function createConfig(options, ...userConfigs) {
                 "antfu/no-top-level-await": ["off"],
                 "@typescript-eslint/no-empty-object-type": "off",
                 "node/prefer-global/process": ["off"],
-                // "node/no-process-env": ["error"],
-                "eslint-comments/no-unlimited-disable": "off",
+                "@typescript-eslint/consistent-type-definitions": "off",
                 "perfectionist/sort-imports": [
                     "error",
                     {
@@ -35,6 +34,7 @@ export default function createConfig(options, ...userConfigs) {
                         ignore: ["README.md"],
                     },
                 ],
+                // "node/no-process-env": ["error"],
             },
             ignores: ["**/route-tree.gen.ts"],
         },
