@@ -1,15 +1,17 @@
-import type { Context, Next } from "hono"
-
-export async function cspMiddleware(c: Context, next: Next) {
-    const rules = [
-        "default-src 'self'",
-        "script-src 'self'",
-        "style-src 'self' 'unsafe-inline'",
-        "img-src 'self' data: https:",
-        "connect-src 'self'",
-    ].join("; ")
-
-    c.header("Content-Security-Policy", rules)
-    c.header("Permissions-Policy", "browsing-topics")
-    await next()
+export const CSP_RULES = {
+    strictTransportSecurity: "max-age=31536000; includeSubDomains; preload",
+    contentSecurityPolicy: {
+        scriptSrc: ["'self'"],
+        scriptSrcElem: ["'self'", "'sha256-8eohedfRaQoWnH7igD20HvjedM7lPcYbqukJ7DEpMOk='"],
+        styleSrc: ["'self'", "https:"],
+        styleSrcElem: [
+            "'self'",
+            "https:",
+            "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
+            "'sha256-knPAv6T1m9aFSc0s3vSMuh3Kdxy//BumDVqYOSPzYqE='",
+        ],
+    },
+    permissionsPolicy: {
+        browsingTopics: ["'self'", "'*'"],
+    },
 }

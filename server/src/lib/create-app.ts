@@ -7,48 +7,44 @@ import { secureHeaders } from "hono/secure-headers"
 
 import type { AppAPI, AppEnv } from "./types"
 
-import { cspMiddleware } from "../middlewares/csp"
+import { CSP_RULES } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
 import { env } from "../t3-env"
 import { BASE_PATH } from "./constants"
-// import onError from "../middlewares/on-error"
+import { readFile } from "node:fs/promises"
+
+let indexHtml = await readFile("public/index.html", "utf8")
 
 export function createRouter() {
-    return new Hono<AppEnv>({
+    const app = new Hono<AppEnv>({
         strict: false,
     })
+    app.use("*", secureHeaders(CSP_RULES))
+    app.use(
+        "*",
+        cors({
+            origin: [env.ORIGIN_URL],
+        }),
+    )
+
+    return app
 }
 
 export function createApp() {
     const app = createRouter()
         .use("*", serveStatic({ root: "public/" }))
         .use("/vite.svg", serveStatic({ root: "public/" }))
-        .use(
-            "*",
-            secureHeaders({
-                strictTransportSecurity: "max-age=31536000; includeSubDomains; preload",
-            }),
-        )
-        .use(
-            "*",
-            cors({
-                origin: [env.ORIGIN_URL],
-            }),
-        )
-        .use(cspMiddleware)
-        .use(logger())
-
-        // app.onError(onError)
-
-        .notFound(notFound)
 
         .use("*", async (c, next) => {
             if (c.req.path.startsWith(BASE_PATH)) {
                 return next()
             }
+            return c.html(indexHtml)
         })
         .basePath(BASE_PATH) as AppAPI
 
+    app.use(logger())
+    app.notFound(notFound)
     showRoutes(app, {
         verbose: true,
     })
