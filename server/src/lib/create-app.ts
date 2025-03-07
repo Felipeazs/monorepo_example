@@ -23,6 +23,24 @@ export function createApp() {
     const app = createRouter()
         .use("*", serveStatic({ root: "public/" }))
         .use("/vite.svg", serveStatic({ root: "public/" }))
+        .use(
+            "*",
+            secureHeaders({
+                strictTransportSecurity: "max-age=31536000; includeSubDomains; preload",
+            }),
+        )
+        .use(
+            "*",
+            cors({
+                origin: [env.ORIGIN_URL],
+            }),
+        )
+        .use(cspMiddleware)
+        .use(logger())
+
+        // app.onError(onError)
+
+        .notFound(notFound)
 
         .use("*", async (c, next) => {
             if (c.req.path.startsWith(BASE_PATH)) {
@@ -30,21 +48,6 @@ export function createApp() {
             }
         })
         .basePath(BASE_PATH) as AppAPI
-
-    app.use("*", secureHeaders())
-
-    app.use(
-        "/api/*",
-        cors({
-            origin: [env.ORIGIN_URL],
-        }),
-    )
-    app.use(cspMiddleware)
-    app.use(logger())
-
-    // app.onError(onError)
-
-    app.notFound(notFound)
 
     showRoutes(app, {
         verbose: true,
