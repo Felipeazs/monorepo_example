@@ -14,7 +14,19 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 			api_host: "/ingest",
 			ui_host: "https://us.posthog.com",
 			capture_pageview: false,
-			capture_pageleave: true,
+			capture_pageleave: false,
+			cross_subdomain_cookie: true,
+			enable_recording_console_log: false,
+			autocapture: false,
+			disable_session_recording: true,
+			disable_surveys: true,
+			enable_heatmaps: false,
+			disable_scroll_properties: true,
+			disable_web_experiments: true,
+			rageclick: false,
+			capture_heatmaps: false,
+			capture_performance: false,
+			capture_dead_clicks: false,
 		})
 	}, [])
 
