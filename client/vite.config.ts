@@ -15,8 +15,8 @@ export default defineConfig({
 			output: {
 				manualChunks: {
 					"lucide-react": ["lucide-react"],
-					["posthog"]: ["posthog-js"],
-					["zod"]: ["zod"],
+					posthog: ["posthog-js"],
+					zod: ["zod"],
 				},
 			},
 		},
