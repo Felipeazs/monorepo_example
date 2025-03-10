@@ -22,7 +22,7 @@ function Index() {
 		<div className="p-2">
 			<h3>
 				{"Welcome "}
-				{data?.message}
+				{data?.title}
 			</h3>
 		</div>
 	)

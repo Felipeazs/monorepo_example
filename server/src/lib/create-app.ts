@@ -1,3 +1,5 @@
+import "./instrument"
+
 import { serveStatic } from "@hono/node-server/serve-static"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
@@ -10,10 +12,9 @@ import type { AppAPI, AppEnv } from "./types"
 
 import { CSP_RULES } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
+import onError from "../middlewares/on-error"
 import { env } from "../t3-env"
 import { BASE_PATH } from "./constants"
-
-// import "./instruments.js"
 
 const indexHtml = await readFile("public/index.html", "utf8")
 
@@ -46,7 +47,10 @@ export function createApp() {
 		.basePath(BASE_PATH) as AppAPI
 
 	app.use(logger())
+
+	app.onError(onError)
 	app.notFound(notFound)
+
 	showRoutes(app, {
 		verbose: true,
 	})

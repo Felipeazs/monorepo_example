@@ -34,3 +34,7 @@ dist
 .dev.vars
 public
 .wrangler
+
+# Sentry Config File
+.sentryclirc
+dist/

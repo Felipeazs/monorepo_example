@@ -11,6 +11,9 @@ export function registerRoutes(app: AppAPI) {
 			c.status(200)
 			return c.text("API live and running...")
 		})
+		.get("/error", () => {
+			throw new Error("Error route")
+		})
 		.route("/hello", hello_route)
 }
 

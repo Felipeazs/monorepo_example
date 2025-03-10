@@ -5,10 +5,12 @@
 		"jsxImportSource": "hono/jsx",
 		"baseUrl": "./",
 		"paths": {
-			"@/server/*": [
-				"./src/*"
-			]
+			"@/server/*": ["./src/*"]
 		},
-		"strict": true
+		"strict": true,
+		"inlineSources": true,
+		"outDir": "./dist",
+		"sourceMap": true,
+		"sourceRoot": "/"
 	}
 }

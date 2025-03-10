@@ -3,6 +3,7 @@ import { z } from "zod"
 
 export const env = createEnv({
 	server: {
+		NODE_ENV: z.enum(["development", "production"]).default("development"),
 		ORIGIN_URL: z.string(),
 		SENTRY_DNS: z.string().optional(),
 	},
