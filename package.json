@@ -15,9 +15,5 @@
 	"workspaces": ["client", "server", "packages/*"],
 	"packageManager": "bun",
 	"author": "Felipe Zapata <felipeazs@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"posthog-js": "^1.229.5",
-		"posthog-node": "^4.10.1"
-	}
+	"license": "MIT"
 }

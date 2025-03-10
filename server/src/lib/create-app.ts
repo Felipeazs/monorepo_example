@@ -13,6 +13,8 @@ import notFound from "../middlewares/not-found"
 import { env } from "../t3-env"
 import { BASE_PATH } from "./constants"
 
+// import "./instruments.js"
+
 const indexHtml = await readFile("public/index.html", "utf8")
 
 export function createRouter() {
