@@ -27,6 +27,7 @@ export default function createConfig(options, ...userConfigs) {
 					{ selfClosing: "tag-aligned", nonEmpty: "after-props" },
 				],
 				"style/arrow-parens": "off",
+				"style/quote-props": "warn",
 				"perfectionist/sort-imports": [
 					"error",
 					{
