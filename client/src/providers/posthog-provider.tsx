@@ -11,8 +11,7 @@ const SuspendedPostHogPageView = React.lazy(() => import("./posthog-tracker"))
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		posthog.init(env.VITE_PUBLIC_POSTHOG_KEY, {
-			api_host: "/ingest",
-			ui_host: "https://us.posthog.com",
+			api_host: env.VITE_PUBLIC_POSTHOG_HOST,
 			capture_pageview: false,
 			capture_pageleave: false,
 			cross_subdomain_cookie: true,
