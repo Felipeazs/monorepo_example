@@ -10,6 +10,16 @@ export default defineConfig({
 	build: {
 		outDir: "../server/public",
 		emptyOutDir: true,
+		minify: "esbuild",
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					"lucide-react": ["lucide-react"],
+					posthog: ["posthog-js"],
+					zod: ["zod"],
+				},
+			},
+		},
 	},
 	plugins: [
 		tsconfigPaths(),
