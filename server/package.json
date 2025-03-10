@@ -3,10 +3,10 @@
 	"type": "module",
 	"version": "1.0.0",
 	"private": true,
+	"packageManager": "bun",
 	"exports": {
 		"./routes": "./src/routes/index.ts"
 	},
-	"packageManager": "bun",
 	"main": "./dist/index.js",
 	"scripts": {
 		"start": "bun dist/index.js",
