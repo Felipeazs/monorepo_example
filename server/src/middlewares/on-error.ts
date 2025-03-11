@@ -1,12 +1,12 @@
 import type { Context, ErrorHandler } from "hono"
 
-import { captureException } from "@sentry/node"
+import * as Sentry from "@sentry/node"
 import { HTTPException } from "hono/http-exception"
 
 import { env } from "../t3-env"
 
 const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => {
-	captureException(err)
+	Sentry.captureException(err)
 
 	// Determine if error has a status code
 	const statusCode = err instanceof Error && "status" in err ? (err as any).status : 500
