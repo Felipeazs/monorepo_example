@@ -2,8 +2,6 @@ import { model, Schema } from "mongoose"
 
 import type { Usuario } from "./schemas"
 
-import { env } from "../t3-env"
-
 const usuarioModel = new Schema<Usuario>(
 	{
 		email: {
@@ -13,7 +11,7 @@ const usuarioModel = new Schema<Usuario>(
 		},
 		password: String,
 	},
-	{ collection: env.NODE_ENV },
+	{ versionKey: false, timestamps: true },
 )
 
 export default model<Usuario>("Usuario", usuarioModel)
