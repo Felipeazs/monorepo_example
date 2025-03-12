@@ -10,13 +10,16 @@ export async function login({ email, password }: Usuario) {
 		.$post({
 			json: { email, password },
 		})
-		.then((res) => {
-			return res.json()
+		.then(async (res) => {
+			const json = await res.json()
+			if (!res.ok) {
+				if ("message" in json) {
+					throw new Error(json.message as string)
+				}
+			}
+
+			return json
 		})
-		.then((res) => {
-			return res
-		})
-		.catch(console.error)
 }
 export async function signup({ email, password }: Usuario) {
 	return await client.api.signup

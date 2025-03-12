@@ -2,6 +2,7 @@ import type { Usuario } from "@monorepo/server/db"
 
 import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
@@ -14,10 +15,10 @@ export function Login() {
 		mutationFn: async (data: Usuario) =>
 			await login({ email: data.email, password: data.password }),
 		onSuccess: (data) => {
-			console.warn(data)
+			toast(`Bienvenido ${data?.usuario}`)
 		},
-		onError: () => {
-			console.error("Error al traer al usuario")
+		onError: (error) => {
+			toast(error.message)
 		},
 	})
 
