@@ -1,9 +1,11 @@
+import type { Usuario } from "@monorepo/server/db"
+
 import { env } from "../t3-env"
 import hcClient from "./api"
 
 export const client = hcClient(env.VITE_API_URL)
 
-export async function login({ email, password }: { email: string; password: string }) {
+export async function login({ email, password }: Usuario) {
 	return await client.api.login
 		.$post({
 			json: { email, password },
@@ -16,7 +18,7 @@ export async function login({ email, password }: { email: string; password: stri
 		})
 		.catch(console.error)
 }
-export async function signup({ email, password }: { email: string; password: string }) {
+export async function signup({ email, password }: Usuario) {
 	return await client.api.signup
 		.$post({
 			json: { email, password },

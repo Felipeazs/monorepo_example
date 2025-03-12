@@ -1,3 +1,5 @@
+import type { Usuario } from "@monorepo/server/db"
+
 import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -10,7 +12,7 @@ import { signup } from "../lib/queries"
 export function Signup() {
 	const { mutate } = useMutation({
 		mutationKey: ["signup"],
-		mutationFn: async (data: { email: string; password: string }) =>
+		mutationFn: async (data: Usuario) =>
 			await signup({ email: data.email, password: data.password }),
 		onSuccess: (data) => {
 			toast(`Success usuario id: ${data?.usuario}`)

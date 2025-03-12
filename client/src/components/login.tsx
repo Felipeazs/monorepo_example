@@ -1,3 +1,5 @@
+import type { Usuario } from "@monorepo/server/db"
+
 import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 
@@ -9,10 +11,10 @@ import { login } from "../lib/queries"
 export function Login() {
 	const { mutate } = useMutation({
 		mutationKey: ["login"],
-		mutationFn: async (data: { email: string; password: string }) =>
+		mutationFn: async (data: Usuario) =>
 			await login({ email: data.email, password: data.password }),
 		onSuccess: (data) => {
-			console.log(data)
+			console.warn(data)
 		},
 		onError: () => {
 			console.error("Error al traer al usuario")

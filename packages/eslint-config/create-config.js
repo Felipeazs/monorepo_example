@@ -11,6 +11,11 @@ export default function createConfig(options, ...userConfigs) {
 				spaces: 4,
 				semi: false,
 				quotes: "double",
+				memberDelimeterStyle: {
+					singleline: {
+						delimeter: "comma",
+					},
+				},
 			},
 			...options,
 		},
@@ -29,6 +34,8 @@ export default function createConfig(options, ...userConfigs) {
 				"style/arrow-parens": "off",
 				"style/quote-props": "off",
 				"style/brace-style": "off",
+				"style/operator-linebreak": "off",
+				"style/multiline-ternary": "off",
 				"perfectionist/sort-imports": [
 					"error",
 					{

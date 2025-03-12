@@ -5,7 +5,8 @@
 	"private": true,
 	"packageManager": "bun",
 	"exports": {
-		"./routes": "./src/routes/index.ts"
+		"./routes": "./src/routes/index.ts",
+		"./db": "./src/db/schemas.ts"
 	},
 	"main": "./dist/src/index.js",
 	"scripts": {
