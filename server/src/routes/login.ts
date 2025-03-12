@@ -1,9 +1,8 @@
 import { Hono } from "hono"
+import { HTTPException } from "hono/http-exception"
 import { z } from "zod"
 
-import type { Usuario } from "../db/schemas"
-
-import { db } from "../db"
+import Usuario from "../db/models"
 import { zValidator } from "../lib/validator-wrapper"
 
 const loginSchema = z.object({
@@ -12,9 +11,12 @@ const loginSchema = z.object({
 })
 
 export default new Hono().post("/", zValidator("json", loginSchema), async (c) => {
-	const { email, password } = c.req.valid("json")
+	const { email } = c.req.valid("json")
 
-	const u = await db.collection<Usuario>("usuario").insertOne({ email, password })
+	const u = await Usuario.findOne({ email })
+	if (!u) {
+		throw new HTTPException(404, { message: "Usuario no encontrado" })
+	}
 
-	return c.json({ usuario: u.insertedId }, 200)
+	return c.json({ usuario: u._id.toString() }, 200)
 })
