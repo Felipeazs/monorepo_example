@@ -1,32 +1,29 @@
 import type { Context, ErrorHandler } from "hono"
+import type { HTTPException } from "hono/http-exception"
+import type { ContentfulStatusCode } from "hono/utils/http-status"
 
 import * as Sentry from "@sentry/node"
-import { HTTPException } from "hono/http-exception"
 
 import { env } from "../t3-env"
 
 const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => {
-	Sentry.captureException(err)
+	const currentStatus = "status" in err ? err.status : c.newResponse(null).status
+	const statusCode = currentStatus !== 200 ? (currentStatus as ContentfulStatusCode) : 500
 
-	// Determine if error has a status code
-	const statusCode = err instanceof Error && "status" in err ? (err as any).status : 500
-
-	// Get error message or fallback to generic message
-	const message = err instanceof Error ? err.message : "Internal Server Error"
-
-	const stack = env.NODE_ENV === "production" ? undefined : err.stack
-
-	const errorRes = {
-		success: false,
-		message,
-		stack,
+	if (statusCode >= 500) {
+		Sentry.captureException(err)
 	}
 
-	if (err instanceof HTTPException) {
-		return c.json(errorRes, statusCode)
-	}
-
-	return c.json(errorRes, 500)
+	return c.json(
+		{
+			message:
+				statusCode !== 500
+					? err.message
+					: "Error interno del servidor, por favor inténtalo más tarde",
+			stack: env.NODE_ENV === "production" ? undefined : err.stack,
+		},
+		statusCode,
+	)
 }
 
 export default onError

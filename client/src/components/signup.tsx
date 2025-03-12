@@ -1,10 +1,24 @@
 import { useForm } from "@tanstack/react-form"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
+import { signup } from "../lib/queries"
 
 export function Signup() {
+	const { mutate } = useMutation({
+		mutationKey: ["signup"],
+		mutationFn: async (data: { email: string; password: string }) =>
+			await signup({ email: data.email, password: data.password }),
+		onSuccess: (data) => {
+			toast(`Success usuario id: ${data?.usuario}`)
+		},
+		onError: (error) => {
+			toast(error.message)
+		},
+	})
 	const form = useForm({
 		defaultValues: {
 			email: "",
@@ -12,9 +26,10 @@ export function Signup() {
 			repeat_password: "",
 		},
 		onSubmit: ({ value }) => {
-			console.warn(value)
+			mutate(value)
 		},
 	})
+
 	return (
 		<div className="p-2">
 			<h1 className="font-bold uppercase">Register</h1>

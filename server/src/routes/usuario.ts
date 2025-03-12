@@ -2,6 +2,8 @@ import { Hono } from "hono"
 
 const app = new Hono()
 
-export default app.get("/", async (c) => {
+export const usuario = app.get("/", (c) => {
 	return c.json({ title: "Vite-Hono Stack" }, 200)
 })
+
+export default app

@@ -4,6 +4,10 @@ import type { AppAPI, AppEnv } from "../lib/types"
 
 import { BASE_PATH } from "../lib/constants"
 import hello_route from "./hello"
+import login from "./login"
+import producto_route from "./producto"
+import signup from "./signup"
+import usuario_route from "./usuario"
 
 export function registerRoutes(app: AppAPI) {
 	return app
@@ -11,10 +15,14 @@ export function registerRoutes(app: AppAPI) {
 			c.status(200)
 			return c.text("API live and running...")
 		})
-		.get("/error", () => {
-			throw new Error("Error route")
+		.get("/error", (c) => {
+			return c.json({ message: "error route" })
 		})
 		.route("/hello", hello_route)
+		.route("/login", login)
+		.route("/signup", signup)
+		.route("/usuario", usuario_route)
+		.route("/producto", producto_route)
 }
 
 // to use in client api

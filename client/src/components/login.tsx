@@ -1,17 +1,31 @@
 import { useForm } from "@tanstack/react-form"
+import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
+import { login } from "../lib/queries"
 
 export function Login() {
+	const { mutate } = useMutation({
+		mutationKey: ["login"],
+		mutationFn: async (data: { email: string; password: string }) =>
+			await login({ email: data.email, password: data.password }),
+		onSuccess: (data) => {
+			console.log(data)
+		},
+		onError: () => {
+			console.error("Error al traer al usuario")
+		},
+	})
+
 	const form = useForm({
 		defaultValues: {
 			email: "",
 			password: "",
 		},
 		onSubmit: ({ value }) => {
-			console.warn(value)
+			mutate(value)
 		},
 	})
 	return (

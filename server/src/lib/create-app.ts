@@ -10,6 +10,7 @@ import { readFile } from "node:fs/promises"
 
 import type { AppAPI, AppEnv } from "./types"
 
+import { runDB } from "../db"
 import { CSP_RULES } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
 import onError from "../middlewares/on-error"
@@ -54,6 +55,8 @@ export function createApp() {
 	showRoutes(app, {
 		verbose: true,
 	})
+
+	runDB()
 
 	return app
 }
