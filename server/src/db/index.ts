@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception"
 import { MongoClient, ServerApiVersion } from "mongodb"
 
 import type { Usuario } from "./schemas"
@@ -14,15 +15,19 @@ const mongo = new MongoClient(env.DATABASE_URI, {
 })
 
 export async function runDB() {
-	await mongo.connect().then(() => console.warn("Connecting to DB..."))
-	await mongo
-		.db(env.NODE_ENV)
-		.command({ ping: 1 })
-		.then((_) => console.warn("Connected to DB"))
-		.catch(async (err) => {
-			console.error(err)
-			await mongo.close()
-		})
+	try {
+		await mongo.connect().then(() => console.warn("Connecting to DB..."))
+		await mongo
+			.db(env.NODE_ENV)
+			.command({ ping: 1 })
+			.then((_) => console.warn("Connected to DB"))
+			.catch(async (err) => {
+				console.error(err)
+				await mongo.close()
+			})
+	} catch (err: any) {
+		throw new HTTPException(500, { message: err.message })
+	}
 }
 
 export const db = mongo.db(env.NODE_ENV)
