@@ -56,7 +56,7 @@ export function createApp() {
 		verbose: true,
 	})
 
-	runDB()
+	runDB().catch(console.error)
 
 	return app
 }

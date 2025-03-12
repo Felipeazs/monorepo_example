@@ -17,16 +17,12 @@ const mongo = new MongoClient(env.DATABASE_URI, {
 export async function runDB() {
 	try {
 		await mongo.connect().then(() => console.warn("Connecting to DB..."))
-		await mongo
-			.db(env.NODE_ENV)
-			.command({ ping: 1 })
-			.then((_) => console.warn("Connected to DB"))
-			.catch(async (err) => {
-				console.error(err)
-				await mongo.close()
-			})
+		await mongo.db(env.NODE_ENV).command({ ping: 1 })
+		console.warn("Connected to DB")
 	} catch (err: any) {
 		throw new HTTPException(500, { message: err.message })
+	} finally {
+		await mongo.close()
 	}
 }
 
