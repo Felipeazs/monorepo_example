@@ -27,10 +27,9 @@ function FieldInfo({
 }) {
 	return (
 		<>
-			{field.state.meta.isTouched && field.state.meta.errors.length ? (
-				<em className="text-red-700">{field.state.meta.errors.join(", ")}</em>
+			{field.state.meta.errors.length > 0 ? (
+				<em className="text-red-700">{field.state.meta.errors[0].message}</em>
 			) : null}
-			{field.state.meta.isValidating ? "Validating..." : null}
 		</>
 	)
 }

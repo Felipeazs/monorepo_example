@@ -1,5 +1,4 @@
-import type { Usuario } from "@monorepo/server/db"
-
+import { signupSchema, type Usuario } from "@monorepo/server/db"
 import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -8,6 +7,7 @@ import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { signup } from "../lib/queries"
+import FieldInfo from "./field-info"
 
 export function Signup() {
 	const { mutate } = useMutation({
@@ -26,6 +26,9 @@ export function Signup() {
 			email: "",
 			password: "",
 			repeat_password: "",
+		},
+		validators: {
+			onChange: signupSchema,
 		},
 		onSubmit: ({ value }) => {
 			mutate(value)
@@ -46,39 +49,54 @@ export function Signup() {
 				Email
 				<form.Field
 					name="email"
+					validators={{ onChange: signupSchema.shape.email }}
 					children={(field) => {
 						return (
-							<Input
-								id={field.name}
-								name={field.name}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
+							<>
+								<Input
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+								<FieldInfo field={field} />
+							</>
 						)
 					}}
 				/>
 				<Label htmlFor="password">Password</Label>
 				<form.Field
 					name="password"
+					validators={{ onChange: signupSchema.shape.password }}
 					children={(field) => {
 						return (
-							<Input
-								id={field.name}
-								name={field.name}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
+							<>
+								<Input
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+								<FieldInfo field={field} />
+							</>
 						)
 					}}
 				/>
 				<Label htmlFor="repeat_password">Repeat Password</Label>
 				<form.Field
 					name="repeat_password"
+					validators={{ onChange: signupSchema.shape.repeat_password }}
 					children={(field) => {
 						return (
-							<Input
-								id={field.name}
-								name={field.name}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
+							<>
+								<Input
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+								<FieldInfo field={field} />
+							</>
 						)
 					}}
 				/>

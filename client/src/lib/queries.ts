@@ -21,6 +21,7 @@ export async function login({ email, password }: Usuario) {
 			return json
 		})
 }
+
 export async function signup({ email, password }: Usuario) {
 	return await client.api.signup
 		.$post({

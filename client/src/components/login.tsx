@@ -1,5 +1,4 @@
-import type { Usuario } from "@monorepo/server/db"
-
+import { type Usuario, usuarioSchema } from "@monorepo/server/db"
 import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -8,6 +7,7 @@ import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { login } from "../lib/queries"
+import FieldInfo from "./field-info"
 
 export function Login() {
 	const { mutate } = useMutation({
@@ -27,13 +27,16 @@ export function Login() {
 			email: "",
 			password: "",
 		},
+		validators: {
+			onChange: usuarioSchema,
+		},
 		onSubmit: ({ value }) => {
 			mutate(value)
 		},
 	})
 	return (
 		<div className="p-2">
-			<h1 className="font-bold uppercase">Register</h1>
+			<h1 className="font-bold uppercase">Login</h1>
 			<form
 				className="flex flex-col gap-2"
 				onSubmit={(e) => {
@@ -44,26 +47,38 @@ export function Login() {
 				<Label htmlFor="email">Email</Label>
 				<form.Field
 					name="email"
+					validators={{ onChange: usuarioSchema.shape.email }}
 					children={(field) => {
 						return (
-							<Input
-								id={field.name}
-								name={field.name}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
+							<>
+								<Input
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+								<FieldInfo field={field} />
+							</>
 						)
 					}}
 				/>
 				<Label htmlFor="password">Password</Label>
 				<form.Field
 					name="password"
+					validators={{ onChange: usuarioSchema.shape.password }}
 					children={(field) => {
 						return (
-							<Input
-								id={field.name}
-								name={field.name}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
+							<>
+								<Input
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+								<FieldInfo field={field} />
+							</>
 						)
 					}}
 				/>

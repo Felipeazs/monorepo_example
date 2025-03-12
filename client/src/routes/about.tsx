@@ -9,7 +9,7 @@ export const Route = createFileRoute("/about")({
 
 function About() {
 	return (
-		<div className="flex gap-5">
+		<div className="flex h-screen w-full justify-center gap-5">
 			<Login />
 			<Signup />
 		</div>
