@@ -14,7 +14,7 @@ const mongo = new MongoClient(env.DATABASE_URI, {
 })
 
 export async function runDB() {
-	await mongo.connect()
+	await mongo.connect().then(() => console.warn("Connecting to DB..."))
 	await mongo
 		.db(env.NODE_ENV)
 		.command({ ping: 1 })
