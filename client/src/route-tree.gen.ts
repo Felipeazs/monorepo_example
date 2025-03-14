@@ -1,6 +1,3 @@
-/* eslint-disable style/quote-props */
-/* eslint-disable object-shorthand */
-
 // @ts-nocheck
 
 // noinspection JSUnusedGlobalSymbols
@@ -12,79 +9,154 @@
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root"
-import { Route as AboutImport } from "./routes/about"
-import { Route as IndexImport } from "./routes/index"
+import { Route as LayoutImport } from "./routes/_layout"
+import { Route as LayoutAuthImport } from "./routes/_layout._auth"
+import { Route as LayoutAuthDashboardImport } from "./routes/_layout._auth/dashboard"
+import { Route as LayoutAboutImport } from "./routes/_layout.about"
+import { Route as LayoutIndexImport } from "./routes/_layout.index"
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-	id: "/about",
-	path: "/about",
+const LayoutRoute = LayoutImport.update({
+	id: "/_layout",
 	getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const LayoutIndexRoute = LayoutIndexImport.update({
 	id: "/",
 	path: "/",
-	getParentRoute: () => rootRoute,
+	getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAboutRoute = LayoutAboutImport.update({
+	id: "/about",
+	path: "/about",
+	getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAuthRoute = LayoutAuthImport.update({
+	id: "/_auth",
+	getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAuthDashboardRoute = LayoutAuthDashboardImport.update({
+	id: "/dashboard",
+	path: "/dashboard",
+	getParentRoute: () => LayoutAuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
 	interface FileRoutesByPath {
-		"/": {
-			id: "/"
-			path: "/"
-			fullPath: "/"
-			preLoaderRoute: typeof IndexImport
+		"/_layout": {
+			id: "/_layout"
+			path: ""
+			fullPath: ""
+			preLoaderRoute: typeof LayoutImport
 			parentRoute: typeof rootRoute
 		}
-		"/about": {
-			id: "/about"
+		"/_layout/_auth": {
+			id: "/_layout/_auth"
+			path: ""
+			fullPath: ""
+			preLoaderRoute: typeof LayoutAuthImport
+			parentRoute: typeof LayoutImport
+		}
+		"/_layout/about": {
+			id: "/_layout/about"
 			path: "/about"
 			fullPath: "/about"
-			preLoaderRoute: typeof AboutImport
-			parentRoute: typeof rootRoute
+			preLoaderRoute: typeof LayoutAboutImport
+			parentRoute: typeof LayoutImport
+		}
+		"/_layout/": {
+			id: "/_layout/"
+			path: "/"
+			fullPath: "/"
+			preLoaderRoute: typeof LayoutIndexImport
+			parentRoute: typeof LayoutImport
+		}
+		"/_layout/_auth/dashboard": {
+			id: "/_layout/_auth/dashboard"
+			path: "/dashboard"
+			fullPath: "/dashboard"
+			preLoaderRoute: typeof LayoutAuthDashboardImport
+			parentRoute: typeof LayoutAuthImport
 		}
 	}
 }
 
 // Create and export the route tree
 
+interface LayoutAuthRouteChildren {
+	LayoutAuthDashboardRoute: typeof LayoutAuthDashboardRoute
+}
+
+const LayoutAuthRouteChildren: LayoutAuthRouteChildren = {
+	LayoutAuthDashboardRoute: LayoutAuthDashboardRoute,
+}
+
+const LayoutAuthRouteWithChildren = LayoutAuthRoute._addFileChildren(LayoutAuthRouteChildren)
+
+interface LayoutRouteChildren {
+	LayoutAuthRoute: typeof LayoutAuthRouteWithChildren
+	LayoutAboutRoute: typeof LayoutAboutRoute
+	LayoutIndexRoute: typeof LayoutIndexRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+	LayoutAuthRoute: LayoutAuthRouteWithChildren,
+	LayoutAboutRoute: LayoutAboutRoute,
+	LayoutIndexRoute: LayoutIndexRoute,
+}
+
+const LayoutRouteWithChildren = LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute
-	"/about": typeof AboutRoute
+	"": typeof LayoutAuthRouteWithChildren
+	"/about": typeof LayoutAboutRoute
+	"/": typeof LayoutIndexRoute
+	"/dashboard": typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute
-	"/about": typeof AboutRoute
+	"": typeof LayoutAuthRouteWithChildren
+	"/about": typeof LayoutAboutRoute
+	"/": typeof LayoutIndexRoute
+	"/dashboard": typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRoutesById {
 	__root__: typeof rootRoute
-	"/": typeof IndexRoute
-	"/about": typeof AboutRoute
+	"/_layout": typeof LayoutRouteWithChildren
+	"/_layout/_auth": typeof LayoutAuthRouteWithChildren
+	"/_layout/about": typeof LayoutAboutRoute
+	"/_layout/": typeof LayoutIndexRoute
+	"/_layout/_auth/dashboard": typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath
-	fullPaths: "/" | "/about"
+	fullPaths: "" | "/about" | "/" | "/dashboard"
 	fileRoutesByTo: FileRoutesByTo
-	to: "/" | "/about"
-	id: "__root__" | "/" | "/about"
+	to: "" | "/about" | "/" | "/dashboard"
+	id:
+		| "__root__"
+		| "/_layout"
+		| "/_layout/_auth"
+		| "/_layout/about"
+		| "/_layout/"
+		| "/_layout/_auth/dashboard"
 	fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute
-	AboutRoute: typeof AboutRoute
+	LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	AboutRoute: AboutRoute,
+	LayoutRoute: LayoutRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -97,15 +169,35 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/about"
+        "/_layout"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_layout": {
+      "filePath": "_layout.tsx",
+      "children": [
+        "/_layout/_auth",
+        "/_layout/about",
+        "/_layout/"
+      ]
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/_layout/_auth": {
+      "filePath": "_layout._auth.tsx",
+      "parent": "/_layout",
+      "children": [
+        "/_layout/_auth/dashboard"
+      ]
+    },
+    "/_layout/about": {
+      "filePath": "_layout.about.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/": {
+      "filePath": "_layout.index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/_auth/dashboard": {
+      "filePath": "_layout._auth/dashboard.tsx",
+      "parent": "/_layout/_auth"
     }
   }
 }
