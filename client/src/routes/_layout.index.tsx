@@ -12,6 +12,7 @@ function Index() {
 	const { data, isError } = useQuery({
 		queryKey: ["hello"],
 		queryFn: getHello,
+		staleTime: Infinity,
 	})
 
 	if (isError) {

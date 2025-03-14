@@ -20,12 +20,13 @@ export const Route = createFileRoute("/_layout/_auth")({
 })
 
 function RouteComponent() {
-	const { enter } = useAuth()
+	const { enter, quit } = useAuth()
 	const { user } = Route.useRouteContext()
 	const navigate = useNavigate()
 
 	useEffect(() => {
 		if (!user) {
+			quit()
 			navigate({ to: "/about" })
 		} else {
 			enter()

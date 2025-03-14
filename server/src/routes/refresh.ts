@@ -1,9 +1,9 @@
 import { Hono } from "hono"
-import { deleteCookie, getSignedCookie, setSignedCookie } from "hono/cookie"
+import { deleteCookie, getSignedCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
-import { generateToken } from "../lib/cookies"
+import { generateTokensAndCookies } from "../lib/cookies"
 import { getRedisClient } from "../lib/redis"
 import { env } from "../t3-env"
 
@@ -27,32 +27,7 @@ export default new Hono().post("/", async (c) => {
 			throw new HTTPException(401, { message: "Acceso no autorizado" })
 		}
 
-		// generar nuevos tokens (access y refresh)
-		const new_access_token = await generateToken(
-			user_id,
-			Math.floor(Date.now() / 1000) + 60 * 10,
-			env.JWT_ACCESS_SECRET,
-		)
-
-		const new_refresh_token = await generateToken(
-			user_id,
-			Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-			env.JWT_REFRESH_SECRET,
-		)
-
-		// send new cookie
-		await setSignedCookie(c, "refresh_token", new_refresh_token, env.COOKIE_SECRET, {
-			httpOnly: true,
-			secure: env.NODE_ENV === "production",
-			sameSite: env.NODE_ENV === "production" ? "None" : "Lax",
-			maxAge: 1000,
-			expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-		})
-
-		// guardar new refresh token en redis
-		await redis.set(`${user_id}:refresh_token`, new_refresh_token, {
-			EX: 60 * 60 * 24,
-		})
+		const { access_token: new_access_token } = await generateTokensAndCookies(c, user_id)
 
 		return c.json({ access_token: new_access_token }, 200)
 	} catch (err: any) {
