@@ -22,7 +22,6 @@ export async function generateTokensAndCookies(c: Context, user_id: string) {
 		isProd ? segundos + 60 * 60 * 24 : segundos + 60 * 2,
 		env.JWT_REFRESH_SECRET,
 	)
-
 	await setSignedCookie(c, "refresh_token", refresh_token, env.COOKIE_SECRET, {
 		httpOnly: true,
 		secure: isProd,
@@ -30,7 +29,7 @@ export async function generateTokensAndCookies(c: Context, user_id: string) {
 		maxAge: 1000,
 		expires: isProd
 			? new Date(Date.now() + 1 * 60 * 60 * 24 * 1000)
-			: new Date(Date.now() + 60 * 2),
+			: new Date(Date.now() + 2 * 60 * 1000),
 	})
 
 	const redis = getRedisClient()

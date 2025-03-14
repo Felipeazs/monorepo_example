@@ -24,8 +24,7 @@ export const auth = createMiddleware(async (c, next) => {
 		const verified_access = await verify(token, env.JWT_ACCESS_SECRET)
 
 		c.set("user", verified_access.user)
-	} catch (err: any) {
-		console.error(err.message)
+	} catch (_e: any) {
 		throw new HTTPException(401, {
 			message: "Acceso no autorizado: No se pudo verificar el access token",
 		})

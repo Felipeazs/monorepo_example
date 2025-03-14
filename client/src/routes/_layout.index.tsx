@@ -20,7 +20,7 @@ function Index() {
 	}
 
 	return (
-		<div className="p-2">
+		<div className="flex items-center justify-center p-2 text-2xl">
 			<h3>
 				{"Welcome "}
 				{data?.title}

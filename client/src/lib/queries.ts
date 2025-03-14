@@ -119,8 +119,7 @@ export const authMeQueryOptions = () => {
 	return queryOptions({
 		queryKey: ["auth"],
 		queryFn: getAuthMe,
-		gcTime: import.meta.env.PROD ? 10 : 0,
-		staleTime: 0,
+		gcTime: import.meta.env.PROD ? 10 * 60 * 1000 : 1 * 60 * 1000,
 	})
 }
 

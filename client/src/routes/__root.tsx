@@ -25,7 +25,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function Home() {
 	return (
-		<>
+		<div className="flex min-h-[calc(100vh-1px)] flex-col">
 			<PostHogProvider>
 				<Outlet />
 			</PostHogProvider>
@@ -33,6 +33,6 @@ function Home() {
 				<TanStackRouterDevtools />
 			</Suspense>
 			<Toaster />
-		</>
+		</div>
 	)
 }
