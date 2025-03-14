@@ -4,7 +4,7 @@ import { toast } from "sonner"
 
 import { getHello } from "@/client/lib/queries"
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_layout/")({
 	component: Index,
 })
 

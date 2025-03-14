@@ -1,12 +1,11 @@
 import type { Hono } from "hono"
-import type { SecureHeadersVariables } from "hono/secure-headers"
 
 import type { BASE_PATH } from "./constants"
 
-type Variables = SecureHeadersVariables
-
 export type AppEnv = {
-	Variables: Variables
+	Variables: {
+		user: string
+	}
 	Bindings: {
 		AUTH_SECRET: string
 	}

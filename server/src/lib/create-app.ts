@@ -25,9 +25,12 @@ export function createRouter() {
 	})
 	app.use("*", secureHeaders(CSP_RULES))
 	app.use(
-		"*",
+		"/*",
 		cors({
 			origin: [env.ORIGIN_URL],
+			allowHeaders: ["Content-Type", "Authorization"],
+			exposeHeaders: ["Set-Cookie"],
+			credentials: true,
 		}),
 	)
 

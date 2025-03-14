@@ -17,6 +17,7 @@ export default function createConfig(options, ...userConfigs) {
 					},
 				},
 			},
+			ignores: ["**/route-tree.gen.ts"],
 			...options,
 		},
 		{
@@ -36,6 +37,22 @@ export default function createConfig(options, ...userConfigs) {
 				"style/brace-style": "off",
 				"style/operator-linebreak": "off",
 				"style/multiline-ternary": "off",
+				"react-hooks/exhaustive-deps": "off",
+				"unused-imports/no-unused-vars": "off",
+				"no-unused-vars": "off",
+				"antfu/consistent-list-newline": "off",
+				"@typescript-eslint/no-unused-vars": [
+					"error",
+					{
+						args: "all",
+						argsIgnorePattern: "^_",
+						caughtErrors: "all",
+						caughtErrorsIgnorePattern: "^_",
+						destructuredArrayIgnorePattern: "^_",
+						varsIgnorePattern: "^_",
+						ignoreRestSiblings: true,
+					},
+				],
 				"perfectionist/sort-imports": [
 					"error",
 					{
@@ -51,7 +68,6 @@ export default function createConfig(options, ...userConfigs) {
 				],
 				// "node/no-process-env": ["error"],
 			},
-			ignores: ["**/route-tree.gen.ts"],
 		},
 		...userConfigs,
 	)
