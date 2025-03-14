@@ -4,33 +4,33 @@ import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
 import { generateToken } from "../lib/cookies"
+import { getRedisClient } from "../lib/redis"
 import { env } from "../t3-env"
 
 export default new Hono().post("/", async (c) => {
 	const refresh_token = await getSignedCookie(c, env.COOKIE_SECRET, "refresh_token")
 
 	if (!refresh_token) {
-		throw new HTTPException(401, { message: "No autorizado" })
+		throw new HTTPException(401, { message: "Acceso no autorizado" })
 	}
 
 	try {
 		const verified = await verify(refresh_token, env.JWT_REFRESH_SECRET)
+		const user_id = String(verified.user)
 
-		// traer token de redis
-		const redis_token = "1"
+		// validar presencia del token en redis
+		const redis = getRedisClient()
+		const redis_token = await redis.get(`${user_id}:refresh_token`)
 
-		// validar presencia del token
 		if (!redis_token) {
 			deleteCookie(c, "refresh_token")
-			throw new HTTPException(401, { message: "No autorizado" })
+			throw new HTTPException(401, { message: "Acceso no autorizado" })
 		}
-
-		const user_id = String(verified.user)
 
 		// generar nuevos tokens (access y refresh)
 		const new_access_token = await generateToken(
 			user_id,
-			Math.floor(Date.now() / 1000) + 5,
+			Math.floor(Date.now() / 1000) + 60 * 10,
 			env.JWT_ACCESS_SECRET,
 		)
 
@@ -40,9 +40,6 @@ export default new Hono().post("/", async (c) => {
 			env.JWT_REFRESH_SECRET,
 		)
 
-		// guardar new refresh token en redis
-		// deleteCookie(c, "refresh_token")
-
 		// send new cookie
 		await setSignedCookie(c, "refresh_token", new_refresh_token, env.COOKIE_SECRET, {
 			httpOnly: true,
@@ -50,6 +47,11 @@ export default new Hono().post("/", async (c) => {
 			sameSite: env.NODE_ENV === "production" ? "None" : "Lax",
 			maxAge: 1000,
 			expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+		})
+
+		// guardar new refresh token en redis
+		await redis.set(`${user_id}:refresh_token`, new_refresh_token, {
+			EX: 60 * 60 * 24,
 		})
 
 		return c.json({ access_token: new_access_token }, 200)

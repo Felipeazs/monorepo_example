@@ -30,6 +30,7 @@
 		"hono": "^4.7.2",
 		"mongoose": "^8.12.1",
 		"mongoose-unique-validator": "^4.0.1",
+		"redis": "^4.7.0",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {

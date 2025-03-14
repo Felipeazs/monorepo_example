@@ -10,12 +10,13 @@ import { readFile } from "node:fs/promises"
 
 import type { AppAPI, AppEnv } from "./types"
 
-import { runDB } from "../db"
+import { initMongoDB } from "../db"
 import { CSP_RULES } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
 import onError from "../middlewares/on-error"
 import { env } from "../t3-env"
 import { BASE_PATH } from "./constants"
+import { initRedis } from "./redis"
 
 const indexHtml = await readFile("public/index.html", "utf8")
 
@@ -55,11 +56,14 @@ export function createApp() {
 	app.onError(onError)
 	app.notFound(notFound)
 
-	showRoutes(app, {
-		verbose: true,
-	})
+	if (env.NODE_ENV === "development") {
+		showRoutes(app, {
+			verbose: true,
+		})
+	}
 
-	runDB().catch(console.error)
+	initMongoDB()
+	initRedis()
 
 	return app
 }

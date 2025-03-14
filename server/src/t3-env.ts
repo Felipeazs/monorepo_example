@@ -10,6 +10,7 @@ export const env = createEnv({
 		JWT_ACCESS_SECRET: z.string(),
 		JWT_REFRESH_SECRET: z.string(),
 		COOKIE_SECRET: z.string(),
+		REDIS_URL: z.string(),
 	},
 	runtimeEnv: process.env,
 	skipValidation: false,

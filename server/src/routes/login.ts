@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception"
 import Usuario from "../db/models"
 import { loginSchema } from "../db/schemas"
 import { generateToken } from "../lib/cookies"
+import { getRedisClient } from "../lib/redis"
 import { zValidator } from "../lib/validator-wrapper"
 import { env } from "../t3-env"
 
@@ -41,6 +42,11 @@ export default new Hono().post("/", zValidator("json", loginSchema), async (c) =
 		sameSite: env.NODE_ENV === "production" ? "None" : "Lax",
 		maxAge: 1000,
 		expires: new Date(Date.now() + 10),
+	})
+
+	const redis = getRedisClient()
+	await redis.set(`${user_id}:refresh_token`, refresh_token, {
+		EX: 60 * 60 * 24,
 	})
 
 	return c.json({ access_token }, 200)
