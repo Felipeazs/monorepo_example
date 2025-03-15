@@ -11,7 +11,7 @@
 	"main": "./dist/src/index.js",
 	"scripts": {
 		"start": "NODE_ENV=production bun dist/src/index.js",
-		"build": "tsc && npm run posthog:sourcemaps",
+		"build": "tsc && npm run sentry:sourcemaps",
 		"dev": "bun --hot src/index.ts --elide-lines 0",
 		"lint": "eslint .",
 		"lint:fix": "bun run lint --fix",
