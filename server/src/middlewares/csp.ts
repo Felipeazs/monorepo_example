@@ -6,6 +6,7 @@ export const CSP_RULES = {
 			"'self'",
 			"'sha256-8eohedfRaQoWnH7igD20HvjedM7lPcYbqukJ7DEpMOk='",
 			"https://*.posthog.com",
+			"https://*.railway.com",
 		],
 		styleSrc: ["'self'", "https:"],
 		styleSrcElem: [
