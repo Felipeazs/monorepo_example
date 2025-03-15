@@ -5,10 +5,7 @@ export const CSP_RULES = {
 		scriptSrcElem: [
 			"'self'",
 			"'sha256-8eohedfRaQoWnH7igD20HvjedM7lPcYbqukJ7DEpMOk='",
-			"https://us-assets.i.posthog.com",
-			"https://us.i.posthog.com",
-			"https://eu-assets.i.posthog.com",
-			"https://eu.i.posthog.com",
+			"https://*.posthog.com",
 		],
 		styleSrc: ["'self'", "https:"],
 		styleSrcElem: [
