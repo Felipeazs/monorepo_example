@@ -69,8 +69,7 @@ function checkAccessTokenExpired(access_token: string): boolean | undefined {
 
 		const current_time = Math.floor(Date.now() / 1000)
 		if (payload.exp) {
-			const isExpired = payload.exp < current_time
-			return isExpired
+			return payload.exp < current_time
 		}
 	} catch (_e: any) {
 		return true

@@ -11,13 +11,14 @@
 	"main": "./dist/src/index.js",
 	"scripts": {
 		"start": "NODE_ENV=production bun dist/src/index.js",
-		"build": "tsc && npm run sentry:sourcemaps",
+		"build": "tsc && npm run posthog:sourcemaps",
 		"dev": "bun --hot src/index.ts --elide-lines 0",
 		"lint": "eslint .",
 		"lint:fix": "bun run lint --fix",
 		"typecheck": "tsc --noEmit",
 		"clean": "rm -rf node_modules dist public tsconfig.tsbuildinfo",
-		"sentry:sourcemaps": "sentry-cli sourcemaps inject --org felipeazs --project monorepo-example ./dist && sentry-cli sourcemaps upload --org felipeazs --project monorepo-example ./dist"
+		"sentry:sourcemaps": "sentry-cli sourcemaps inject --org felipeazs --project monorepo-example ./dist && sentry-cli sourcemaps upload --org felipeazs --project monorepo-example ./dist",
+		"posthog:sourcemaps": "posthog-cli sourcemap inject --directory ./dist && posthog-cli sourcemap upload --directory ./dist"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
@@ -30,6 +31,7 @@
 		"hono": "^4.7.2",
 		"mongoose": "^8.12.1",
 		"mongoose-unique-validator": "^4.0.1",
+		"posthog-node": "^4.10.1",
 		"redis": "^4.7.0",
 		"zod": "^3.24.2"
 	},

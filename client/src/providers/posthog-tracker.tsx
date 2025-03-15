@@ -16,7 +16,7 @@ export default function PostHogPageView(): null {
 				url = `${url}?${searchStr.toString()}`
 			}
 
-			posthog.capture("$pageview", { $current_url: url })
+			posthog.capture("$pageview", { $current_url: url, $pathname: "pathname" })
 		}
 	}, [pathname, searchStr, posthog])
 

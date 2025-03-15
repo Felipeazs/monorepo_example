@@ -3,5 +3,5 @@ import { Hono } from "hono"
 const app = new Hono()
 
 export default app.get("/", async (c) => {
-	return c.json({ title: "Vite-Hono Stack" }, 200)
+	return c.json({}, 200)
 })

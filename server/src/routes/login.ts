@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception"
 import Usuario from "../db/models"
 import { loginSchema } from "../db/schemas"
 import { generateTokensAndCookies } from "../lib/cookies"
+import { captureEvent } from "../lib/posthog"
 import { zValidator } from "../lib/validator-wrapper"
 
 export default new Hono().post("/", zValidator("json", loginSchema), async (c) => {
@@ -22,6 +23,11 @@ export default new Hono().post("/", zValidator("json", loginSchema), async (c) =
 	const user_id = usuarioEncontrado._id.toString()
 
 	const { access_token } = await generateTokensAndCookies(c, user_id)
+
+	captureEvent({
+		distinct_id: email,
+		event: "login",
+	})
 
 	return c.json({ access_token }, 200)
 })

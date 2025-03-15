@@ -3,18 +3,19 @@ import { HTTPException } from "hono/http-exception"
 
 import Usuario from "../db/models"
 import { signupSchema } from "../db/schemas"
+import { captureEvent } from "../lib/posthog"
 import { zValidator } from "../lib/validator-wrapper"
 
 export default new Hono().post("/", zValidator("json", signupSchema), async (c) => {
 	const { email, password, repeat_password } = c.req.valid("json")
 
+	if (password !== repeat_password) {
+		throw new Error("Las contraseñas no coinciden")
+	}
+
 	const usuarioEncontrado = await Usuario.findOne({ email }).lean()
 	if (usuarioEncontrado) {
 		throw new HTTPException(400, { message: "El usuario ya existe" })
-	}
-
-	if (password !== repeat_password) {
-		throw new Error("Las contraseñas no coinciden")
 	}
 
 	const hashedPassword = await Bun.password.hash(password, {
@@ -24,6 +25,8 @@ export default new Hono().post("/", zValidator("json", signupSchema), async (c) 
 
 	const nuevoUsuario = new Usuario({ email, password: hashedPassword })
 	await nuevoUsuario.save()
+
+	captureEvent({ distinct_id: email, event: "signup" })
 
 	return c.json({ usuario: nuevoUsuario.id }, 200)
 })
