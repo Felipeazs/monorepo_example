@@ -1,37 +1,25 @@
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router"
-import { useEffect } from "react"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 
 import { authMeQueryOptions } from "../lib/queries"
-import { useAuth } from "../store"
 
 export const Route = createFileRoute("/_layout/_auth")({
 	beforeLoad: async ({ context }) => {
-		const queryClient = context.queryClient
+		const auth = context.auth
 
 		try {
-			const data = await queryClient.ensureQueryData(authMeQueryOptions())
+			const data = await context.queryClient.ensureQueryData(authMeQueryOptions())
+
+			auth.enter()
 
 			return data
-		} catch {
-			return { user: null }
+		} catch (_err) {
+			auth.quit()
+			throw redirect({
+				to: "/",
+				search: {
+					redirect: location.href,
+				},
+			})
 		}
 	},
-	component: RouteComponent,
 })
-
-function RouteComponent() {
-	const { enter, quit } = useAuth()
-	const { user } = Route.useRouteContext()
-	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (!user) {
-			quit()
-			navigate({ to: "/about" })
-		} else {
-			enter()
-		}
-	}, [user])
-
-	return <Outlet />
-}

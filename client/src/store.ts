@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-interface AuthState {
+export interface AuthState {
 	isLoggedIn: boolean
 	enter: () => void
 	quit: () => void

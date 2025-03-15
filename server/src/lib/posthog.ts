@@ -30,9 +30,13 @@ export function captureEvent({ distinct_id, event, properties }: PostHogEvent) {
 		throw new HTTPException(500, { message: "PostHog client eror" })
 	}
 
-	client.capture({
-		distinctId: distinct_id,
-		event,
-		properties,
-	})
+	try {
+		client.capture({
+			distinctId: distinct_id,
+			event,
+			properties,
+		})
+	} catch (err: any) {
+		throw new HTTPException(500, { message: err })
+	}
 }

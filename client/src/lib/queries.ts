@@ -100,7 +100,7 @@ export async function getAuthMe(): Promise<{}> {
 		.then(async (res) => {
 			const json = await res.json()
 
-			if (!res.ok && checkAccessTokenExpired(token)) {
+			if (checkAccessTokenExpired(token)) {
 				await refreshAccessToken()
 
 				return getAuthMe()
@@ -122,34 +122,30 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-export async function getHello() {
-	return await client.api.hello
-		.$get()
-		.then((res) => {
-			return res.json()
-		})
-		.then((res) => {
-			return res
-		})
-		.catch(console.error)
-}
+export async function getUsuario(): Promise<Usuario | undefined> {
+	const token = localStorage.getItem("access_token")
+	if (!token) {
+		return
+	}
 
-export async function getUsuario() {
-	return await client.api.usuario.$get().then(async (res) => {
-		const json = await res.json()
-		if (!res.ok) {
-			if ("message" in json) {
-				throw new Error(json.message as string)
+	return await client.api.usuario
+		.$get({}, { headers: { Authorization: `Bearer ${token}` } })
+		.then(async (res) => {
+			const json = await res.json()
+			if (!res.ok) {
+				if ("message" in json) {
+					throw new Error(json.message as string)
+				}
 			}
-		}
 
-		return json
-	})
+			return json.usuario
+		})
 }
 
-export const getUsuarioQueryOptions = () => {
+export const getUsuarioQueryOptions = (id: string) => {
 	return queryOptions({
-		queryKey: ["usuario"],
-		queryFn: async () => await getUsuario(),
+		queryKey: ["usuario", id],
+		queryFn: getUsuario,
+		staleTime: Infinity,
 	})
 }

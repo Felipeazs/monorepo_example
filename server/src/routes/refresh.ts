@@ -32,6 +32,6 @@ export default new Hono().post("/", async (c) => {
 		return c.json({ access_token: new_access_token }, 200)
 	} catch (err: any) {
 		deleteCookie(c, "refresh_token")
-		throw new HTTPException(500, { message: err.message, cause: err.cause })
+		throw new HTTPException(401, { message: err.message, cause: err.cause })
 	}
 })

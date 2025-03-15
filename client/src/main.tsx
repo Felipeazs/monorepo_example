@@ -7,10 +7,14 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
 import { routeTree } from "./route-tree.gen"
+import { useAuth } from "./store"
 
 const queryClient = new QueryClient()
 
-const router = createRouter({ routeTree, context: { queryClient, user: undefined } })
+const router = createRouter({
+	routeTree,
+	context: { queryClient, user: undefined, auth: undefined! },
+})
 
 declare module "@tanstack/react-router" {
 	interface Register {
@@ -18,10 +22,15 @@ declare module "@tanstack/react-router" {
 	}
 }
 
+export function InnerApp() {
+	const auth = useAuth()
+	return <RouterProvider router={router} context={{ auth }} />
+}
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<RouterProvider router={router} />
+			<InnerApp />
 		</QueryClientProvider>
 	</StrictMode>,
 )

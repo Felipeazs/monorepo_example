@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose"
 
-import type { SignupUsuario } from "./schemas"
+import type { Usuario } from "./schemas"
 
-const usuarioModel = new Schema<SignupUsuario>(
+const usuarioModel = new Schema<Usuario>(
 	{
 		email: {
 			type: String,
@@ -19,4 +19,4 @@ const usuarioModel = new Schema<SignupUsuario>(
 	{ versionKey: false, timestamps: true },
 )
 
-export default model<SignupUsuario>("Usuario", usuarioModel)
+export default model<Usuario>("Usuario", usuarioModel)

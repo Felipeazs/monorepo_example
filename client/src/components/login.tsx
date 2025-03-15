@@ -8,9 +8,11 @@ import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { login } from "../lib/queries"
+import { useAuth } from "../store"
 import FieldInfo from "./field-info"
 
 export function Login() {
+	const { quit } = useAuth()
 	const navigate = useNavigate()
 
 	const { mutate } = useMutation({
@@ -23,6 +25,8 @@ export function Login() {
 			navigate({ from: "/about", to: "/dashboard" })
 		},
 		onError: (error) => {
+			quit()
+
 			toast(error.message)
 		},
 	})

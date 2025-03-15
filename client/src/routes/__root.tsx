@@ -4,11 +4,14 @@ import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import React, { Suspense } from "react"
 import { Toaster } from "sonner"
 
+import type { AuthState } from "../store"
+
 import { PostHogProvider } from "../providers/posthog-provider"
 
 type RouterContext = {
 	queryClient: QueryClient
 	user: string | undefined
+	auth: AuthState
 }
 
 const TanStackRouterDevtools = import.meta.env.PROD

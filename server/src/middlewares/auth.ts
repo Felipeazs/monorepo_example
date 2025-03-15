@@ -9,14 +9,14 @@ export const auth = createMiddleware(async (c, next) => {
 
 	if (!access_token) {
 		throw new HTTPException(401, {
-			message: "Acceso no authorizado: El access token no existe en el header",
+			message: "Acceso no authorizado",
 		})
 	}
 
 	const token = access_token.split(" ")[1]
 	if (!token) {
 		throw new HTTPException(401, {
-			message: "Acceso no authorizado: No existe el token en el access token",
+			message: "Acceso no authorizado",
 		})
 	}
 
@@ -26,7 +26,7 @@ export const auth = createMiddleware(async (c, next) => {
 		c.set("user", verified_access.user)
 	} catch (_e: any) {
 		throw new HTTPException(401, {
-			message: "Acceso no autorizado: No se pudo verificar el access token",
+			message: "Acceso no autorizado",
 		})
 	}
 
