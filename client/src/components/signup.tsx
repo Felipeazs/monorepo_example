@@ -47,7 +47,7 @@ export function Signup() {
 
 	return (
 		<form
-			className="flex flex-col gap-2"
+			className="flex w-[250px] flex-col gap-2"
 			onSubmit={(e) => {
 				e.preventDefault()
 				e.stopPropagation()
