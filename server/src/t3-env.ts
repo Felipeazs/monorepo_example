@@ -5,7 +5,7 @@ export const env = createEnv({
 	server: {
 		NODE_ENV: z.enum(["development", "production"]).default("development"),
 		DATABASE_URI: z.string(),
-		ORIGIN_URL: z.string().url(),
+		ORIGIN_URL: z.string(),
 		URL: z.string().url(),
 		SENTRY_DNS: z.string().optional(),
 		JWT_ACCESS_SECRET: z.string(),
