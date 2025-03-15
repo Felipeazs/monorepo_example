@@ -1,30 +1,13 @@
-import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
-import { toast } from "sonner"
-
-import { getHello } from "@/client/lib/queries"
 
 export const Route = createFileRoute("/_layout/")({
 	component: Index,
 })
 
 function Index() {
-	const { data, isError } = useQuery({
-		queryKey: ["hello"],
-		queryFn: getHello,
-		staleTime: Infinity,
-	})
-
-	if (isError) {
-		toast("Error fetching hello")
-	}
-
 	return (
 		<div className="flex items-center justify-center p-2 text-2xl">
-			<h3>
-				{"Welcome "}
-				{data?.title}
-			</h3>
+			<h3>{"Welcome "}</h3>
 		</div>
 	)
 }
