@@ -53,13 +53,9 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 		})
 }
 
-export async function logout() {
-	return await client.api.logout.$post().then(async (res) => {
-		const json = await res.json()
-
+export async function logout(): Promise<void> {
+	await client.api.logout.$post().then(async () => {
 		localStorage.removeItem("access_token")
-
-		return json
 	})
 }
 
@@ -89,10 +85,10 @@ async function refreshAccessToken() {
 	})
 }
 
-export async function getAuthMe(): Promise<{}> {
+export async function getAuthMe(): Promise<null> {
 	const token = localStorage.getItem("access_token")
 	if (!token) {
-		return {}
+		return null
 	}
 
 	return await client.api.auth
@@ -110,7 +106,7 @@ export async function getAuthMe(): Promise<{}> {
 				throw new Error(json.message as string)
 			}
 
-			return json
+			return null
 		})
 }
 
@@ -122,10 +118,10 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-export async function getUsuario(): Promise<Usuario | undefined> {
+export async function getUsuario(): Promise<Usuario | null> {
 	const token = localStorage.getItem("access_token")
 	if (!token) {
-		return
+		return null
 	}
 
 	return await client.api.usuario

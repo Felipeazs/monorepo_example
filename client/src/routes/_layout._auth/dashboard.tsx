@@ -15,6 +15,9 @@ export const Route = createFileRoute("/_layout/_auth/dashboard")({
 			return await context.queryClient.ensureQueryData(getUsuarioQueryOptions(context.user!))
 		} catch (_err) {
 			context.auth.quit()
+
+			context.logout()
+
 			throw redirect({
 				to: "/",
 				search: {

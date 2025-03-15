@@ -6,6 +6,7 @@ import "./index.css"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
+import { logout } from "./lib/queries"
 import { routeTree } from "./route-tree.gen"
 import { useAuth } from "./store"
 
@@ -13,7 +14,7 @@ const queryClient = new QueryClient()
 
 const router = createRouter({
 	routeTree,
-	context: { queryClient, user: undefined, auth: undefined! },
+	context: { queryClient, user: undefined, auth: undefined!, logout },
 })
 
 declare module "@tanstack/react-router" {

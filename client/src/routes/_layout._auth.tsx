@@ -7,11 +7,9 @@ export const Route = createFileRoute("/_layout/_auth")({
 		const auth = context.auth
 
 		try {
-			const data = await context.queryClient.ensureQueryData(authMeQueryOptions())
+			await context.queryClient.ensureQueryData(authMeQueryOptions())
 
 			auth.enter()
-
-			return data
 		} catch (_err) {
 			auth.quit()
 			throw redirect({

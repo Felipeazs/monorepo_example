@@ -12,6 +12,7 @@ type RouterContext = {
 	queryClient: QueryClient
 	user: string | undefined
 	auth: AuthState
+	logout: () => Promise<void>
 }
 
 const TanStackRouterDevtools = import.meta.env.PROD

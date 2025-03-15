@@ -4,6 +4,7 @@ import type { ContentfulStatusCode } from "hono/utils/http-status"
 
 import * as Sentry from "@sentry/node"
 
+import { initPosthog } from "../lib/posthog"
 import { env } from "../t3-env"
 
 const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => {
@@ -11,6 +12,9 @@ const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => 
 	const statusCode = currentStatus !== 200 ? (currentStatus as ContentfulStatusCode) : 500
 
 	if (statusCode >= 500) {
+		const posthog = initPosthog()
+		posthog.captureException(err)
+
 		Sentry.captureException(err)
 	}
 

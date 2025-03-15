@@ -9,6 +9,7 @@ export function initPosthog() {
 	if (!client) {
 		client = new PostHog(env.POSTHOG_APIKEY, {
 			host: env.POSTHOG_HOST,
+			enableExceptionAutocapture: true,
 		})
 
 		client.on("error", (err) => {
