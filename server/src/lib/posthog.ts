@@ -32,11 +32,13 @@ export function captureEvent({ distinct_id, event, properties }: PostHogEvent) {
 	}
 
 	try {
-		client.capture({
-			distinctId: distinct_id,
-			event,
-			properties,
-		})
+		if (env.NODE_ENV === "production") {
+			client.capture({
+				distinctId: distinct_id,
+				event,
+				properties,
+			})
+		}
 	} catch (err: any) {
 		throw new HTTPException(500, { message: err })
 	}

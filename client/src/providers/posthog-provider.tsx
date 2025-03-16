@@ -2,11 +2,13 @@
 
 import posthog from "posthog-js"
 import { PostHogProvider as PHProvider } from "posthog-js/react"
-import React, { Suspense, useEffect } from "react"
+import React, { useEffect } from "react"
 
 import { env } from "../t3-env"
 
-const PostHogPageView = React.lazy(() => import("./posthog-tracker"))
+const PostHogPageView = import.meta.env.PROD
+	? React.lazy(() => import("./posthog-tracker"))
+	: () => null
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
@@ -31,9 +33,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
 	return (
 		<PHProvider client={posthog}>
-			<Suspense fallback={null}>
-				<PostHogPageView />
-			</Suspense>
+			<PostHogPageView />
 			{children}
 		</PHProvider>
 	)

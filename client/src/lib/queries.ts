@@ -54,9 +54,16 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 }
 
 export async function logout(): Promise<void> {
-	await client.api.logout.$post().then(async () => {
-		localStorage.removeItem("access_token")
-	})
+	const token = localStorage.getItem("access_token")
+	if (!token) {
+		return
+	}
+
+	await client.api.logout
+		.$post({}, { headers: { Authorization: `Bearer ${token}` } })
+		.then(async () => {
+			localStorage.removeItem("access_token")
+		})
 }
 
 function checkAccessTokenExpired(access_token: string): boolean | undefined {
