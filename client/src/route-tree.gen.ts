@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // @ts-nocheck
 
 // noinspection JSUnusedGlobalSymbols
@@ -8,160 +10,163 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root"
-import { Route as LayoutImport } from "./routes/_layout"
-import { Route as LayoutAuthImport } from "./routes/_layout._auth"
-import { Route as LayoutAuthDashboardImport } from "./routes/_layout._auth/dashboard"
-import { Route as LayoutAboutImport } from "./routes/_layout.about"
-import { Route as LayoutIndexImport } from "./routes/_layout.index"
+import { Route as rootRoute } from './routes/__root'
+import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutIndexImport } from './routes/_layout.index'
+import { Route as LayoutAboutImport } from './routes/_layout.about'
+import { Route as LayoutAuthImport } from './routes/_layout._auth'
+import { Route as LayoutAuthDashboardImport } from './routes/_layout._auth/dashboard'
 
 // Create/Update Routes
 
 const LayoutRoute = LayoutImport.update({
-	id: "/_layout",
-	getParentRoute: () => rootRoute,
+  id: '/_layout',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const LayoutIndexRoute = LayoutIndexImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => LayoutRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutAboutRoute = LayoutAboutImport.update({
-	id: "/about",
-	path: "/about",
-	getParentRoute: () => LayoutRoute,
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutAuthRoute = LayoutAuthImport.update({
-	id: "/_auth",
-	getParentRoute: () => LayoutRoute,
+  id: '/_auth',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutAuthDashboardRoute = LayoutAuthDashboardImport.update({
-	id: "/dashboard",
-	path: "/dashboard",
-	getParentRoute: () => LayoutAuthRoute,
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => LayoutAuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/_layout": {
-			id: "/_layout"
-			path: ""
-			fullPath: ""
-			preLoaderRoute: typeof LayoutImport
-			parentRoute: typeof rootRoute
-		}
-		"/_layout/_auth": {
-			id: "/_layout/_auth"
-			path: ""
-			fullPath: ""
-			preLoaderRoute: typeof LayoutAuthImport
-			parentRoute: typeof LayoutImport
-		}
-		"/_layout/about": {
-			id: "/_layout/about"
-			path: "/about"
-			fullPath: "/about"
-			preLoaderRoute: typeof LayoutAboutImport
-			parentRoute: typeof LayoutImport
-		}
-		"/_layout/": {
-			id: "/_layout/"
-			path: "/"
-			fullPath: "/"
-			preLoaderRoute: typeof LayoutIndexImport
-			parentRoute: typeof LayoutImport
-		}
-		"/_layout/_auth/dashboard": {
-			id: "/_layout/_auth/dashboard"
-			path: "/dashboard"
-			fullPath: "/dashboard"
-			preLoaderRoute: typeof LayoutAuthDashboardImport
-			parentRoute: typeof LayoutAuthImport
-		}
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_layout/_auth': {
+      id: '/_layout/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutAuthImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/about': {
+      id: '/_layout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof LayoutAboutImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/_auth/dashboard': {
+      id: '/_layout/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof LayoutAuthDashboardImport
+      parentRoute: typeof LayoutAuthImport
+    }
+  }
 }
 
 // Create and export the route tree
 
 interface LayoutAuthRouteChildren {
-	LayoutAuthDashboardRoute: typeof LayoutAuthDashboardRoute
+  LayoutAuthDashboardRoute: typeof LayoutAuthDashboardRoute
 }
 
 const LayoutAuthRouteChildren: LayoutAuthRouteChildren = {
-	LayoutAuthDashboardRoute: LayoutAuthDashboardRoute,
+  LayoutAuthDashboardRoute: LayoutAuthDashboardRoute,
 }
 
-const LayoutAuthRouteWithChildren = LayoutAuthRoute._addFileChildren(LayoutAuthRouteChildren)
+const LayoutAuthRouteWithChildren = LayoutAuthRoute._addFileChildren(
+  LayoutAuthRouteChildren,
+)
 
 interface LayoutRouteChildren {
-	LayoutAuthRoute: typeof LayoutAuthRouteWithChildren
-	LayoutAboutRoute: typeof LayoutAboutRoute
-	LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutAuthRoute: typeof LayoutAuthRouteWithChildren
+  LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-	LayoutAuthRoute: LayoutAuthRouteWithChildren,
-	LayoutAboutRoute: LayoutAboutRoute,
-	LayoutIndexRoute: LayoutIndexRoute,
+  LayoutAuthRoute: LayoutAuthRouteWithChildren,
+  LayoutAboutRoute: LayoutAboutRoute,
+  LayoutIndexRoute: LayoutIndexRoute,
 }
 
-const LayoutRouteWithChildren = LayoutRoute._addFileChildren(LayoutRouteChildren)
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 export interface FileRoutesByFullPath {
-	"": typeof LayoutAuthRouteWithChildren
-	"/about": typeof LayoutAboutRoute
-	"/": typeof LayoutIndexRoute
-	"/dashboard": typeof LayoutAuthDashboardRoute
+  '': typeof LayoutAuthRouteWithChildren
+  '/about': typeof LayoutAboutRoute
+  '/': typeof LayoutIndexRoute
+  '/dashboard': typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRoutesByTo {
-	"": typeof LayoutAuthRouteWithChildren
-	"/about": typeof LayoutAboutRoute
-	"/": typeof LayoutIndexRoute
-	"/dashboard": typeof LayoutAuthDashboardRoute
+  '': typeof LayoutAuthRouteWithChildren
+  '/about': typeof LayoutAboutRoute
+  '/': typeof LayoutIndexRoute
+  '/dashboard': typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRoutesById {
-	__root__: typeof rootRoute
-	"/_layout": typeof LayoutRouteWithChildren
-	"/_layout/_auth": typeof LayoutAuthRouteWithChildren
-	"/_layout/about": typeof LayoutAboutRoute
-	"/_layout/": typeof LayoutIndexRoute
-	"/_layout/_auth/dashboard": typeof LayoutAuthDashboardRoute
+  __root__: typeof rootRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/_auth': typeof LayoutAuthRouteWithChildren
+  '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/_auth/dashboard': typeof LayoutAuthDashboardRoute
 }
 
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath
-	fullPaths: "" | "/about" | "/" | "/dashboard"
-	fileRoutesByTo: FileRoutesByTo
-	to: "" | "/about" | "/" | "/dashboard"
-	id:
-		| "__root__"
-		| "/_layout"
-		| "/_layout/_auth"
-		| "/_layout/about"
-		| "/_layout/"
-		| "/_layout/_auth/dashboard"
-	fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '' | '/about' | '/' | '/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to: '' | '/about' | '/' | '/dashboard'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/_auth'
+    | '/_layout/about'
+    | '/_layout/'
+    | '/_layout/_auth/dashboard'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	LayoutRoute: typeof LayoutRouteWithChildren
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	LayoutRoute: LayoutRouteWithChildren,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 
 export const routeTree = rootRoute
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>()
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {

@@ -53,7 +53,7 @@ export function Signup() {
 				e.stopPropagation()
 				form.handleSubmit()
 			}}>
-			<Label htmlFor="email"></Label>
+			<Label htmlFor="email-signup"></Label>
 			Email
 			<form.Field
 				name="email"
@@ -62,7 +62,7 @@ export function Signup() {
 					return (
 						<>
 							<Input
-								id={field.name}
+								id="email-signup"
 								name={field.name}
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
@@ -72,7 +72,7 @@ export function Signup() {
 					)
 				}}
 			/>
-			<Label htmlFor="password">Password</Label>
+			<Label htmlFor="password-signup">Password</Label>
 			<form.Field
 				name="password"
 				validators={{ onChange: signupSchema.shape.password }}
@@ -80,7 +80,7 @@ export function Signup() {
 					return (
 						<>
 							<Input
-								id={field.name}
+								id="password-signup"
 								name={field.name}
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
@@ -90,7 +90,7 @@ export function Signup() {
 					)
 				}}
 			/>
-			<Label htmlFor="repeat_password">Repeat Password</Label>
+			<Label htmlFor="repeat_password-signup">Repeat Password</Label>
 			<form.Field
 				name="repeat_password"
 				validators={{ onChange: signupSchema.shape.repeat_password }}
@@ -98,7 +98,7 @@ export function Signup() {
 					return (
 						<>
 							<Input
-								id={field.name}
+								id="repeat_password-signup"
 								name={field.name}
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
