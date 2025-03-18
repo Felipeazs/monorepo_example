@@ -6,8 +6,8 @@ import { RL_REQUESTS, RL_WINDOW } from "../lib/constants"
 import { getRedisClient } from "../lib/redis"
 
 export default createMiddleware(async (c, next) => {
-	const id = getConnInfo(c).remote.address
-	const key = `${id}:rate-limit`
+	const id = getConnInfo(c).remote.address ?? ""
+	const key = `${id}:rate_limit`
 
 	// Use Redis MULTI for atomic operations
 	const redis = getRedisClient()

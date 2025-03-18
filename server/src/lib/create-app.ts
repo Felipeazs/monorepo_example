@@ -14,6 +14,7 @@ import { initMongoDB } from "../db"
 import { CSP_RULES } from "../middlewares/csp"
 import notFound from "../middlewares/not-found"
 import onError from "../middlewares/on-error"
+import rateLimit from "../middlewares/rate-limit"
 import { env } from "../t3-env"
 import { BASE_PATH } from "./constants"
 import { initPosthog } from "./posthog"
@@ -39,6 +40,8 @@ export function createRouter() {
 			credentials: true,
 		}),
 	)
+
+	app.use("/api/*", rateLimit)
 
 	return app
 }

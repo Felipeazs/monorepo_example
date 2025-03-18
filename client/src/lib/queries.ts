@@ -15,6 +15,33 @@ export const client = hcClient(env.VITE_API_URL, {
 	},
 })
 
+async function fetchWithAuth() {
+	let token = getAccessToken()
+	if (!token) {
+		throw new Error("Usuario no autenticado")
+	}
+
+	if (checkAccessTokenExpired(token)) {
+		try {
+			await refreshAccessToken()
+			token = getAccessToken()
+		} catch (_err) {
+			localStorage.removeItem("access_token")
+			window.location.href = "/about"
+			return
+		}
+	}
+
+	return token
+}
+
+async function checkRateLimit(json: any) {
+	if (json.status === 429) {
+		await logout()
+		return (window.location.href = "/")
+	}
+}
+
 export async function login({ email, password }: Usuario) {
 	return await client.api.login
 		.$post({
@@ -22,10 +49,11 @@ export async function login({ email, password }: Usuario) {
 		})
 		.then(async (res) => {
 			const json = await res.json()
-			if (!res.ok) {
-				if ("message" in json) {
-					throw new Error(json.message as string)
-				}
+
+			await checkRateLimit(json)
+
+			if ("message" in json) {
+				throw new Error(json.message as string)
 			}
 
 			if (!json.access_token) {
@@ -43,10 +71,11 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 		})
 		.then(async (res) => {
 			const json = await res.json()
-			if (!res.ok) {
-				if ("message" in json) {
-					throw new Error(json.message as string)
-				}
+
+			await checkRateLimit(json)
+
+			if ("message" in json) {
+				throw new Error(json.message as string)
 			}
 
 			return login({ email, password })
@@ -94,10 +123,12 @@ export async function getAuthMe(): Promise<{ usuario: AuthUsuario }> {
 		.then(async (res) => {
 			const json = await res.json()
 
-			if ("status" in json && json.status === 401) {
-				await refreshAccessToken()
+			if ("status" in json) {
+				if (json.status === 401) {
+					await refreshAccessToken()
 
-				return getAuthMe()
+					return getAuthMe()
+				}
 			}
 
 			if (!res.ok && "message" in json) {
@@ -116,36 +147,16 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-async function fetchWithAuth() {
-	let token = getAccessToken()
-	if (!token) {
-		throw new Error("Usuario no autenticado")
-	}
-
-	if (checkAccessTokenExpired(token)) {
-		try {
-			await refreshAccessToken()
-			token = getAccessToken()
-		} catch (_err) {
-			localStorage.removeItem("access_token")
-			window.location.href = "/about"
-			return
-		}
-	}
-
-	return token
-}
-
 export async function getUsuario(token: string): Promise<Usuario | null> {
 	return client.api.usuario
 		.$get({}, { headers: { Authorization: `Bearer ${token}` } })
 		.then(async (res) => {
 			const json = await res.json()
 
-			if (!res.ok) {
-				if ("message" in json) {
-					throw new Error(json.message as string)
-				}
+			await checkRateLimit(json)
+
+			if ("message" in json) {
+				throw new Error(json.message as string)
 			}
 
 			return json.usuario

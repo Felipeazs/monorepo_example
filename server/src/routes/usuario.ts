@@ -6,9 +6,8 @@ import type { AppEnv } from "../lib/types"
 
 import Usuario from "../db/models"
 import { checkAuth } from "../middlewares/auth"
-import rateLimit from "../middlewares/rate-limit"
 
-export default new Hono<AppEnv>().get("/", rateLimit, checkAuth, async (c) => {
+export default new Hono<AppEnv>().get("/", checkAuth, async (c) => {
 	const usuario = c.get("usuario")
 
 	const id = new mongoose.Types.ObjectId(usuario.id)
