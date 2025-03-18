@@ -1,15 +1,11 @@
 import { type Usuario, usuarioSchema } from "@monorepo/server/db"
-import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
 
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
+import { useAppForm } from "../hooks/form"
 import { login } from "../lib/queries"
 import { useAuth } from "../store"
-import FieldInfo from "./field-info"
 
 export function Login() {
 	const { quit, enter } = useAuth()
@@ -32,7 +28,7 @@ export function Login() {
 		},
 	})
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues: {
 			email: "",
 			password: "",
@@ -44,60 +40,28 @@ export function Login() {
 			mutate(value)
 		},
 	})
+
 	return (
 		<form
-			className="flex w-[250px] flex-col gap-2"
+			className="flex w-[250px] flex-col gap-5"
 			onSubmit={(e) => {
 				e.preventDefault()
 				e.stopPropagation()
 				form.handleSubmit()
 			}}>
-			<Label htmlFor="email">Email</Label>
-			<form.Field
+			<form.AppField
 				name="email"
 				validators={{ onChange: usuarioSchema.shape.email }}
-				children={(field) => {
-					return (
-						<>
-							<Input
-								id={field.name}
-								name={field.name}
-								value={field.state.value}
-								onBlur={field.handleBlur}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							<FieldInfo field={field} />
-						</>
-					)
-				}}
+				children={(field) => <field.TextField label="Email" />}
 			/>
-			<Label htmlFor="password">Password</Label>
-			<form.Field
+			<form.AppField
 				name="password"
 				validators={{ onChange: usuarioSchema.shape.password }}
-				children={(field) => {
-					return (
-						<>
-							<Input
-								id={field.name}
-								name={field.name}
-								value={field.state.value}
-								onBlur={field.handleBlur}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							<FieldInfo field={field} />
-						</>
-					)
-				}}
+				children={(field) => <field.TextField label="Password" />}
 			/>
-			<form.Subscribe
-				selector={(state) => [state.canSubmit, state.isSubmitting]}
-				children={([canSubmit, isSubmitting]) => (
-					<Button type="submit" disabled={!canSubmit}>
-						{isSubmitting ? "..." : "Submit"}
-					</Button>
-				)}
-			/>
+			<form.AppForm>
+				<form.SubscribeButton label="Ingresar" />
+			</form.AppForm>
 		</form>
 	)
 }
