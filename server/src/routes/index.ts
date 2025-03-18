@@ -3,7 +3,7 @@ import { Hono } from "hono"
 import type { AppAPI, AppEnv } from "../lib/types"
 
 import { BASE_PATH } from "../lib/constants"
-import auth from "./auth"
+import authMe from "./auth"
 import hello_route from "./hello"
 import login from "./login"
 import logout from "./logout"
@@ -25,7 +25,7 @@ export function registerRoutes(app: AppAPI) {
 		.route("/login", login)
 		.route("/signup", signup)
 		.route("/logout", logout)
-		.route("/auth", auth)
+		.route("/auth", authMe)
 		.route("/refresh", refresh)
 		.route("/usuario", usuario_route)
 		.route("/producto", producto_route)

@@ -1,20 +1,37 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { createRouter, RouterProvider } from "@tanstack/react-router"
+import { createRouter, ErrorComponent, Link, RouterProvider } from "@tanstack/react-router"
 
 import "./index.css"
 
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
+import { TIMER } from "./lib/api-utils"
 import { logout } from "./lib/queries"
 import { routeTree } from "./route-tree.gen"
 import { useAuth } from "./store"
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			gcTime: TIMER,
+		},
+	},
+})
 
 const router = createRouter({
 	routeTree,
-	context: { queryClient, user: undefined, auth: undefined!, logout },
+	context: { queryClient, usuario: undefined, auth: undefined!, logout },
+	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+	defaultNotFoundComponent: () => {
+		return (
+			<div>
+				<p>404 - NOT FOUND</p>
+				<Link to="/">Ir al Home</Link>
+			</div>
+		)
+	},
+	scrollRestoration: true,
 })
 
 declare module "@tanstack/react-router" {

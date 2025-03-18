@@ -1,10 +1,10 @@
 import type { SignupUsuario, Usuario } from "@monorepo/server/db"
 
 import { queryOptions } from "@tanstack/react-query"
-import { decode } from "hono/jwt"
 
 import { env } from "../t3-env"
 import hcClient from "./api"
+import { checkAccessTokenExpired, getAccessToken, TIMER } from "./api-utils"
 
 export const client = hcClient(env.VITE_API_URL, {
 	fetch: (input: URL | RequestInfo, requestInit: RequestInit | undefined) => {
@@ -54,48 +54,39 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 }
 
 export async function logout(): Promise<void> {
-	const token = localStorage.getItem("access_token")
-	if (!token) {
-		return
-	}
-
-	await client.api.logout
-		.$post({}, { headers: { Authorization: `Bearer ${token}` } })
-		.then(async () => {
-			localStorage.removeItem("access_token")
-		})
-}
-
-function checkAccessTokenExpired(access_token: string): boolean | undefined {
-	try {
-		const { payload } = decode(access_token)
-
-		const current_time = Math.floor(Date.now() / 1000)
-		if (payload.exp) {
-			return payload.exp < current_time
-		}
-	} catch (_e: any) {
-		return true
-	}
+	await client.api.logout.$post().then(async () => {
+		localStorage.removeItem("access_token")
+	})
 }
 
 async function refreshAccessToken() {
 	return await client.api.refresh.$post().then(async (res) => {
 		const json = await res.json()
 
-		if (!res.ok) {
+		if ("status" in json && json.status === 401) {
 			localStorage.removeItem("access_token")
 			throw new Error("Acceso no autorizado")
 		}
 
+		if (!res.ok && "message" in json) {
+			throw new Error("Error autenticando al usuario")
+		}
+
 		localStorage.setItem("access_token", json.access_token)
+
+		return json.access_token
 	})
 }
 
-export async function getAuthMe(): Promise<null> {
-	const token = localStorage.getItem("access_token")
+export type AuthUsuario = {
+	id: string
+	email: string
+}
+
+export async function getAuthMe(): Promise<{ usuario: AuthUsuario }> {
+	const token = getAccessToken()
 	if (!token) {
-		return null
+		throw new Error("Usuario no autenticado")
 	}
 
 	return await client.api.auth
@@ -103,17 +94,17 @@ export async function getAuthMe(): Promise<null> {
 		.then(async (res) => {
 			const json = await res.json()
 
-			if (checkAccessTokenExpired(token)) {
+			if ("status" in json && json.status === 401) {
 				await refreshAccessToken()
 
 				return getAuthMe()
 			}
 
-			if ("message" in json) {
-				throw new Error(json.message as string)
+			if (!res.ok && "message" in json) {
+				throw new Error("Error autenticando al usuario")
 			}
 
-			return null
+			return json
 		})
 }
 
@@ -121,14 +112,14 @@ export const authMeQueryOptions = () => {
 	return queryOptions({
 		queryKey: ["auth"],
 		queryFn: getAuthMe,
-		gcTime: import.meta.env.PROD ? 10 * 60 * 1000 : 1 * 60 * 1000,
+		staleTime: TIMER,
 	})
 }
 
 export async function getUsuario(): Promise<Usuario | null> {
-	const token = localStorage.getItem("access_token")
+	const token = getAccessToken()
 	if (!token) {
-		return null
+		throw new Error("Usuario no autenticado")
 	}
 
 	return await client.api.usuario
@@ -145,10 +136,11 @@ export async function getUsuario(): Promise<Usuario | null> {
 		})
 }
 
-export const getUsuarioQueryOptions = (id: string) => {
+export const getUsuarioQueryOptions = (id: string | undefined) => {
 	return queryOptions({
 		queryKey: ["usuario", id],
 		queryFn: getUsuario,
-		staleTime: Infinity,
+		staleTime: TIMER,
+		enabled: !!id,
 	})
 }

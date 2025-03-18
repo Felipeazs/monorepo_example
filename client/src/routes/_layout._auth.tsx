@@ -3,17 +3,15 @@ import { createFileRoute, redirect } from "@tanstack/react-router"
 import { authMeQueryOptions } from "../lib/queries"
 
 export const Route = createFileRoute("/_layout/_auth")({
-	beforeLoad: async ({ context }) => {
-		const auth = context.auth
-
+	beforeLoad: async ({ context: { queryClient, auth } }) => {
 		try {
-			await context.queryClient.ensureQueryData(authMeQueryOptions())
-
+			const data = await queryClient.fetchQuery(authMeQueryOptions())
 			auth.enter()
-		} catch (_err) {
-			auth.quit()
+
+			return data
+		} catch {
 			throw redirect({
-				to: "/",
+				to: "/about",
 				search: {
 					redirect: location.href,
 				},

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_layout/about")({
 	component: About,
 })
 
-function About() {
+export function About() {
 	return (
 		<div className="flex w-full justify-center gap-5 pt-5">
 			<Card>

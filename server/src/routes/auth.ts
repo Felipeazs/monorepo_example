@@ -3,14 +3,14 @@ import { HTTPException } from "hono/http-exception"
 
 import type { AppEnv } from "../lib/types"
 
-import { auth } from "../middlewares/auth"
+import { checkAuth } from "../middlewares/auth"
 
-export default new Hono<AppEnv>().get("/", auth, async (c) => {
-	const user = c.get("user")
+export default new Hono<AppEnv>().get("/", checkAuth, async (c) => {
+	const usuario = c.get("usuario")
 
-	if (!user) {
-		throw new HTTPException(403, { message: "Usuario no autorizado" })
+	if (!usuario) {
+		throw new HTTPException(401, { message: "Usuario no autorizado" })
 	}
 
-	return c.json({ user }, 200)
+	return c.json({ usuario }, 200)
 })

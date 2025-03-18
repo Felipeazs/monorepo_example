@@ -20,9 +20,12 @@ export default new Hono().post("/", zValidator("json", loginSchema), async (c) =
 		throw new HTTPException(403, { message: "Credenciales incorrectas" })
 	}
 
-	const user_id = usuarioEncontrado._id.toString()
+	const usuario = {
+		id: usuarioEncontrado._id.toString(),
+		email,
+	}
 
-	const { access_token } = await generateTokensAndCookies(c, user_id)
+	const { access_token } = await generateTokensAndCookies(c, usuario)
 
 	captureEvent({
 		distinct_id: email,

@@ -13,17 +13,17 @@ function RouteComponent() {
 	return (
 		<>
 			<div className="flex items-center justify-end gap-4 px-5 py-2">
-				<Link to="/" className="[&.active]:font-bold">
+				<Link to="/" activeProps={{ className: "font-bold" }} viewTransition>
 					Inicio
 				</Link>
 				{!isLoggedIn && (
-					<Link to="/about" className="[&.active]:font-bold">
+					<Link to="/about" activeProps={{ className: "font-bold" }} viewTransition>
 						Entrar
 					</Link>
 				)}
 				{isLoggedIn && (
 					<>
-						<Link to="/dashboard" className="[&.active]:font-bold">
+						<Link to="/dashboard" activeProps={{ className: "font-bold" }} viewTransition>
 							Dashboard
 						</Link>
 						<Logout />

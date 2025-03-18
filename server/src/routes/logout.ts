@@ -4,10 +4,9 @@ import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
 import { getRedisClient } from "../lib/redis"
-import { auth } from "../middlewares/auth"
 import { env } from "../t3-env"
 
-export default new Hono().post("/", auth, async (c) => {
+export default new Hono().post("/", async (c) => {
 	try {
 		const refresh_token = await getSignedCookie(c, env.COOKIE_SECRET, "refresh_token")
 
@@ -27,7 +26,7 @@ export default new Hono().post("/", auth, async (c) => {
 	} catch (err: any) {
 		console.error(err.message)
 		throw new HTTPException(500, {
-			message: "Acceso no autorizado: No se pudo verificar el access token",
+			message: "Acceso no autorizado",
 		})
 	}
 })

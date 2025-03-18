@@ -3,6 +3,8 @@ import { deleteCookie, getSignedCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
+import type { EnvUsuario } from "../lib/types"
+
 import { generateTokensAndCookies } from "../lib/cookies"
 import { getRedisClient } from "../lib/redis"
 import { env } from "../t3-env"
@@ -16,18 +18,17 @@ export default new Hono().post("/", async (c) => {
 
 	try {
 		const verified = await verify(refresh_token, env.JWT_REFRESH_SECRET)
-		const user_id = String(verified.user)
+		const usuario = verified.usuario as EnvUsuario
 
-		// validar presencia del token en redis
 		const redis = getRedisClient()
-		const redis_token = await redis.get(`${user_id}:refresh_token`)
+		const redis_token = await redis.get(`${usuario.id}:refresh_token`)
 
 		if (!redis_token) {
 			deleteCookie(c, "refresh_token")
 			throw new HTTPException(401, { message: "Acceso no autorizado" })
 		}
 
-		const { access_token: new_access_token } = await generateTokensAndCookies(c, user_id)
+		const { access_token: new_access_token } = await generateTokensAndCookies(c, usuario)
 
 		return c.json({ access_token: new_access_token }, 200)
 	} catch (err: any) {

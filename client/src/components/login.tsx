@@ -12,7 +12,7 @@ import { useAuth } from "../store"
 import FieldInfo from "./field-info"
 
 export function Login() {
-	const { quit } = useAuth()
+	const { quit, enter } = useAuth()
 	const navigate = useNavigate()
 
 	const { mutate } = useMutation({
@@ -20,9 +20,10 @@ export function Login() {
 		mutationFn: async (data: Usuario) =>
 			await login({ email: data.email, password: data.password }),
 		onSuccess: () => {
+			enter()
 			toast("Bienvenido")
 
-			navigate({ from: "/about", to: "/dashboard" })
+			navigate({ to: "/dashboard" })
 		},
 		onError: (error) => {
 			quit()
