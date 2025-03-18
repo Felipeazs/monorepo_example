@@ -4,7 +4,7 @@ import { queryOptions } from "@tanstack/react-query"
 
 import { env } from "../t3-env"
 import hcClient from "./api"
-import { getAccessToken, TIMER } from "./api-utils"
+import { checkAccessTokenExpired, getAccessToken, TIMER } from "./api-utils"
 
 export const client = hcClient(env.VITE_API_URL, {
 	fetch: (input: URL | RequestInfo, requestInit: RequestInit | undefined) => {
@@ -116,16 +116,32 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-export async function getUsuario(): Promise<Usuario | null> {
-	const token = getAccessToken()
+async function fetchWithAuth() {
+	let token = getAccessToken()
 	if (!token) {
 		throw new Error("Usuario no autenticado")
 	}
 
-	return await client.api.usuario
+	if (checkAccessTokenExpired(token)) {
+		try {
+			await refreshAccessToken()
+			token = getAccessToken()
+		} catch (_err) {
+			localStorage.removeItem("access_token")
+			window.location.href = "/about"
+			return
+		}
+	}
+
+	return token
+}
+
+export async function getUsuario(token: string): Promise<Usuario | null> {
+	return client.api.usuario
 		.$get({}, { headers: { Authorization: `Bearer ${token}` } })
 		.then(async (res) => {
 			const json = await res.json()
+
 			if (!res.ok) {
 				if ("message" in json) {
 					throw new Error(json.message as string)
@@ -136,10 +152,10 @@ export async function getUsuario(): Promise<Usuario | null> {
 		})
 }
 
-export const getUsuarioQueryOptions = (id: string | undefined) => {
+export const usuarioQueryOptions = (id: string | undefined) => {
 	return queryOptions({
 		queryKey: ["usuario", id],
-		queryFn: getUsuario,
+		queryFn: () => fetchWithAuth().then((token) => getUsuario(token!)),
 		staleTime: TIMER,
 		enabled: !!id,
 	})

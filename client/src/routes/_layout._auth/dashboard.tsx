@@ -10,17 +10,17 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/client/components/ui/card"
-import { getUsuarioQueryOptions } from "@/client/lib/queries"
+import { usuarioQueryOptions } from "@/client/lib/queries"
 
 export const Route = createFileRoute("/_layout/_auth/dashboard")({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
-	const { usuario } = Route.useRouteContext()
-	const { data, refetch } = useQuery(getUsuarioQueryOptions(usuario?.id))
+	const ctx = Route.useRouteContext()
+	const { data: usuario, refetch } = useQuery(usuarioQueryOptions(ctx.usuario.id))
 
-	const createdAt = new Date(data?.createdAt ?? Date.now())
+	const createdAt = new Date(usuario?.createdAt ?? Date.now())
 
 	return (
 		<div className="flex items-center justify-center p-5 text-2xl">
@@ -31,11 +31,11 @@ function RouteComponent() {
 				<CardContent>
 					<CardDescription>
 						email:
-						{data?.email}
+						{usuario?.email}
 					</CardDescription>
 					<CardDescription>
 						role:
-						{data?.role}
+						{usuario?.role}
 					</CardDescription>
 					<CardDescription>
 						singup:

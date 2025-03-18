@@ -6,9 +6,9 @@ export function getAccessToken(): string | null {
 	return localStorage.getItem("access_token")
 }
 
-export function checkAccessTokenExpired(access_token: string): boolean | undefined {
+export function checkAccessTokenExpired(token: string): boolean | undefined {
 	try {
-		const { payload } = decode(access_token)
+		const { payload } = decode(token)
 
 		const current_time = Math.floor(Date.now() / 1000)
 		if (payload.exp) {
