@@ -5,26 +5,25 @@ import { env } from "../t3-env"
 
 let client: RedisClientType | null = null
 
-export async function initRedis() {
-	if (!client) {
-		client = createClient({
-			url: env.REDIS_URL,
-			socket: {
-				reconnectStrategy: (retries) => {
-					if (retries > 20) {
-						console.warn("Too many attempts to reconnect. Redis connection was terminated")
-						return new Error("Too many retries")
-					} else {
-						return retries * 500
-					}
-				},
-				connectTimeout: 10000,
+export function initRedis() {
+	client = createClient({
+		url: env.REDIS_URL,
+		socket: {
+			reconnectStrategy: (retries) => {
+				if (retries > 20) {
+					console.warn("Too many attempts to reconnect. Redis connection was terminated")
+					return new Error("Too many retries")
+				} else {
+					return retries * 500
+				}
 			},
-		})
-		client.on("error", (err) => console.error("Redis client error", err))
+			connectTimeout: 10000,
+		},
+	})
 
-		await client.connect().then(() => console.warn("Redis connected"))
-	}
+	client.on("error", (err) => console.error("Redis client error", err))
+	client.connect().then(() => console.warn("Redis connected"))
+
 	return client
 }
 

@@ -15,3 +15,6 @@ export const SC_TIME = new Date(
 )
 
 export const RTR_TIME = isProd ? 60 * 60 * 24 : 60 * 2
+
+export const RL_REQUESTS = isProd ? 100 : 10
+export const RL_WINDOW = isProd ? 60 * 15 : 60

@@ -22,6 +22,10 @@ import { initRedis } from "./redis"
 const indexHtml = await readFile("public/index.html", "utf8")
 
 export function createRouter() {
+	initMongoDB()
+	initRedis()
+	initPosthog()
+
 	const app = new Hono<AppEnv>({
 		strict: false,
 	})
@@ -62,10 +66,6 @@ export function createApp() {
 			verbose: true,
 		})
 	}
-
-	initMongoDB()
-	initRedis()
-	initPosthog()
 
 	return app
 }
