@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_layout/_auth/dashboard")({
 
 function RouteComponent() {
 	const ctx = Route.useRouteContext()
-	const { data: usuario, refetch } = useQuery(usuarioQueryOptions(ctx.usuario.id))
+	const { data: usuario, refetch, isFetching } = useQuery(usuarioQueryOptions(ctx.usuario.id))
 
 	const createdAt = new Date(usuario?.createdAt ?? Date.now())
 
@@ -43,8 +43,8 @@ function RouteComponent() {
 					</CardDescription>
 					<hr className="p-5" />
 					<CardFooter>
-						<Button variant="outline" onClick={() => refetch()}>
-							Reload
+						<Button variant="default" className="w-full" onClick={() => refetch()}>
+							{isFetching ? "..." : "Reload"}
 						</Button>
 					</CardFooter>
 				</CardContent>
