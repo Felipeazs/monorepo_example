@@ -4,7 +4,7 @@ import { queryOptions } from "@tanstack/react-query"
 
 import { env } from "../t3-env"
 import hcClient from "./api"
-import { checkAccessTokenExpired, getAccessToken, TIMER } from "./api-utils"
+import { getAccessToken, TIMER } from "./api-utils"
 
 export const client = hcClient(env.VITE_API_URL, {
 	fetch: (input: URL | RequestInfo, requestInit: RequestInit | undefined) => {

@@ -25,7 +25,6 @@ export const checkAuth = createMiddleware(async (c, next) => {
 
 		c.set("usuario", verified_access.usuario)
 	} catch (_e: any) {
-		console.log(_e.message)
 		throw new HTTPException(401, {
 			message: "Acceso no autorizado",
 		})
