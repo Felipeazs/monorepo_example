@@ -3,6 +3,8 @@ import { deleteCookie, getSignedCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
+import type { EnvUsuario } from "../lib/types"
+
 import { getRedisClient } from "../lib/redis"
 import { env } from "../t3-env"
 
@@ -15,12 +17,12 @@ export default new Hono().post("/", async (c) => {
 		}
 
 		const verified = await verify(refresh_token, env.JWT_REFRESH_SECRET)
-		const user_id = verified.user
+		const usuario = verified.usuario as EnvUsuario
 
 		deleteCookie(c, "refresh_token")
 
 		const redis = getRedisClient()
-		await redis.del(`${user_id}:refresh_token`)
+		await redis.del(`${usuario.id}:refresh_token`)
 
 		return c.json({}, 200)
 	} catch (err: any) {
