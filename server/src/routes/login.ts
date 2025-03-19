@@ -6,8 +6,9 @@ import { loginSchema } from "../db/schemas"
 import { generateTokensAndCookies } from "../lib/cookies"
 import { captureEvent } from "../lib/posthog"
 import { zValidator } from "../lib/validator-wrapper"
+import rateLimit from "../middlewares/rate-limit"
 
-export default new Hono().post("/", zValidator("json", loginSchema), async (c) => {
+export default new Hono().post("/", zValidator("json", loginSchema), rateLimit, async (c) => {
 	const { email, password } = c.req.valid("json")
 
 	const usuarioEncontrado = await Usuario.findOne({ email }).lean()

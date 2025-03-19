@@ -4,7 +4,6 @@ import type { AppAPI, AppEnv } from "../lib/types"
 
 import { BASE_PATH } from "../lib/constants"
 import authMe from "./auth"
-import hello_route from "./hello"
 import login from "./login"
 import logout from "./logout"
 import producto_route from "./producto"
@@ -21,7 +20,6 @@ export function registerRoutes(app: AppAPI) {
 		.get("/error", (c) => {
 			return c.json({ message: "error route" })
 		})
-		.route("/hello", hello_route)
 		.route("/login", login)
 		.route("/signup", signup)
 		.route("/logout", logout)

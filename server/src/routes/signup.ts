@@ -5,8 +5,9 @@ import Usuario from "../db/models"
 import { signupSchema } from "../db/schemas"
 import { captureEvent } from "../lib/posthog"
 import { zValidator } from "../lib/validator-wrapper"
+import rateLimit from "../middlewares/rate-limit"
 
-export default new Hono().post("/", zValidator("json", signupSchema), async (c) => {
+export default new Hono().post("/", zValidator("json", signupSchema), rateLimit, async (c) => {
 	const { email, password, repeat_password } = c.req.valid("json")
 
 	if (password !== repeat_password) {
