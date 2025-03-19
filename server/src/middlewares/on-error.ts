@@ -12,8 +12,10 @@ const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => 
 	const statusCode = currentStatus !== 200 ? (currentStatus as ContentfulStatusCode) : 500
 
 	if (statusCode >= 500) {
-		const posthog = initPosthog()
-		posthog.captureException(err)
+		if (env.NODE_ENV === "production") {
+			const posthog = initPosthog()
+			posthog.captureException(err)
+		}
 
 		Sentry.captureException(err)
 	}

@@ -27,12 +27,8 @@ type PostHogEvent = {
 }
 
 export function captureEvent({ distinct_id, event, properties }: PostHogEvent) {
-	if (!client) {
-		throw new HTTPException(500, { message: "PostHog client eror" })
-	}
-
 	try {
-		if (env.NODE_ENV === "production") {
+		if (env.NODE_ENV === "production" && client) {
 			client.capture({
 				distinctId: distinct_id,
 				event,
