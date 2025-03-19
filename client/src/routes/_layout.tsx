@@ -12,7 +12,7 @@ function RouteComponent() {
 
 	return (
 		<>
-			<div className="flex items-center justify-end gap-4 px-5 py-2">
+			<div className="relative z-0 flex items-center justify-end gap-4 px-5 py-2">
 				<Link to="/" activeProps={{ className: "font-bold" }} viewTransition>
 					Inicio
 				</Link>
