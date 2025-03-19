@@ -4,17 +4,23 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import FieldInfo from "./field-info"
 
-export function TextField({ label }: { label: string }) {
-	// The `Field` infers that it should have a `value` type of `string`
+type TextFieldProps = {
+	label: string
+	type?: "text" | "password"
+}
+
+export function TextField({ label, type = "text" }: TextFieldProps) {
 	const field = useFieldContext<string>()
 	return (
 		<label>
 			<Label>{label}</Label>
 			<Input
+				type={type}
 				name={field.name}
 				value={field.state.value}
 				onBlur={field.handleBlur}
 				onChange={(e) => field.handleChange(e.target.value)}
+				autoComplete="off"
 			/>
 			<FieldInfo field={field} />
 		</label>

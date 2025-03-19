@@ -1,4 +1,4 @@
-import { type Usuario, usuarioSchema } from "@monorepo/server/db"
+import { loginSchema, type LoginUsuario } from "@monorepo/server/db"
 import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
@@ -8,12 +8,12 @@ import { login } from "../lib/queries"
 import { useAuth } from "../store"
 
 export function Login() {
-	const { quit, enter } = useAuth()
+	const { enter } = useAuth()
 	const navigate = useNavigate()
 
 	const { mutate } = useMutation({
 		mutationKey: ["login"],
-		mutationFn: async (data: Usuario) =>
+		mutationFn: async (data: LoginUsuario) =>
 			await login({ email: data.email, password: data.password }),
 		onSuccess: () => {
 			enter()
@@ -22,8 +22,6 @@ export function Login() {
 			navigate({ to: "/dashboard" })
 		},
 		onError: (error) => {
-			quit()
-
 			toast(error.message)
 		},
 	})
@@ -34,7 +32,7 @@ export function Login() {
 			password: "",
 		},
 		validators: {
-			onChange: usuarioSchema,
+			onChange: loginSchema,
 		},
 		onSubmit: ({ value }) => {
 			mutate(value)
@@ -51,13 +49,13 @@ export function Login() {
 			}}>
 			<form.AppField
 				name="email"
-				validators={{ onChange: usuarioSchema.shape.email }}
+				validators={{ onChange: loginSchema.shape.email }}
 				children={(field) => <field.TextField label="Email" />}
 			/>
 			<form.AppField
 				name="password"
-				validators={{ onChange: usuarioSchema.shape.password }}
-				children={(field) => <field.TextField label="Password" />}
+				validators={{ onChange: loginSchema.shape.password }}
+				children={(field) => <field.TextField label="Password" type="password" />}
 			/>
 			<form.AppForm>
 				<form.SubscribeButton label="Ingresar" />
