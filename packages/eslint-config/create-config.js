@@ -17,7 +17,7 @@ export default function createConfig(options, ...userConfigs) {
 					},
 				},
 			},
-			ignores: ["**/route-tree.gen.ts"],
+			ignores: ["**/route-tree.gen.ts", "**/components/ui/*"],
 			...options,
 		},
 		{
