@@ -7,7 +7,7 @@ export function ProgressBar({ isLoading }: { isLoading: boolean }) {
 
 	useEffect(() => {
 		if (isLoading) {
-			setProgress((prevState) => prevState + 1)
+			setProgress((prevState) => prevState + 0.05)
 		} else {
 			setProgress(100)
 		}
