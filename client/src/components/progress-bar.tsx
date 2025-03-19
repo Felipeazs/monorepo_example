@@ -13,5 +13,5 @@ export function ProgressBar({ isLoading }: { isLoading: boolean }) {
 		}
 	}, [isLoading])
 
-	return <Progress className={isLoading ? "bg-blue-300" : "bg-white"} value={progress} />
+	return <Progress max={100} className={isLoading ? "bg-blue-300" : "bg-white"} value={progress} />
 }

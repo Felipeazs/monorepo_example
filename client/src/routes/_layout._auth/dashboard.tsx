@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { Breadcrumbs } from "@/client/components/breadbrumbs"
 import { ProgressBar } from "@/client/components/progress-bar"
 import { Button } from "@/client/components/ui/button"
 import {
@@ -28,9 +29,21 @@ function RouteComponent() {
 
 	const createdAt = new Date(usuario?.createdAt ?? Date.now())
 
+	const links = {
+		breadcrumbs: [
+			{
+				id: "1",
+				name: "Home",
+				path: "/",
+			},
+		],
+		current: "Dashboard",
+	}
+
 	return (
 		<main className="w-full">
 			<ProgressBar isLoading={isFetching || isLoading} />
+			<Breadcrumbs links={links} />
 			<div className="flex items-center justify-center p-5 text-2xl">
 				<Card className="w-[250px]">
 					<CardHeader>
@@ -38,21 +51,25 @@ function RouteComponent() {
 					</CardHeader>
 					<CardContent>
 						<CardDescription>
-							email:
+							{"email: "}
 							{usuario?.email}
 						</CardDescription>
 						<CardDescription>
-							role:
+							{"role: "}
 							{usuario?.role}
 						</CardDescription>
 						<CardDescription>
-							singup:
+							{"singup: "}
 							{createdAt.toLocaleDateString()}
 						</CardDescription>
 						<hr className="p-5" />
 						<CardFooter>
-							<Button variant="default" className="w-full" onClick={() => refetch()}>
-								{isFetching ? "..." : "Reload"}
+							<Button
+								variant="default"
+								className="w-full"
+								onClick={() => refetch()}
+								disabled={isLoading || isFetching}>
+								Reload
 							</Button>
 						</CardFooter>
 					</CardContent>
