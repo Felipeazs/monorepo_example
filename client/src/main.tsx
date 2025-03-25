@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
 const router = createRouter({
 	routeTree,
 	context: { queryClient, usuario: undefined, auth: undefined!, logout },
+	defaultPreload: "intent",
 	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
 	defaultNotFoundComponent: () => {
 		return (

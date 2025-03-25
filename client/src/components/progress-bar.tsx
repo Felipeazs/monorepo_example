@@ -2,19 +2,38 @@ import { useEffect, useState } from "react"
 
 import { Progress } from "./ui/progress"
 
-export function ProgressBar({ isLoading }: { isLoading: boolean }) {
-	const [progress, setProgress] = useState<number>(0)
+type ProgressProps = {
+	status: number
+	min: number
+}
+
+export function ProgressBar({ status, min }: ProgressProps) {
+	const [progress, setProgress] = useState<number>(min)
 
 	useEffect(() => {
-		let interval: Timer
-		if (isLoading) {
-			interval = setInterval(() => setProgress((prevState) => prevState + 1), 20)
-		} else {
-			setProgress(100)
+		const interval = setInterval(() => {
+			setProgress((prevState) => {
+				if (status === 0) {
+					clearInterval(interval)
+					return 100
+				}
+
+				return prevState + 1
+			})
+		}, 100)
+
+		if (progress === 100) {
+			setProgress(min)
 		}
 
 		return () => clearInterval(interval)
-	}, [isLoading])
+	}, [status])
 
-	return <Progress max={100} className={isLoading ? "bg-blue-300" : "bg-white"} value={progress} />
+	return (
+		<Progress
+			max={100}
+			className={progress === 100 ? "bg-white" : "bg-blue-300"}
+			value={progress}
+		/>
+	)
 }

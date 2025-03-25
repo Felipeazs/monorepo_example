@@ -1,6 +1,8 @@
+import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 
 import { Logout } from "../components/logout"
+import { ProgressBar } from "../components/progress-bar"
 import { useAuth } from "../store"
 
 export const Route = createFileRoute("/_layout")({
@@ -9,10 +11,12 @@ export const Route = createFileRoute("/_layout")({
 
 function RouteComponent() {
 	const { isLoggedIn } = useAuth((state) => state)
+	const isFetching = useIsFetching()
+	const isMutating = useIsMutating()
 
 	return (
 		<>
-			<div className="relative z-0 flex items-center justify-end gap-4 px-5 py-2">
+			<div className="flex items-center justify-end gap-4 px-5 py-2">
 				<Link to="/" activeProps={{ className: "font-bold" }} viewTransition>
 					Inicio
 				</Link>
@@ -31,6 +35,10 @@ function RouteComponent() {
 				)}
 			</div>
 			<hr />
+
+			<div className="h-1">
+				<ProgressBar status={isFetching || isMutating} min={isLoggedIn ? 25 : 0} />
+			</div>
 			<Outlet />
 		</>
 	)

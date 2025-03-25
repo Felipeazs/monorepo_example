@@ -42,7 +42,7 @@ export default function createConfig(options, ...userConfigs) {
 				"no-unused-vars": "off",
 				"antfu/consistent-list-newline": "off",
 				"@typescript-eslint/no-unused-vars": [
-					"error",
+					"warn",
 					{
 						args: "all",
 						argsIgnorePattern: "^_",

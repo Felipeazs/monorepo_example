@@ -18,6 +18,8 @@ const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => 
 		}
 
 		Sentry.captureException(err)
+
+		console.error(err)
 	}
 
 	return c.json(
@@ -27,7 +29,6 @@ const onError: ErrorHandler = async (err: Error | HTTPException, c: Context) => 
 					? err.message
 					: "Error interno del servidor, por favor inténtalo más tarde",
 			status: statusCode,
-			stack: env.NODE_ENV === "production" ? undefined : err.stack,
 		},
 		statusCode,
 	)

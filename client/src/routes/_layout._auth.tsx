@@ -20,17 +20,19 @@ export const Route = createFileRoute("/_layout/_auth")({
 })
 
 function AuthRoute() {
-	const { usuario } = Route.useRouteContext()
+	const { usuario: usuarioCtx } = Route.useRouteContext()
 
-	if (!usuario) {
+	if (!usuarioCtx) {
 		return <About />
 	}
 
 	return (
-		<SidebarProvider>
-			<AppSidebar />
-			<SidebarTrigger />
-			<Outlet />
-		</SidebarProvider>
+		<>
+			<SidebarProvider>
+				<AppSidebar />
+				<SidebarTrigger />
+				<Outlet />
+			</SidebarProvider>
+		</>
 	)
 }

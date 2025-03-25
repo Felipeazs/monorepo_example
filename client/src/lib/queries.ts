@@ -1,4 +1,4 @@
-import type { SignupUsuario, Usuario } from "@monorepo/server/db"
+import type { EditUsuario, LoginUsuario, SignupUsuario, Usuario } from "@monorepo/server/db"
 
 import { queryOptions } from "@tanstack/react-query"
 
@@ -35,14 +35,15 @@ async function fetchWithAuth() {
 	return token
 }
 
-async function checkRateLimit(json: any) {
-	if (json.status === 429) {
+async function checkRateLimit(status: number) {
+	if (status === 429) {
 		await logout()
-		return (window.location.href = "/")
+
+		return (window.location.href = "/about")
 	}
 }
 
-export async function login({ email, password }: Usuario) {
+export async function login({ email, password }: LoginUsuario) {
 	return await client.api.login
 		.$post({
 			json: { email, password },
@@ -50,14 +51,10 @@ export async function login({ email, password }: Usuario) {
 		.then(async (res) => {
 			const json = await res.json()
 
-			await checkRateLimit(json)
+			if (!res.ok && "status" in json && "message" in json) {
+				await checkRateLimit(json.status as number)
 
-			if ("message" in json) {
 				throw new Error(json.message as string)
-			}
-
-			if (!json.access_token) {
-				throw new Error("Usuario no autorizado")
 			}
 
 			localStorage.setItem("access_token", json.access_token)
@@ -72,9 +69,9 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 		.then(async (res) => {
 			const json = await res.json()
 
-			await checkRateLimit(json)
+			if (!res.ok && "status" in json && "message" in json) {
+				await checkRateLimit(json.status as number)
 
-			if ("message" in json) {
 				throw new Error(json.message as string)
 			}
 
@@ -92,13 +89,12 @@ async function refreshAccessToken() {
 	return await client.api.refresh.$post().then(async (res) => {
 		const json = await res.json()
 
-		if ("status" in json && json.status === 401) {
-			localStorage.removeItem("access_token")
-			throw new Error("Acceso no autorizado")
-		}
+		if (!res.ok && "status" in json && "message" in json) {
+			if (json.status === 401) {
+				localStorage.removeItem("access_token")
+			}
 
-		if (!res.ok && "message" in json) {
-			throw new Error("Error autenticando al usuario")
+			throw new Error(json.message as string)
 		}
 
 		localStorage.setItem("access_token", json.access_token)
@@ -123,16 +119,14 @@ export async function getAuthMe(): Promise<{ usuario: AuthUsuario }> {
 		.then(async (res) => {
 			const json = await res.json()
 
-			if ("status" in json) {
+			if (!res.ok && "status" in json && "message" in json) {
 				if (json.status === 401) {
 					await refreshAccessToken()
 
 					return getAuthMe()
 				}
-			}
 
-			if (!res.ok && "message" in json) {
-				throw new Error("Error autenticando al usuario")
+				throw new Error(json.message as string)
 			}
 
 			return json
@@ -147,27 +141,47 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-export async function getUsuario(token: string): Promise<Usuario | null> {
-	return client.api.usuario
-		.$get({}, { headers: { Authorization: `Bearer ${token}` } })
-		.then(async (res) => {
-			const json = await res.json()
+export async function getUsuario(): Promise<Usuario | null> {
+	return fetchWithAuth().then((token) =>
+		client.api.usuario
+			.$get({}, { headers: { Authorization: `Bearer ${token}` } })
+			.then(async (res) => {
+				const json = await res.json()
 
-			await checkRateLimit(json)
+				if (!res.ok && "status" in json && "message" in json) {
+					await checkRateLimit(json.status as number)
 
-			if ("message" in json) {
-				throw new Error(json.message as string)
-			}
+					throw new Error(json.message as string)
+				}
 
-			return json.usuario
-		})
+				return json.usuario
+			}),
+	)
 }
 
 export const usuarioQueryOptions = (id: string | undefined) => {
 	return queryOptions({
 		queryKey: ["usuario", id],
-		queryFn: () => fetchWithAuth().then((token) => getUsuario(token!)),
-		staleTime: TIMER,
+		queryFn: getUsuario,
 		enabled: !!id,
+		staleTime: Infinity,
 	})
+}
+
+export async function editUsuario(data: EditUsuario): Promise<Usuario | null> {
+	return fetchWithAuth().then((token) =>
+		client.api.usuario.edit
+			.$put({ json: data }, { headers: { Authorization: `Bearer ${token}` } })
+			.then(async (res) => {
+				const json = await res.json()
+
+				if (!res.ok && "status" in json && "message" in json) {
+					await checkRateLimit(json.status as number)
+
+					throw new Error(json.message as string)
+				}
+
+				return json.usuario
+			}),
+	)
 }

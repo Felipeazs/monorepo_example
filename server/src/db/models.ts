@@ -10,6 +10,9 @@ const usuarioModel = new Schema<Usuario>(
 			index: true,
 		},
 		password: String,
+		rut: {
+			type: String,
+		},
 		role: {
 			type: String,
 			enum: ["super_admin", "admin", "user"],
