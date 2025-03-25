@@ -2,6 +2,7 @@
 import { createClient, type RedisClientType } from "redis"
 
 import { env } from "../t3-env"
+import { EXP_TIME } from "./constants"
 
 let client: RedisClientType | null = null
 
@@ -32,4 +33,48 @@ export function getRedisClient() {
 		throw new Error("Redis client not initialized. Call initRedis() first.")
 	}
 	return client
+}
+
+type RedisItem = {
+	item: string
+	key: string
+}
+
+export async function getRedisItem({ item, key }: RedisItem) {
+	if (!client) {
+		throw new Error("Redis client not initialized. Call initRedis() first.")
+	}
+
+	const res = await client.hGet(key, item)
+
+	if (res) {
+		return JSON.parse(res)
+	}
+}
+
+export async function setRedisItem<T>({
+	item,
+	key,
+	value,
+}: {
+	item: string
+	key: string
+	value: T
+}) {
+	if (!client) {
+		throw new Error("Redis client not initialized. Call initRedis() first.")
+	}
+
+	const res = await client.hSet(key, item, JSON.stringify(value))
+	await client.expire(key, EXP_TIME, "NX")
+
+	return res
+}
+
+export async function deleteRedisItem({ item, key }: RedisItem) {
+	if (!client) {
+		throw new Error("Redis client not initialized. Call initRedis() first.")
+	}
+
+	await client.hDel(key, item)
 }

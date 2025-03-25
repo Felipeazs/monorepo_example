@@ -80,9 +80,13 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 }
 
 export async function logout(): Promise<void> {
-	await client.api.logout.$post().then(async () => {
-		localStorage.removeItem("access_token")
-	})
+	return fetchWithAuth().then((token) =>
+		client.api.logout
+			.$post({}, { headers: { Authorization: `Bearer ${token}` } })
+			.then(async () => {
+				localStorage.removeItem("access_token")
+			}),
+	)
 }
 
 async function refreshAccessToken() {
@@ -92,6 +96,8 @@ async function refreshAccessToken() {
 		if (!res.ok && "status" in json && "message" in json) {
 			if (json.status === 401) {
 				localStorage.removeItem("access_token")
+
+				return await logout()
 			}
 
 			throw new Error(json.message as string)

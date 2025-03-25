@@ -1,34 +1,29 @@
 import { Hono } from "hono"
-import { deleteCookie, getSignedCookie } from "hono/cookie"
+import { deleteCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
-import { verify } from "hono/jwt"
 
-import type { EnvUsuario } from "../lib/types"
+import type { AppEnv } from "../lib/types"
 
-import { getRedisClient } from "../lib/redis"
-import { env } from "../t3-env"
+import { ERROR_CODE } from "../lib/constants"
+import { deleteRedisItem, getRedisClient } from "../lib/redis"
+import { checkAuth } from "../middlewares/auth"
+import { tryCatch } from "../utils/try-catch"
 
-export default new Hono().post("/", async (c) => {
-	try {
-		const refresh_token = await getSignedCookie(c, env.COOKIE_SECRET, "refresh_token")
+export default new Hono<AppEnv>().post("/", checkAuth, async (c) => {
+	const usuario = c.get("usuario")
 
-		if (!refresh_token) {
-			return
-		}
+	deleteCookie(c, "refresh_token")
 
-		const verified = await verify(refresh_token, env.JWT_REFRESH_SECRET)
-		const usuario = verified.usuario as EnvUsuario
-
-		deleteCookie(c, "refresh_token")
-
-		const redis = getRedisClient()
-		await redis.del(`${usuario.id}:refresh_token`)
-
-		return c.json({}, 200)
-	} catch (err: any) {
-		console.error(err.message)
-		throw new HTTPException(500, {
-			message: "Acceso no autorizado",
-		})
+	const redis = getRedisClient()
+	const { data: _dt, error: errorToken } = await tryCatch(redis.del(`${usuario.id}:refresh_token`))
+	if (errorToken) {
+		throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: errorToken.message })
 	}
+
+	const { data: _, error } = await tryCatch(deleteRedisItem({ item: "usuario", key: usuario.id }))
+	if (error) {
+		throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: error.message })
+	}
+
+	return c.json({}, 200)
 })

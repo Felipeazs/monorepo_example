@@ -7,6 +7,7 @@ import type { AppEnv } from "../lib/types"
 import Usuario from "../db/models"
 import { editUsuarioSchema } from "../db/schemas"
 import { ERROR_CODE } from "../lib/constants"
+import { deleteRedisItem, getRedisItem, setRedisItem } from "../lib/redis"
 import { zValidator } from "../lib/validator-wrapper"
 import { checkAuth } from "../middlewares/auth"
 import rateLimit from "../middlewares/rate-limit"
@@ -15,6 +16,16 @@ import { tryCatch } from "../utils/try-catch"
 const app = new Hono<AppEnv>()
 	.get("/", rateLimit, checkAuth, async (c) => {
 		const usuario = c.get("usuario")
+
+		const { data: redisItem, error: redisError } = await tryCatch(
+			getRedisItem({ item: "usuario", key: usuario.id }),
+		)
+		if (redisError) {
+			throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: redisError.message })
+		}
+		if (redisItem) {
+			return c.json({ usuario: redisItem }, 200)
+		}
 
 		const id = new mongoose.Types.ObjectId(usuario.id)
 
@@ -27,6 +38,8 @@ const app = new Hono<AppEnv>()
 		if (!usuarioFound) {
 			throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
 		}
+
+		await setRedisItem({ item: "usuario", key: usuario.id, value: usuarioFound })
 
 		return c.json({ usuario: usuarioFound }, 200)
 	})
@@ -51,6 +64,13 @@ const app = new Hono<AppEnv>()
 		}
 		if (!usuarioFound) {
 			throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
+		}
+
+		const { data: _data, error: redisDelError } = await tryCatch(
+			deleteRedisItem({ item: "usuario", key: usuario.id }),
+		)
+		if (redisDelError) {
+			throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: redisDelError.message })
 		}
 
 		return c.json({ status: "ok" }, 200)

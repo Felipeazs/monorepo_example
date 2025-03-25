@@ -3,6 +3,8 @@ import { createMiddleware } from "hono/factory"
 import { HTTPException } from "hono/http-exception"
 
 import {
+	ERROR_CODE,
+	ERROR_MESSAGE,
 	RATELIMIT_DEV_REQUESTS,
 	RATELIMIT_DEV_WINDOW,
 	RATELIMIT_PROD_REQUESTS,
@@ -10,6 +12,7 @@ import {
 } from "../lib/constants"
 import { getRedisClient } from "../lib/redis"
 import { env } from "../t3-env"
+import { tryCatch } from "../utils/try-catch"
 
 export default createMiddleware(async (c, next) => {
 	const id = getConnInfo(c).remote.address ?? ""
@@ -21,7 +24,12 @@ export default createMiddleware(async (c, next) => {
 	multi.incr(key)
 	multi.ttl(key)
 
-	const [count, ttl] = await multi.exec()
+	const { data, error } = await tryCatch(multi.exec())
+	if (error || !data) {
+		throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: error.message })
+	}
+
+	const [count, ttl] = data
 
 	const isProd = env.NODE_ENV === "production"
 
@@ -34,7 +42,9 @@ export default createMiddleware(async (c, next) => {
 	// Handle rate limit exceeded
 	const rt = isProd ? RATELIMIT_PROD_REQUESTS : RATELIMIT_DEV_REQUESTS
 	if (Number(count) > rt) {
-		throw new HTTPException(429, { message: "Too many requests" })
+		throw new HTTPException(ERROR_CODE.TOO_MANY_REQUESTS, {
+			message: ERROR_MESSAGE.TOO_MANY_REQUESTS,
+		})
 	}
 
 	// Set headers

@@ -25,10 +25,7 @@ export default new Hono().post("/", async (c) => {
 	const { data: verified, error: verifyError } = await tryCatch(
 		verify(refresh_token, env.JWT_REFRESH_SECRET),
 	)
-	if (verifyError) {
-		throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: verifyError.message })
-	}
-	if (!verified) {
+	if (!verified || verifyError) {
 		throw new HTTPException(ERROR_CODE.UNAUTHORIZED, { message: "Acceso no autorizado" })
 	}
 
