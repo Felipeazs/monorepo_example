@@ -53,7 +53,7 @@ const app = new Hono<AppEnv>()
 			throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
 		}
 
-		return c.json({ usuario: usuarioFound }, 200)
+		return c.json({ status: "ok" }, 200)
 	})
 
 export default app

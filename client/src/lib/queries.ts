@@ -168,7 +168,7 @@ export const usuarioQueryOptions = (id: string | undefined) => {
 	})
 }
 
-export async function editUsuario(data: EditUsuario): Promise<Usuario | null> {
+export async function editUsuario(data: EditUsuario): Promise<string | null> {
 	return fetchWithAuth().then((token) =>
 		client.api.usuario.edit
 			.$put({ json: data }, { headers: { Authorization: `Bearer ${token}` } })
@@ -176,12 +176,12 @@ export async function editUsuario(data: EditUsuario): Promise<Usuario | null> {
 				const json = await res.json()
 
 				if (!res.ok && "status" in json && "message" in json) {
-					await checkRateLimit(json.status as number)
+					await checkRateLimit(json.status as unknown as number)
 
 					throw new Error(json.message as string)
 				}
 
-				return json.usuario
+				return json.status
 			}),
 	)
 }
