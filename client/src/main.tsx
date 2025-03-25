@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 
 const router = createRouter({
 	routeTree,
-	context: { queryClient, usuario: undefined, auth: undefined!, logout },
+	context: { queryClient, usuario: undefined, store: undefined!, logout },
 	defaultPreload: "intent",
 	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
 	defaultNotFoundComponent: () => {
@@ -42,8 +42,8 @@ declare module "@tanstack/react-router" {
 }
 
 export function InnerApp() {
-	const auth = useStore()
-	return <RouterProvider router={router} context={{ auth }} />
+	const store = useStore()
+	return <RouterProvider router={router} context={{ store }} />
 }
 
 createRoot(document.getElementById("root")!).render(

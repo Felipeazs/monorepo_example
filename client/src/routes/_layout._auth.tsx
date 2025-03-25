@@ -7,10 +7,10 @@ import { authMeQueryOptions } from "../lib/queries"
 import { About } from "./_layout.about"
 
 export const Route = createFileRoute("/_layout/_auth")({
-	beforeLoad: async ({ context: { queryClient, auth } }) => {
+	beforeLoad: async ({ context: { queryClient, store } }) => {
 		try {
 			const data = await queryClient.fetchQuery(authMeQueryOptions())
-			auth.enter()
+			store.enter()
 
 			return data
 		} catch {
@@ -22,10 +22,10 @@ export const Route = createFileRoute("/_layout/_auth")({
 
 function AuthRoute() {
 	const { pathname } = useLocation()
-	const { usuario: usuarioCtx, auth } = Route.useRouteContext()
+	const { usuario: usuarioCtx, store } = Route.useRouteContext()
 
 	useEffect(() => {
-		auth.setPaths(pathname)
+		store.setPaths(pathname)
 	}, [pathname])
 
 	if (!usuarioCtx) {

@@ -5,14 +5,14 @@ import React, { Suspense } from "react"
 import { Toaster } from "sonner"
 
 import type { AuthUsuario } from "../lib/queries"
-import type { AuthState } from "../store"
+import type { StoreState } from "../store"
 
 import { PostHogProvider } from "../providers/posthog-provider"
 
 type RouterContext = {
 	queryClient: QueryClient
 	usuario: AuthUsuario | undefined
-	auth: AuthState
+	store: StoreState
 	logout: () => Promise<void>
 }
 
