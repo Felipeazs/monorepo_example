@@ -1,4 +1,5 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router"
+import { useEffect } from "react"
 
 import { AppSidebar } from "../components/app-sidebar"
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar"
@@ -20,7 +21,12 @@ export const Route = createFileRoute("/_layout/_auth")({
 })
 
 function AuthRoute() {
-	const { usuario: usuarioCtx } = Route.useRouteContext()
+	const { pathname } = useLocation()
+	const { usuario: usuarioCtx, auth } = Route.useRouteContext()
+
+	useEffect(() => {
+		auth.setPaths(pathname)
+	}, [pathname])
 
 	if (!usuarioCtx) {
 		return <About />

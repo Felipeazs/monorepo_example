@@ -2,7 +2,7 @@
 import { createClient, type RedisClientType } from "redis"
 
 import { env } from "../t3-env"
-import { EXP_TIME } from "./constants"
+import { EXP_TIME, EXP_TIME_DEV, EXP_TIME_PROD } from "./constants"
 
 let client: RedisClientType | null = null
 
@@ -65,8 +65,10 @@ export async function setRedisItem<T>({
 		throw new Error("Redis client not initialized. Call initRedis() first.")
 	}
 
+	const isProd = env.NODE_ENV === "production"
+
 	const res = await client.hSet(key, item, JSON.stringify(value))
-	await client.expire(key, EXP_TIME, "NX")
+	await client.expire(key, isProd ? EXP_TIME_PROD : EXP_TIME_DEV, "NX")
 
 	return res
 }

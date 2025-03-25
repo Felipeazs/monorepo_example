@@ -30,11 +30,15 @@ export function UsuarioCard({ usuario }: { usuario: Usuario }) {
 					{usuario?.role}
 				</CardDescription>
 				<CardDescription>
+					{"rut: "}
+					{usuario?.rut}
+				</CardDescription>
+				<CardDescription>
 					{"singup: "}
 					{createdAt.toLocaleDateString()}
 				</CardDescription>
 				<hr className="p-5" />
-				<CardFooter className="flex w-full gap-1">
+				<CardFooter className="flex justify-center">
 					<Link
 						to="/dashboard/edit"
 						className={buttonVariants({

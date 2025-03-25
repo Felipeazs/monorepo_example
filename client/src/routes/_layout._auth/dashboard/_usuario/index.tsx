@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useAuth } from "@/client/store"
+import { useStore } from "@/client/store"
 
 import { UsuarioCard } from "./-components/usuario"
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/")({
 })
 
 function RouteComponent() {
-	const { usuario } = useAuth()
+	const { usuario } = useStore()
 
 	return (
 		<main className="w-full">

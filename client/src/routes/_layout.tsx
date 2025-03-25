@@ -3,14 +3,14 @@ import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 
 import { Logout } from "../components/logout"
 import { ProgressBar } from "../components/progress-bar"
-import { useAuth } from "../store"
+import { useStore } from "../store"
 
 export const Route = createFileRoute("/_layout")({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
-	const { isLoggedIn } = useAuth((state) => state)
+	const { isLoggedIn } = useStore((state) => state)
 	const isFetching = useIsFetching()
 	const isMutating = useIsMutating()
 

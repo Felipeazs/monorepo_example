@@ -16,24 +16,26 @@ type BreadcrumbLinks = {
 }
 
 type BreadcrumbProps = {
-	breadcrumbs: BreadcrumbLinks[]
-	current: string
+	breadcrumbs?: BreadcrumbLinks[]
+	current?: string | undefined
 }
 
-export function Breadcrumbs({ links }: { links: BreadcrumbProps }) {
+export function Breadcrumbs({ breadcrumbs, current }: BreadcrumbProps) {
 	return (
-		<Breadcrumb>
+		<Breadcrumb className="">
 			<BreadcrumbList>
-				{links.breadcrumbs.map((l) => (
-					<BreadcrumbItem key={l.id}>
-						<BreadcrumbLink asChild>
-							<Link to={l.path}>{l.name}</Link>
-						</BreadcrumbLink>
-					</BreadcrumbItem>
+				{breadcrumbs?.map((l) => (
+					<div key={l.id} className="flex items-center gap-3">
+						<BreadcrumbItem>
+							<BreadcrumbLink asChild>
+								<Link to={l.path}>{l.name}</Link>
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+					</div>
 				))}
-				<BreadcrumbSeparator />
 				<BreadcrumbItem>
-					<BreadcrumbPage>{links.current}</BreadcrumbPage>
+					<BreadcrumbPage>{current}</BreadcrumbPage>
 				</BreadcrumbItem>
 			</BreadcrumbList>
 		</Breadcrumb>

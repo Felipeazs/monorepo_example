@@ -5,7 +5,7 @@ import { toast } from "sonner"
 
 import { useAppForm } from "@/client/hooks/form"
 import { editUsuario } from "@/client/lib/queries"
-import { useAuth } from "@/client/store"
+import { useStore } from "@/client/store"
 
 export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/edit")({
 	component: RouteComponent,
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/edit")({
 
 function RouteComponent() {
 	const { queryClient, usuario: usuarioCtx } = Route.useRouteContext()
-	const { usuario } = useAuth()
+	const { usuario } = useStore()
 
 	const { mutate } = useMutation({
 		mutationKey: ["edit"],

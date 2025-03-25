@@ -5,10 +5,10 @@ import { toast } from "sonner"
 
 import { useAppForm } from "../hooks/form"
 import { login } from "../lib/queries"
-import { useAuth } from "../store"
+import { useStore } from "../store"
 
 export function Login() {
-	const { enter } = useAuth()
+	const { enter } = useStore()
 	const navigate = useNavigate()
 
 	const { mutate } = useMutation({

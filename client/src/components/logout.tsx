@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 
 import { logout } from "../lib/queries"
-import { useAuth } from "../store"
+import { useStore } from "../store"
 import { Button } from "./ui/button"
 
 export function Logout() {
-	const { quit } = useAuth()
+	const { quit } = useStore()
 	const navigate = useNavigate()
 
 	const { mutate } = useMutation({

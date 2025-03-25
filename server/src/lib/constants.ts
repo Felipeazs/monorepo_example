@@ -11,7 +11,8 @@ export const RATELIMIT_DEV_REQUESTS = 10 // 10 api calls max
 export const RATELIMIT_PROD_WINDOW = 60 * 15 // 15 min
 export const RATELIMIT_DEV_WINDOW = 60 // 1 min
 
-export const EXP_TIME = 3600
+export const EXP_TIME_PROD = 3600
+export const EXP_TIME_DEV = 60
 
 export const ERROR_CODE = {
 	BAD_REQUEST: 400 as ContentfulStatusCode,

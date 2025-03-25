@@ -9,7 +9,7 @@ import { createRoot } from "react-dom/client"
 import { TIMER } from "./lib/api-utils"
 import { logout } from "./lib/queries"
 import { routeTree } from "./route-tree.gen"
-import { useAuth } from "./store"
+import { useStore } from "./store"
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -42,7 +42,7 @@ declare module "@tanstack/react-router" {
 }
 
 export function InnerApp() {
-	const auth = useAuth()
+	const auth = useStore()
 	return <RouterProvider router={router} context={{ auth }} />
 }
 

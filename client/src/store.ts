@@ -2,16 +2,46 @@ import type { Usuario } from "@monorepo/server/db"
 
 import { create } from "zustand"
 
-export interface AuthState {
+type BreadcrumbLinks = {
+	links: {
+		id: string
+		name: string
+		path: string
+	}[]
+	current: string
+}
+
+export interface StoreState {
 	isLoggedIn: boolean
 	enter: () => void
 	quit: () => void
+	paths?: BreadcrumbLinks
+	setPaths: (paths: string) => void
 	usuario: Usuario | undefined
 	setUsuario: (data: Usuario) => void
 }
 
-export const useAuth = create<AuthState>()((set) => ({
+export const useStore = create<StoreState>()((set) => ({
 	isLoggedIn: false,
+	paths: undefined,
+	setPaths: (paths) =>
+		set(() => {
+			const split = paths.split("/")
+
+			const filtered = split.filter((_, pi) => pi !== 0)
+
+			const newPaths = filtered.map((p, pi) => {
+				return {
+					id: String(pi + 1),
+					name: p.substring(0, 1).toUpperCase() + p.substring(1),
+					path: `/${p}`,
+				}
+			})
+
+			const current = newPaths.pop()?.name ?? ""
+
+			return { paths: { links: newPaths, current } }
+		}),
 	usuario: undefined,
 	enter: () => set(() => ({ isLoggedIn: true })),
 	quit: () => set(() => ({ isLoggedIn: false })),
