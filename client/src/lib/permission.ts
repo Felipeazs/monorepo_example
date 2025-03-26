@@ -1,3 +1,5 @@
+import type { EditUsuario } from "@monorepo/server/db"
+
 import type { AuthUsuario } from "./queries"
 
 type Role = "super_admin" | "admin" | "user"
@@ -20,19 +22,13 @@ type Sidebar = {
 	icon: string
 }
 
-type EditUser = {
-	email: string
-	rut: string
-	roles: Role[]
-}
-
 type Permissions = {
 	sidebar: {
 		dataType: Sidebar
 		action: "view"
 	}
 	userRoles: {
-		dataType: EditUser
+		dataType: EditUsuario
 		action: "view" | "update" | "delete"
 	}
 }

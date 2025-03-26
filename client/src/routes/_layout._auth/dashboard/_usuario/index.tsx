@@ -9,12 +9,13 @@ export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/")({
 })
 
 function RouteComponent() {
+	const { usuario: usuarioCtx } = Route.useRouteContext()
 	const { usuario } = useStore()
 
 	return (
 		<main className="w-full">
 			<div className="flex items-center justify-center p-5 text-2xl">
-				<UsuarioCard usuario={usuario!} />
+				<UsuarioCard data={usuario!} usuario={usuarioCtx!} />
 			</div>
 		</main>
 	)
