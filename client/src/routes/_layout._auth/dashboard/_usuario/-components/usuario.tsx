@@ -27,7 +27,7 @@ export function UsuarioCard({ usuario }: { usuario: Usuario }) {
 				</CardDescription>
 				<CardDescription>
 					{"role: "}
-					{usuario?.role}
+					{usuario?.roles?.join(", ")}
 				</CardDescription>
 				<CardDescription>
 					{"rut: "}

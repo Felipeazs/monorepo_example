@@ -13,10 +13,10 @@ const usuarioModel = new Schema<Usuario>(
 		rut: {
 			type: String,
 		},
-		role: {
-			type: String,
+		roles: {
+			type: [String],
 			enum: ["super_admin", "admin", "user"],
-			default: "user",
+			default: ["user"],
 		},
 	},
 	{ versionKey: false, timestamps: true },

@@ -111,7 +111,7 @@ async function refreshAccessToken() {
 
 export type AuthUsuario = {
 	id: string
-	email: string
+	roles: ("super_admin" | "admin" | "user")[]
 }
 
 export async function getAuthMe(): Promise<{ usuario: AuthUsuario }> {
@@ -147,7 +147,7 @@ export const authMeQueryOptions = () => {
 	})
 }
 
-export async function getUsuario(): Promise<Usuario | null> {
+export async function getMe(): Promise<Usuario | null> {
 	return fetchWithAuth().then((token) =>
 		client.api.usuario
 			.$get({}, { headers: { Authorization: `Bearer ${token}` } })
@@ -165,12 +165,13 @@ export async function getUsuario(): Promise<Usuario | null> {
 	)
 }
 
-export const usuarioQueryOptions = (id: string | undefined) => {
+export const meQueryOptions = (id: string | undefined) => {
 	return queryOptions({
 		queryKey: ["usuario", id],
-		queryFn: getUsuario,
+		queryFn: getMe,
 		enabled: !!id,
 		staleTime: Infinity,
+		throwOnError: true,
 	})
 }
 

@@ -2,6 +2,8 @@ import { createMiddleware } from "hono/factory"
 import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 
+import type { EnvUsuario } from "../lib/types"
+
 import { ERROR_CODE, ERROR_MESSAGE } from "../lib/constants"
 import { env } from "../t3-env"
 import { tryCatch } from "../utils/try-catch"
@@ -29,7 +31,9 @@ export const checkAuth = createMiddleware(async (c, next) => {
 		})
 	}
 
-	c.set("usuario", verified_access.usuario)
+	const usuario = verified_access.usuario as EnvUsuario
+
+	c.set("usuario", usuario)
 
 	await next()
 })

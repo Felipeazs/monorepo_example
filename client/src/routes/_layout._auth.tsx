@@ -35,7 +35,7 @@ function AuthRoute() {
 	return (
 		<>
 			<SidebarProvider>
-				<AppSidebar />
+				<AppSidebar usuario={usuarioCtx} />
 				<SidebarTrigger />
 				<Outlet />
 			</SidebarProvider>

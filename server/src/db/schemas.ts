@@ -4,7 +4,10 @@ import { z } from "zod"
 export const usuarioSchema = z.object({
 	email: z.string().email({ message: "Ingresa el mail" }),
 	password: z.string().min(1, "Ingresa el password"),
-	role: z.enum(["super_admin", "admin", "user"]).default("user").optional(),
+	roles: z
+		.array(z.enum(["super_admin", "admin", "user"]))
+		.default(["user"])
+		.optional(),
 	rut: z.string(),
 	createdAt: z.string().optional(),
 	updatedAt: z.string().optional(),
@@ -13,7 +16,7 @@ export const usuarioSchema = z.object({
 export const openUsuarioSchema = usuarioSchema
 	.pick({
 		email: true,
-		role: true,
+		roles: true,
 	})
 	.merge(
 		z.object({

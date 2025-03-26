@@ -4,7 +4,7 @@ import type { BASE_PATH } from "./constants"
 
 export type EnvUsuario = {
 	id: string
-	email: string
+	roles: ("super_admin" | "admin" | "user")[]
 }
 
 export type AppEnv = {

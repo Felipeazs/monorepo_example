@@ -1,5 +1,9 @@
+import { Link } from "@tanstack/react-router"
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 
+import type { AuthUsuario } from "../lib/queries"
+
+import { hasPermission } from "../lib/permission"
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,11 +17,6 @@ import {
 } from "./ui/sidebar"
 
 const items = [
-	{
-		title: "Home",
-		url: "#",
-		icon: Home,
-	},
 	{
 		title: "Inbox",
 		url: "#",
@@ -40,7 +39,7 @@ const items = [
 	},
 ]
 
-export function AppSidebar() {
+export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 	return (
 		<Sidebar>
 			<SidebarContent>
@@ -48,13 +47,23 @@ export function AppSidebar() {
 				<SidebarGroupLabel>Application</SidebarGroupLabel>
 				<SidebarGroupContent>
 					<SidebarMenu>
+						<SidebarMenuItem>
+							<SidebarMenuButton asChild>
+								<Link to="/dashboard">
+									<Home />
+									<span>Home</span>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
 						{items.map((item) => (
 							<SidebarMenuItem key={item.title}>
 								<SidebarMenuButton asChild>
-									<a href={item.url}>
-										<item.icon />
-										<span>{item.title}</span>
-									</a>
+									{hasPermission(usuario, "sidebar", "view") && (
+										<a href={item.url}>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									)}
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}

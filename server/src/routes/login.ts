@@ -1,6 +1,8 @@
 import { Hono } from "hono"
 import { HTTPException } from "hono/http-exception"
 
+import type { EnvUsuario } from "../lib/types"
+
 import Usuario from "../db/models"
 import { loginSchema } from "../db/schemas"
 import { ERROR_CODE } from "../lib/constants"
@@ -35,9 +37,9 @@ export default new Hono().post("/", zValidator("json", loginSchema), rateLimit, 
 		throw new HTTPException(ERROR_CODE.FORBIDDEN, { message: "Credenciales incorrectas" })
 	}
 
-	const usuario = {
+	const usuario: EnvUsuario = {
 		id: usuarioEncontrado._id.toString(),
-		email,
+		roles: usuarioEncontrado.roles ?? ["user"],
 	}
 
 	const { data: tokens, error: tokenError } = await tryCatch(generateTokensAndCookies(c, usuario))

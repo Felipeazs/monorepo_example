@@ -11,10 +11,12 @@ import { deleteRedisItem, getRedisItem, setRedisItem } from "../lib/redis"
 import { zValidator } from "../lib/validator-wrapper"
 import { checkAuth } from "../middlewares/auth"
 import rateLimit from "../middlewares/rate-limit"
+import { restrict } from "../middlewares/restrict"
 import { tryCatch } from "../utils/try-catch"
 
 const app = new Hono<AppEnv>()
-	.get("/", rateLimit, checkAuth, async (c) => {
+	// get me
+	.get("/", rateLimit, checkAuth, restrict("user"), async (c) => {
 		const usuario = c.get("usuario")
 
 		const { data: redisItem, error: redisError } = await tryCatch(
@@ -43,37 +45,49 @@ const app = new Hono<AppEnv>()
 
 		return c.json({ usuario: usuarioFound }, 200)
 	})
-	.put("/edit", zValidator("json", editUsuarioSchema), rateLimit, checkAuth, async (c) => {
-		const usuario = c.get("usuario")
-		const { email, rut } = c.req.valid("json")
+	// edit me
+	.put(
+		"/edit",
+		zValidator("json", editUsuarioSchema),
+		rateLimit,
+		checkAuth,
+		restrict("user"),
+		async (c) => {
+			const usuario = c.get("usuario")
+			const { email, rut } = c.req.valid("json")
 
-		const id = new mongoose.Types.ObjectId(usuario.id)
-		const { data: usuarioFound, error: dbUpdateError } = await tryCatch(
-			Usuario.findOneAndUpdate(
-				{ _id: id },
-				{
-					$set: { email, rut },
-				},
-				{
-					returnOriginal: false,
-				},
-			).lean(),
-		)
-		if (dbUpdateError) {
-			throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: dbUpdateError.message })
-		}
-		if (!usuarioFound) {
-			throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
-		}
+			const id = new mongoose.Types.ObjectId(usuario.id)
+			const { data: usuarioFound, error: dbUpdateError } = await tryCatch(
+				Usuario.findOneAndUpdate(
+					{ _id: id },
+					{
+						$set: { email, rut },
+					},
+					{
+						returnOriginal: false,
+					},
+				).lean(),
+			)
+			if (dbUpdateError) {
+				throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, {
+					message: dbUpdateError.message,
+				})
+			}
+			if (!usuarioFound) {
+				throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
+			}
 
-		const { data: _data, error: redisDelError } = await tryCatch(
-			deleteRedisItem({ item: "usuario", key: usuario.id }),
-		)
-		if (redisDelError) {
-			throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: redisDelError.message })
-		}
+			const { data: _data, error: redisDelError } = await tryCatch(
+				deleteRedisItem({ item: "usuario", key: usuario.id }),
+			)
+			if (redisDelError) {
+				throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, {
+					message: redisDelError.message,
+				})
+			}
 
-		return c.json({ status: "ok" }, 200)
-	})
+			return c.json({ status: "ok" }, 200)
+		},
+	)
 
 export default app
