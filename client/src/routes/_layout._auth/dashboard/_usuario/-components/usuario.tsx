@@ -16,7 +16,7 @@ export function UsuarioCard({ usuario }: { usuario: Usuario }) {
 	const createdAt = new Date(usuario?.createdAt ?? Date.now())
 
 	return (
-		<Card className="w-[250px]">
+		<Card className="w-[300px]">
 			<CardHeader>
 				<CardTitle>Usuario</CardTitle>
 			</CardHeader>
@@ -26,8 +26,12 @@ export function UsuarioCard({ usuario }: { usuario: Usuario }) {
 					{usuario?.email}
 				</CardDescription>
 				<CardDescription>
-					{"role: "}
-					{usuario?.roles?.join(", ")}
+					{"roles: "}
+					{usuario?.roles
+						?.slice()
+						.sort((a, b) => a.localeCompare(b))
+						.join(", ")
+						.replace("_", " ")}
 				</CardDescription>
 				<CardDescription>
 					{"rut: "}

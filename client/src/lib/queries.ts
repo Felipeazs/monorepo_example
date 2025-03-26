@@ -175,7 +175,7 @@ export const meQueryOptions = (id: string | undefined) => {
 	})
 }
 
-export async function editUsuario(data: EditUsuario): Promise<string | null> {
+export async function editMe(data: EditUsuario): Promise<string | null> {
 	return fetchWithAuth().then((token) =>
 		client.api.usuario.edit
 			.$put({ json: data }, { headers: { Authorization: `Bearer ${token}` } })

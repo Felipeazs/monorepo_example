@@ -35,9 +35,13 @@ export const signupSchema = loginSchema.merge(
 	}),
 )
 
-export const editUsuarioSchema = usuarioSchema.pick({
-	email: true,
-	rut: true,
+export const editUsuarioSchema = z.object({
+	email: z.string().email({ message: "Ingresa el mail" }),
+	rut: z.string(),
+	roles: z
+		.array(z.enum(["super_admin", "admin", "user"]))
+		.default(["user"])
+		.optional(),
 })
 
 export type Usuario = z.infer<typeof usuarioSchema>

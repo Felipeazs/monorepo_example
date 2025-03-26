@@ -20,10 +20,20 @@ type Sidebar = {
 	icon: string
 }
 
+type EditUser = {
+	email: string
+	rut: string
+	roles: Role[]
+}
+
 type Permissions = {
 	sidebar: {
 		dataType: Sidebar
 		action: "view"
+	}
+	editUser: {
+		dataType: EditUser
+		action: "view" | "update" | "delete"
 	}
 }
 
@@ -32,15 +42,30 @@ const ROLES = {
 		sidebar: {
 			view: true,
 		},
+		editUser: {
+			view: true,
+			update: true,
+			delete: true,
+		},
 	},
 	admin: {
 		sidebar: {
 			view: true,
 		},
+		editUser: {
+			view: true,
+			update: true,
+			delete: false,
+		},
 	},
 	user: {
 		sidebar: {
 			view: false,
+		},
+		editUser: {
+			view: true,
+			update: true,
+			delete: false,
 		},
 	},
 } as const satisfies RolesWithPermissions

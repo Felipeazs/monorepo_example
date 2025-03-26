@@ -54,14 +54,14 @@ const app = new Hono<AppEnv>()
 		restrict("user"),
 		async (c) => {
 			const usuario = c.get("usuario")
-			const { email, rut } = c.req.valid("json")
+			const { email, rut, roles } = c.req.valid("json")
 
 			const id = new mongoose.Types.ObjectId(usuario.id)
 			const { data: usuarioFound, error: dbUpdateError } = await tryCatch(
 				Usuario.findOneAndUpdate(
 					{ _id: id },
 					{
-						$set: { email, rut },
+						$set: { email, rut, roles },
 					},
 					{
 						returnOriginal: false,
