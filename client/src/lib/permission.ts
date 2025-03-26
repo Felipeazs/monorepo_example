@@ -31,7 +31,7 @@ type Permissions = {
 		dataType: Sidebar
 		action: "view"
 	}
-	editUser: {
+	userRoles: {
 		dataType: EditUser
 		action: "view" | "update" | "delete"
 	}
@@ -42,7 +42,7 @@ const ROLES = {
 		sidebar: {
 			view: true,
 		},
-		editUser: {
+		userRoles: {
 			view: true,
 			update: true,
 			delete: true,
@@ -52,9 +52,9 @@ const ROLES = {
 		sidebar: {
 			view: true,
 		},
-		editUser: {
-			view: true,
-			update: true,
+		userRoles: {
+			view: false,
+			update: false,
 			delete: false,
 		},
 	},
@@ -62,9 +62,9 @@ const ROLES = {
 		sidebar: {
 			view: false,
 		},
-		editUser: {
-			view: true,
-			update: true,
+		userRoles: {
+			view: false,
+			update: false,
 			delete: false,
 		},
 	},

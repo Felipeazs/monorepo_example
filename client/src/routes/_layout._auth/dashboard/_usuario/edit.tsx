@@ -10,6 +10,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/client/components/ui/card"
+import { Label } from "@/client/components/ui/label"
 import { useAppForm } from "@/client/hooks/form"
 import { hasPermission } from "@/client/lib/permission"
 import { editMe } from "@/client/lib/queries"
@@ -72,23 +73,28 @@ function RouteComponent() {
 									validators={{ onChange: editUsuarioSchema.shape.rut }}
 									children={(field) => <field.TextField label="Rut" />}
 								/>
-								{hasPermission(usuarioCtx!, "editUser", "update") && (
-									<div className="flex gap-2">
-										{[
-											{ id: 1, name: "Super Admin", value: "super_admin" },
-											{ id: 2, name: "Admin", value: "admin" },
-											{ id: 3, name: "Usuario", value: "user" },
-										].map((rol) => (
-											<form.AppField
-												key={rol.id}
-												name="roles"
-												children={(field) => (
-													<field.CheckboxField value={rol.value} label={rol.name} />
-												)}
-											/>
-										))}
-									</div>
-								)}
+								<div>
+									{hasPermission(usuarioCtx!, "userRoles", "update") && (
+										<>
+											<Label>Roles</Label>
+											<div className="flex flex-col gap-2">
+												{[
+													{ id: 1, name: "Super Admin", value: "super_admin" },
+													{ id: 2, name: "Admin", value: "admin" },
+													{ id: 3, name: "Usuario", value: "user" },
+												].map((rol) => (
+													<form.AppField
+														key={rol.id}
+														name="roles"
+														children={(field) => (
+															<field.CheckboxField value={rol.value} label={rol.name} />
+														)}
+													/>
+												))}
+											</div>
+										</>
+									)}
+								</div>
 								<form.AppForm>
 									<form.SubscribeButton label="Aceptar" />
 								</form.AppForm>

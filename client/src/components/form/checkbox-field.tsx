@@ -14,6 +14,7 @@ export function CheckboxField({ label, value }: CheckboxProps) {
 		<div className="flex items-center space-x-2">
 			<Checkbox
 				id={label}
+				name={field.name}
 				value={field.state.value}
 				defaultChecked={field.state.value.includes(value)}
 				onCheckedChange={(e) => {
@@ -23,7 +24,6 @@ export function CheckboxField({ label, value }: CheckboxProps) {
 						field.removeValue(value as never)
 					}
 				}}
-				name={field.name}
 			/>
 			<label
 				htmlFor={label}

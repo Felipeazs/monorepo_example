@@ -16,7 +16,7 @@ import { tryCatch } from "../utils/try-catch"
 
 const app = new Hono<AppEnv>()
 	// get me
-	.get("/", rateLimit, checkAuth, restrict("user"), async (c) => {
+	.get("/", rateLimit, checkAuth, restrict("super_admin", "admin", "user"), async (c) => {
 		const usuario = c.get("usuario")
 
 		const { data: redisItem, error: redisError } = await tryCatch(
@@ -51,7 +51,7 @@ const app = new Hono<AppEnv>()
 		zValidator("json", editUsuarioSchema),
 		rateLimit,
 		checkAuth,
-		restrict("user"),
+		restrict("super_admin", "admin", "user"),
 		async (c) => {
 			const usuario = c.get("usuario")
 			const { email, rut, roles } = c.req.valid("json")
@@ -61,7 +61,7 @@ const app = new Hono<AppEnv>()
 				Usuario.findOneAndUpdate(
 					{ _id: id },
 					{
-						$set: { email, rut, roles },
+						$set: { email, rut, roles: roles?.length ? roles : ["user"] },
 					},
 					{
 						returnOriginal: false,
