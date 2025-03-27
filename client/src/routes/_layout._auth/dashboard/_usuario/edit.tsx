@@ -38,7 +38,10 @@ function RouteComponent() {
 
 	const form = useAppForm({
 		defaultValues: {
+			nombre: usuario?.nombre ?? "",
+			apellido: usuario?.apellido ?? "",
 			email: usuario?.email ?? "",
+			organizacion: usuario?.organizacion ?? "",
 			rut: usuario?.rut ?? "",
 			roles: usuario?.roles,
 		},
@@ -64,9 +67,24 @@ function RouteComponent() {
 									form.handleSubmit()
 								}}>
 								<form.AppField
+									name="nombre"
+									validators={{ onChange: editUsuarioSchema.shape.nombre }}
+									children={(field) => <field.TextField label="Nombre" />}
+								/>
+								<form.AppField
+									name="apellido"
+									validators={{ onChange: editUsuarioSchema.shape.apellido }}
+									children={(field) => <field.TextField label="Apellido" />}
+								/>
+								<form.AppField
 									name="email"
 									validators={{ onChange: editUsuarioSchema.shape.email }}
 									children={(field) => <field.TextField label="Email" />}
+								/>
+								<form.AppField
+									name="organizacion"
+									validators={{ onChange: editUsuarioSchema.shape.organizacion }}
+									children={(field) => <field.TextField label="Organización" />}
 								/>
 								<form.AppField
 									name="rut"

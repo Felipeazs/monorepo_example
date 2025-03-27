@@ -32,11 +32,6 @@ const items = [
 		url: "#",
 		icon: Search,
 	},
-	{
-		title: "Settings",
-		url: "#",
-		icon: Settings,
-	},
 ]
 
 export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
@@ -67,6 +62,14 @@ export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}
+						<SidebarMenuItem>
+							<SidebarMenuButton asChild>
+								<Link to="/">
+									<Settings />
+									<span>Settings</span>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
 					</SidebarMenu>
 				</SidebarGroupContent>
 				<SidebarGroup />

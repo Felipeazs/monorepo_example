@@ -2,7 +2,10 @@ import { z } from "zod"
 
 // Usuario
 export const usuarioSchema = z.object({
+	nombre: z.string(),
+	apellido: z.string(),
 	email: z.string().email({ message: "Ingresa el mail" }),
+	organizacion: z.string(),
 	password: z.string().min(1, "Ingresa el password"),
 	roles: z
 		.array(z.enum(["super_admin", "admin", "user"]))
@@ -12,17 +15,6 @@ export const usuarioSchema = z.object({
 	createdAt: z.string().optional(),
 	updatedAt: z.string().optional(),
 })
-
-export const openUsuarioSchema = usuarioSchema
-	.pick({
-		email: true,
-		roles: true,
-	})
-	.merge(
-		z.object({
-			rut: z.string(),
-		}),
-	)
 
 export const loginSchema = usuarioSchema.pick({
 	email: true,
@@ -36,7 +28,10 @@ export const signupSchema = loginSchema.merge(
 )
 
 export const editUsuarioSchema = z.object({
+	nombre: z.string(),
+	apellido: z.string(),
 	email: z.string().email({ message: "Ingresa el mail" }),
+	organizacion: z.string(),
 	rut: z.string(),
 	roles: z
 		.array(z.enum(["super_admin", "admin", "user"]))
@@ -47,5 +42,4 @@ export const editUsuarioSchema = z.object({
 export type Usuario = z.infer<typeof usuarioSchema>
 export type LoginUsuario = z.infer<typeof loginSchema>
 export type SignupUsuario = z.infer<typeof signupSchema>
-export type OpenUsuario = z.infer<typeof openUsuarioSchema>
 export type EditUsuario = z.infer<typeof editUsuarioSchema>
