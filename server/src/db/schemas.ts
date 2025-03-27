@@ -12,6 +12,7 @@ export const usuarioSchema = z.object({
 		.default(["user"])
 		.optional(),
 	rut: z.string(),
+	image: z.string(),
 	createdAt: z.string().optional(),
 	updatedAt: z.string().optional(),
 })
@@ -33,6 +34,12 @@ export const editUsuarioSchema = z.object({
 	email: z.string().email({ message: "Ingresa el mail" }),
 	organizacion: z.string(),
 	rut: z.string(),
+	image: z
+		.union([
+			z.instanceof(File),
+			z.string().transform((value) => (value === "" ? undefined : value)),
+		])
+		.optional(),
 	roles: z
 		.array(z.enum(["super_admin", "admin", "user"]))
 		.default(["user"])

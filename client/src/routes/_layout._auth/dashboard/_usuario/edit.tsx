@@ -1,6 +1,7 @@
 import { editUsuarioSchema } from "@monorepo/server/db"
 import { useMutation } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import {
@@ -10,6 +11,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/client/components/ui/card"
+import { Input } from "@/client/components/ui/input"
 import { Label } from "@/client/components/ui/label"
 import { useAppForm } from "@/client/hooks/form"
 import { hasPermission } from "@/client/lib/permission"
@@ -23,6 +25,7 @@ export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/edit")({
 function RouteComponent() {
 	const { queryClient, usuario: usuarioCtx } = Route.useRouteContext()
 	const { usuario } = useStore()
+	const [imageFile, setImageFile] = useState<File | string>("")
 
 	const { mutate } = useMutation({
 		mutationKey: ["edit"],
@@ -43,7 +46,8 @@ function RouteComponent() {
 			email: usuario?.email ?? "",
 			organizacion: usuario?.organizacion ?? "",
 			rut: usuario?.rut ?? "",
-			roles: usuario?.roles,
+			image: usuario?.image || imageFile,
+			roles: usuario?.roles ?? ["user"],
 		},
 		onSubmit: ({ value }) => {
 			mutate(value)
@@ -56,68 +60,81 @@ function RouteComponent() {
 				<Card className="w-[300px]">
 					<CardHeader>
 						<CardTitle>Editar</CardTitle>
+						<CardDescription>editar propiedades</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<CardDescription>
-							<form
-								className="flex w-[250px] flex-col gap-5"
-								onSubmit={(e) => {
-									e.preventDefault()
-									e.stopPropagation()
-									form.handleSubmit()
-								}}>
-								<form.AppField
-									name="nombre"
-									validators={{ onChange: editUsuarioSchema.shape.nombre }}
-									children={(field) => <field.TextField label="Nombre" />}
+						<form
+							className="flex w-[250px] flex-col gap-5"
+							onSubmit={(e) => {
+								e.preventDefault()
+								e.stopPropagation()
+								form.handleSubmit()
+							}}>
+							<form.AppField
+								name="nombre"
+								validators={{ onChange: editUsuarioSchema.shape.nombre }}
+								children={(field) => <field.TextField label="Nombre" />}
+							/>
+							<form.AppField
+								name="apellido"
+								validators={{ onChange: editUsuarioSchema.shape.apellido }}
+								children={(field) => <field.TextField label="Apellido" />}
+							/>
+							<form.AppField
+								name="email"
+								validators={{ onChange: editUsuarioSchema.shape.email }}
+								children={(field) => <field.TextField label="Email" />}
+							/>
+							<form.AppField
+								name="organizacion"
+								validators={{ onChange: editUsuarioSchema.shape.organizacion }}
+								children={(field) => <field.TextField label="Organización" />}
+							/>
+							<form.AppField
+								name="rut"
+								validators={{ onChange: editUsuarioSchema.shape.rut }}
+								children={(field) => <field.TextField label="Rut" />}
+							/>
+							<div>
+								<Label>Imagen</Label>
+								<Input
+									type="file"
+									accept="image/*"
+									onChange={(e) => {
+										const file = e.target.files?.[0]
+										if (file) {
+											setImageFile(file)
+											form.setFieldValue("image", file)
+										}
+									}}
 								/>
-								<form.AppField
-									name="apellido"
-									validators={{ onChange: editUsuarioSchema.shape.apellido }}
-									children={(field) => <field.TextField label="Apellido" />}
-								/>
-								<form.AppField
-									name="email"
-									validators={{ onChange: editUsuarioSchema.shape.email }}
-									children={(field) => <field.TextField label="Email" />}
-								/>
-								<form.AppField
-									name="organizacion"
-									validators={{ onChange: editUsuarioSchema.shape.organizacion }}
-									children={(field) => <field.TextField label="Organización" />}
-								/>
-								<form.AppField
-									name="rut"
-									validators={{ onChange: editUsuarioSchema.shape.rut }}
-									children={(field) => <field.TextField label="Rut" />}
-								/>
-								<div>
-									{hasPermission(usuarioCtx!, "userRoles", "update") && (
-										<>
-											<Label>Roles</Label>
-											<div className="flex flex-col gap-2">
-												{[
-													{ id: 1, name: "Super Admin", value: "super_admin" },
-													{ id: 2, name: "Admin", value: "admin" },
-													{ id: 3, name: "Usuario", value: "user" },
-												].map((rol) => (
-													<form.AppField
-														key={rol.id}
-														name="roles"
-														children={(field) => (
-															<field.CheckboxField value={rol.value} label={rol.name} />
-														)}
-													/>
-												))}
-											</div>
-										</>
-									)}
-								</div>
-								<form.AppForm>
-									<form.SubscribeButton label="Aceptar" />
-								</form.AppForm>
-							</form>
-						</CardDescription>
+							</div>
+							<div>
+								{hasPermission(usuarioCtx!, "userRoles", "update") && (
+									<>
+										<Label>Roles</Label>
+										<div className="flex flex-col gap-2">
+											{[
+												{ id: 1, name: "Super Admin", value: "super_admin" },
+												{ id: 2, name: "Admin", value: "admin" },
+												{ id: 3, name: "Usuario", value: "user" },
+											].map((rol) => (
+												<form.AppField
+													key={rol.id}
+													name="roles"
+													children={(field) => (
+														<field.CheckboxField value={rol.value} label={rol.name} />
+													)}
+												/>
+											))}
+										</div>
+									</>
+								)}
+							</div>
+							<form.AppForm>
+								<form.SubscribeButton label="Aceptar" />
+							</form.AppForm>
+						</form>
 					</CardContent>
 				</Card>
 			</div>

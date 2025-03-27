@@ -46,7 +46,7 @@ export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 							<SidebarMenuButton asChild>
 								<Link to="/dashboard">
 									<Home />
-									<span>Home</span>
+									<span>Dashboard</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>

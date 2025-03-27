@@ -1,12 +1,14 @@
 import { Hono } from "hono"
 import { HTTPException } from "hono/http-exception"
 import mongoose from "mongoose"
+import { Buffer } from "node:buffer"
 
 import type { AppEnv } from "../lib/types"
 
 import Usuario from "../db/models"
 import { editUsuarioSchema } from "../db/schemas"
 import { ERROR_CODE } from "../lib/constants"
+import { uploadImage } from "../lib/providers/cloudinary"
 import { deleteRedisItem, getRedisItem, setRedisItem } from "../lib/redis"
 import { zValidator } from "../lib/validator-wrapper"
 import { checkAuth } from "../middlewares/auth"
@@ -48,13 +50,27 @@ const app = new Hono<AppEnv>()
 	// edit me
 	.put(
 		"/edit",
-		zValidator("json", editUsuarioSchema),
+		zValidator("form", editUsuarioSchema),
 		rateLimit,
 		checkAuth,
 		restrict("super_admin", "admin", "user"),
 		async (c) => {
 			const usuario = c.get("usuario")
-			const { nombre, apellido, email, organizacion, rut, roles } = c.req.valid("json")
+
+			const { nombre, apellido, email, organizacion, rut, roles, image } = c.req.valid("form")
+
+			// transform image with cloudinary and return de url -> save it to db
+			let dbimage = image
+			if (image instanceof File) {
+				const arrayBuf = await image.arrayBuffer()
+				const buffer = Buffer.from(arrayBuf).toString("base64")
+				const { data: cloud, error } = await tryCatch(uploadImage(buffer!, usuario.id))
+				if (error) {
+					throw new HTTPException(500, { message: error.message })
+				}
+
+				dbimage = cloud.secure_url
+			}
 
 			const id = new mongoose.Types.ObjectId(usuario.id)
 			const { data: usuarioFound, error: dbUpdateError } = await tryCatch(
@@ -68,6 +84,7 @@ const app = new Hono<AppEnv>()
 							organizacion,
 							rut,
 							roles: roles?.length ? roles : ["user"],
+							image: dbimage,
 						},
 					},
 					{

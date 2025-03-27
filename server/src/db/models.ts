@@ -31,6 +31,10 @@ const usuarioModel = new Schema<Usuario>(
 			enum: ["super_admin", "admin", "user"],
 			default: ["user"],
 		},
+		image: {
+			type: String,
+			required: false,
+		},
 	},
 	{ versionKey: false, timestamps: true },
 )

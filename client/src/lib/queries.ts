@@ -178,7 +178,7 @@ export const meQueryOptions = (id: string | undefined) => {
 export async function editMe(data: EditUsuario): Promise<string | null> {
 	return fetchWithAuth().then((token) =>
 		client.api.usuario.edit
-			.$put({ json: data }, { headers: { Authorization: `Bearer ${token}` } })
+			.$put({ form: data }, { headers: { Authorization: `Bearer ${token}` } })
 			.then(async (res) => {
 				const json = await res.json()
 
