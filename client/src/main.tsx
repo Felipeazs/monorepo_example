@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { createRouter, Link, RouterProvider } from "@tanstack/react-router"
+import { createRouter, RouterProvider } from "@tanstack/react-router"
 
 import "./index.css"
 
@@ -7,6 +7,7 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
 import { ErrorComponent } from "./components/error-component"
+import { NotFoundComponent } from "./components/notfound-component"
 import { TIMER } from "./lib/api-utils"
 import { logout } from "./lib/queries"
 import { routeTree } from "./route-tree.gen"
@@ -25,14 +26,7 @@ const router = createRouter({
 	context: { queryClient, usuario: undefined, store: undefined!, logout },
 	defaultPreload: "intent",
 	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
-	defaultNotFoundComponent: () => {
-		return (
-			<div>
-				<p>404 - NOT FOUND</p>
-				<Link to="/">Ir al Home</Link>
-			</div>
-		)
-	},
+	defaultNotFoundComponent: () => <NotFoundComponent />,
 	scrollRestoration: true,
 })
 

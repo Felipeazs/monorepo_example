@@ -23,11 +23,7 @@ export function Logout() {
 	}
 
 	return (
-		<Button
-			variant="destructive"
-			size="sm"
-			className="h-5 hover:cursor-pointer"
-			onClick={handleLogout}>
+		<Button variant="outline" size="lg" className="h-5 hover:cursor-pointer" onClick={handleLogout}>
 			Salir
 		</Button>
 	)

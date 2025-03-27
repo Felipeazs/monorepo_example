@@ -70,7 +70,8 @@ export function UsuarioCard({ data, ctx }: UsuarioProps) {
 						to="/dashboard/edit"
 						className={buttonVariants({
 							size: "sm",
-						})}>
+						})}
+						viewTransition>
 						Editar
 					</Link>
 				</CardFooter>
