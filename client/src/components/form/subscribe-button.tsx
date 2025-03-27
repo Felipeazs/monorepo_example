@@ -9,7 +9,7 @@ export function SubscribeButton({ label }: { label: string }) {
 		<form.Subscribe
 			selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
 			children={([canSubmit, isSubmitting, isDirty]) => (
-				<Button type="submit" disabled={!canSubmit || !isDirty}>
+				<Button type="submit" disabled={!canSubmit || !isDirty} className="hover:cursor-pointer">
 					{isSubmitting ? "..." : label}
 				</Button>
 			)}

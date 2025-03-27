@@ -22,8 +22,6 @@ type UsuarioProps = {
 }
 
 export function UsuarioCard({ data, ctx }: UsuarioProps) {
-	const createdAt = new Date(data?.createdAt ?? Date.now())
-
 	return (
 		<Card className="w-[300px]">
 			<CardHeader className="flex flex-row justify-between">
@@ -64,7 +62,7 @@ export function UsuarioCard({ data, ctx }: UsuarioProps) {
 				)}
 				<p className="text-sm">
 					{"singup: "}
-					{createdAt.toLocaleDateString("es-CL")}
+					{data?.createdAt?.toLocaleDateString("es-Cl")}
 				</p>
 				<hr className="p-5" />
 				<CardFooter className="flex justify-center">

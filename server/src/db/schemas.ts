@@ -13,8 +13,8 @@ export const usuarioSchema = z.object({
 		.optional(),
 	rut: z.string(),
 	image: z.string(),
-	createdAt: z.string().optional(),
-	updatedAt: z.string().optional(),
+	createdAt: z.date().optional(),
+	updatedAt: z.date().optional(),
 })
 
 export const loginSchema = usuarioSchema.pick({

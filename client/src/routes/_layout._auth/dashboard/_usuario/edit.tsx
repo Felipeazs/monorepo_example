@@ -50,6 +50,7 @@ function RouteComponent() {
 			roles: usuario?.roles ?? ["user"],
 		},
 		onSubmit: ({ value }) => {
+			form.reset()
 			mutate(value)
 		},
 	})

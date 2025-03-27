@@ -1,6 +1,7 @@
 import type { EditUsuario, LoginUsuario, SignupUsuario, Usuario } from "@monorepo/server/db"
 
 import { queryOptions } from "@tanstack/react-query"
+import SuperJSON from "superjson"
 
 import { env } from "../t3-env"
 import hcClient from "./api"
@@ -160,7 +161,7 @@ export async function getMe(): Promise<Usuario | null> {
 					throw new Error(json.message as string)
 				}
 
-				return json.usuario
+				return SuperJSON.parse(json.usuario)
 			}),
 	)
 }

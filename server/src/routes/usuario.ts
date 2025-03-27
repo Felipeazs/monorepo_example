@@ -2,6 +2,7 @@ import { Hono } from "hono"
 import { HTTPException } from "hono/http-exception"
 import mongoose from "mongoose"
 import { Buffer } from "node:buffer"
+import SuperJSON from "superjson"
 
 import type { AppEnv } from "../lib/types"
 
@@ -43,9 +44,11 @@ const app = new Hono<AppEnv>()
 			throw new HTTPException(ERROR_CODE.NOT_FOUND, { message: "usuario no encontrado" })
 		}
 
-		await setRedisItem({ item: "usuario", key: usuario.id, value: usuarioFound })
+		const sjson = SuperJSON.stringify(usuarioFound)
 
-		return c.json({ usuario: usuarioFound }, 200)
+		await setRedisItem({ item: "usuario", key: usuario.id, value: sjson })
+
+		return c.json({ usuario: sjson }, 200)
 	})
 	// edit me
 	.put(

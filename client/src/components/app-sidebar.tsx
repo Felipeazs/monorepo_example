@@ -49,10 +49,8 @@ export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 									<span>Dashboard</span>
 								</Link>
 							</SidebarMenuButton>
-						</SidebarMenuItem>
-						{items.map((item) => (
-							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton asChild>
+							{items.map((item) => (
+								<SidebarMenuButton key={item.title} asChild>
 									{hasPermission(usuario, "sidebar", "view") && (
 										<a href={item.url}>
 											<item.icon />
@@ -60,9 +58,7 @@ export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 										</a>
 									)}
 								</SidebarMenuButton>
-							</SidebarMenuItem>
-						))}
-						<SidebarMenuItem>
+							))}
 							<SidebarMenuButton asChild>
 								<Link to="/">
 									<Settings />
