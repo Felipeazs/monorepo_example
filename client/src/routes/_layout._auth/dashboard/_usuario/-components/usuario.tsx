@@ -38,8 +38,8 @@ export function UsuarioCard({ data, ctx }: UsuarioProps) {
 				<Avatar className="h-[50px] w-[50px]">
 					<AvatarImage src={data?.image} alt="profile-image"></AvatarImage>
 					<AvatarFallback>
-						{data?.nombre.substring(0, 1).toUpperCase()}
-						{data?.apellido.substring(0, 1).toUpperCase()}
+						{data?.nombre.substring(0, 1).toUpperCase() ?? ""}
+						{data?.apellido.substring(0, 1).toUpperCase() ?? ""}
 					</AvatarFallback>
 				</Avatar>
 			</CardHeader>
