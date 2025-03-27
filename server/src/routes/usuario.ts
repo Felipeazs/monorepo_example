@@ -59,7 +59,6 @@ const app = new Hono<AppEnv>()
 
 			const { nombre, apellido, email, organizacion, rut, roles, image } = c.req.valid("form")
 
-			// transform image with cloudinary and return de url -> save it to db
 			let dbimage = image
 			if (image instanceof File) {
 				const arrayBuf = await image.arrayBuffer()

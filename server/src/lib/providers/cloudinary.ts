@@ -1,6 +1,6 @@
 import { v2 as cloudinary, type UploadApiResponse } from "cloudinary"
 
-import { env } from "@/server/t3-env"
+import { env } from "../../t3-env"
 
 cloudinary.config({
 	cloud_name: env.CLOUDINARY_NAME,

@@ -40,10 +40,13 @@ export const editUsuarioSchema = z.object({
 			z.string().transform((value) => (value === "" ? undefined : value)),
 		])
 		.optional(),
-	roles: z
-		.array(z.enum(["super_admin", "admin", "user"]))
-		.default(["user"])
-		.optional(),
+	roles: z.union([
+		z
+			.array(z.enum(["super_admin", "admin", "user"]))
+			.default(["user"])
+			.optional(),
+		z.string(),
+	]),
 })
 
 export type Usuario = z.infer<typeof usuarioSchema>

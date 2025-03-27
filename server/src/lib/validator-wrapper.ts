@@ -13,7 +13,7 @@ export function zValidator<T extends ZodSchema, Target extends keyof ValidationT
 	return zv(target, schema, (result) => {
 		if (!result.success) {
 			if (env.NODE_ENV === "development") {
-				console.error(result.error.flatten())
+				console.error(result.error.errors)
 			}
 			throw new HTTPException(400, { message: "Invalid Request" })
 		}
