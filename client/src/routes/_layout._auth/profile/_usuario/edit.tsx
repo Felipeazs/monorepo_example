@@ -18,7 +18,7 @@ import { hasPermission } from "@/client/lib/permission"
 import { editMe } from "@/client/lib/queries"
 import { useStore } from "@/client/store"
 
-export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/edit")({
+export const Route = createFileRoute("/_layout/_auth/profile/_usuario/edit")({
 	component: RouteComponent,
 })
 
@@ -58,14 +58,14 @@ function RouteComponent() {
 	return (
 		<main className="w-full">
 			<div className="flex items-center justify-center p-5 text-2xl">
-				<Card className="w-[300px]">
+				<Card className="w-[500px]">
 					<CardHeader>
 						<CardTitle>Editar</CardTitle>
 						<CardDescription>editar propiedades</CardDescription>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="w-full">
 						<form
-							className="flex w-[250px] flex-col gap-5"
+							className="flex flex-col gap-5"
 							onSubmit={(e) => {
 								e.preventDefault()
 								e.stopPropagation()

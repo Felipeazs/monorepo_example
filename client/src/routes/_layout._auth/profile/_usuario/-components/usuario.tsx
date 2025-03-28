@@ -23,7 +23,7 @@ type UsuarioProps = {
 
 export function UsuarioCard({ data, ctx }: UsuarioProps) {
 	return (
-		<Card className="w-[300px]">
+		<Card className="w-[500px]">
 			<CardHeader className="flex flex-row justify-between">
 				<div>
 					<CardTitle>
@@ -67,7 +67,7 @@ export function UsuarioCard({ data, ctx }: UsuarioProps) {
 				<hr className="p-5" />
 				<CardFooter className="flex justify-center">
 					<Link
-						to="/dashboard/edit"
+						to="/profile/edit"
 						className={buttonVariants({
 							size: "sm",
 						})}

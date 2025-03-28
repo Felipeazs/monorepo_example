@@ -28,7 +28,9 @@ export function Breadcrumbs({ breadcrumbs, current }: BreadcrumbProps) {
 					<div key={l.id} className="flex items-center gap-3">
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link to={l.path}>{l.name}</Link>
+								<Link to={l.path} viewTransition>
+									{l.name}
+								</Link>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />

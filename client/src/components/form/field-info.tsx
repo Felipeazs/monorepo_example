@@ -26,7 +26,7 @@ function FieldInfo({
 	>
 }) {
 	return (
-		<em className="h-3 text-xs text-red-700">
+		<em className="h-3 w-full text-xs text-red-700">
 			{field.state.meta.errors.length > 0 ? field.state.meta.errors[0].message : null}
 		</em>
 	)

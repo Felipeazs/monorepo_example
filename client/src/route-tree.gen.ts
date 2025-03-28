@@ -17,13 +17,14 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout.index'
 import { Route as LayoutAboutImport } from './routes/_layout.about'
 import { Route as LayoutAuthImport } from './routes/_layout._auth'
-import { Route as LayoutAuthDashboardUsuarioImport } from './routes/_layout._auth/dashboard/_usuario'
-import { Route as LayoutAuthDashboardUsuarioIndexImport } from './routes/_layout._auth/dashboard/_usuario/index'
-import { Route as LayoutAuthDashboardUsuarioEditImport } from './routes/_layout._auth/dashboard/_usuario/edit'
+import { Route as LayoutAuthDashboardIndexImport } from './routes/_layout._auth/dashboard/index'
+import { Route as LayoutAuthProfileUsuarioImport } from './routes/_layout._auth/profile/_usuario'
+import { Route as LayoutAuthProfileUsuarioIndexImport } from './routes/_layout._auth/profile/_usuario/index'
+import { Route as LayoutAuthProfileUsuarioEditImport } from './routes/_layout._auth/profile/_usuario/edit'
 
 // Create Virtual Routes
 
-const LayoutAuthDashboardImport = createFileRoute('/_layout/_auth/dashboard')()
+const LayoutAuthProfileImport = createFileRoute('/_layout/_auth/profile')()
 
 // Create/Update Routes
 
@@ -49,31 +50,35 @@ const LayoutAuthRoute = LayoutAuthImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutAuthDashboardRoute = LayoutAuthDashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const LayoutAuthProfileRoute = LayoutAuthProfileImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => LayoutAuthRoute,
 } as any)
 
-const LayoutAuthDashboardUsuarioRoute = LayoutAuthDashboardUsuarioImport.update(
-  {
-    id: '/_usuario',
-    getParentRoute: () => LayoutAuthDashboardRoute,
-  } as any,
-)
+const LayoutAuthDashboardIndexRoute = LayoutAuthDashboardIndexImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => LayoutAuthRoute,
+} as any)
 
-const LayoutAuthDashboardUsuarioIndexRoute =
-  LayoutAuthDashboardUsuarioIndexImport.update({
+const LayoutAuthProfileUsuarioRoute = LayoutAuthProfileUsuarioImport.update({
+  id: '/_usuario',
+  getParentRoute: () => LayoutAuthProfileRoute,
+} as any)
+
+const LayoutAuthProfileUsuarioIndexRoute =
+  LayoutAuthProfileUsuarioIndexImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => LayoutAuthDashboardUsuarioRoute,
+    getParentRoute: () => LayoutAuthProfileUsuarioRoute,
   } as any)
 
-const LayoutAuthDashboardUsuarioEditRoute =
-  LayoutAuthDashboardUsuarioEditImport.update({
+const LayoutAuthProfileUsuarioEditRoute =
+  LayoutAuthProfileUsuarioEditImport.update({
     id: '/edit',
     path: '/edit',
-    getParentRoute: () => LayoutAuthDashboardUsuarioRoute,
+    getParentRoute: () => LayoutAuthProfileUsuarioRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -108,72 +113,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/_auth/dashboard': {
-      id: '/_layout/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof LayoutAuthDashboardImport
+    '/_layout/_auth/profile': {
+      id: '/_layout/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof LayoutAuthProfileImport
       parentRoute: typeof LayoutAuthImport
     }
-    '/_layout/_auth/dashboard/_usuario': {
-      id: '/_layout/_auth/dashboard/_usuario'
+    '/_layout/_auth/profile/_usuario': {
+      id: '/_layout/_auth/profile/_usuario'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof LayoutAuthProfileUsuarioImport
+      parentRoute: typeof LayoutAuthProfileRoute
+    }
+    '/_layout/_auth/dashboard/': {
+      id: '/_layout/_auth/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof LayoutAuthDashboardUsuarioImport
-      parentRoute: typeof LayoutAuthDashboardRoute
+      preLoaderRoute: typeof LayoutAuthDashboardIndexImport
+      parentRoute: typeof LayoutAuthImport
     }
-    '/_layout/_auth/dashboard/_usuario/edit': {
-      id: '/_layout/_auth/dashboard/_usuario/edit'
+    '/_layout/_auth/profile/_usuario/edit': {
+      id: '/_layout/_auth/profile/_usuario/edit'
       path: '/edit'
-      fullPath: '/dashboard/edit'
-      preLoaderRoute: typeof LayoutAuthDashboardUsuarioEditImport
-      parentRoute: typeof LayoutAuthDashboardUsuarioImport
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof LayoutAuthProfileUsuarioEditImport
+      parentRoute: typeof LayoutAuthProfileUsuarioImport
     }
-    '/_layout/_auth/dashboard/_usuario/': {
-      id: '/_layout/_auth/dashboard/_usuario/'
+    '/_layout/_auth/profile/_usuario/': {
+      id: '/_layout/_auth/profile/_usuario/'
       path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof LayoutAuthDashboardUsuarioIndexImport
-      parentRoute: typeof LayoutAuthDashboardUsuarioImport
+      fullPath: '/profile/'
+      preLoaderRoute: typeof LayoutAuthProfileUsuarioIndexImport
+      parentRoute: typeof LayoutAuthProfileUsuarioImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface LayoutAuthDashboardUsuarioRouteChildren {
-  LayoutAuthDashboardUsuarioEditRoute: typeof LayoutAuthDashboardUsuarioEditRoute
-  LayoutAuthDashboardUsuarioIndexRoute: typeof LayoutAuthDashboardUsuarioIndexRoute
+interface LayoutAuthProfileUsuarioRouteChildren {
+  LayoutAuthProfileUsuarioEditRoute: typeof LayoutAuthProfileUsuarioEditRoute
+  LayoutAuthProfileUsuarioIndexRoute: typeof LayoutAuthProfileUsuarioIndexRoute
 }
 
-const LayoutAuthDashboardUsuarioRouteChildren: LayoutAuthDashboardUsuarioRouteChildren =
+const LayoutAuthProfileUsuarioRouteChildren: LayoutAuthProfileUsuarioRouteChildren =
   {
-    LayoutAuthDashboardUsuarioEditRoute: LayoutAuthDashboardUsuarioEditRoute,
-    LayoutAuthDashboardUsuarioIndexRoute: LayoutAuthDashboardUsuarioIndexRoute,
+    LayoutAuthProfileUsuarioEditRoute: LayoutAuthProfileUsuarioEditRoute,
+    LayoutAuthProfileUsuarioIndexRoute: LayoutAuthProfileUsuarioIndexRoute,
   }
 
-const LayoutAuthDashboardUsuarioRouteWithChildren =
-  LayoutAuthDashboardUsuarioRoute._addFileChildren(
-    LayoutAuthDashboardUsuarioRouteChildren,
+const LayoutAuthProfileUsuarioRouteWithChildren =
+  LayoutAuthProfileUsuarioRoute._addFileChildren(
+    LayoutAuthProfileUsuarioRouteChildren,
   )
 
-interface LayoutAuthDashboardRouteChildren {
-  LayoutAuthDashboardUsuarioRoute: typeof LayoutAuthDashboardUsuarioRouteWithChildren
+interface LayoutAuthProfileRouteChildren {
+  LayoutAuthProfileUsuarioRoute: typeof LayoutAuthProfileUsuarioRouteWithChildren
 }
 
-const LayoutAuthDashboardRouteChildren: LayoutAuthDashboardRouteChildren = {
-  LayoutAuthDashboardUsuarioRoute: LayoutAuthDashboardUsuarioRouteWithChildren,
+const LayoutAuthProfileRouteChildren: LayoutAuthProfileRouteChildren = {
+  LayoutAuthProfileUsuarioRoute: LayoutAuthProfileUsuarioRouteWithChildren,
 }
 
-const LayoutAuthDashboardRouteWithChildren =
-  LayoutAuthDashboardRoute._addFileChildren(LayoutAuthDashboardRouteChildren)
+const LayoutAuthProfileRouteWithChildren =
+  LayoutAuthProfileRoute._addFileChildren(LayoutAuthProfileRouteChildren)
 
 interface LayoutAuthRouteChildren {
-  LayoutAuthDashboardRoute: typeof LayoutAuthDashboardRouteWithChildren
+  LayoutAuthProfileRoute: typeof LayoutAuthProfileRouteWithChildren
+  LayoutAuthDashboardIndexRoute: typeof LayoutAuthDashboardIndexRoute
 }
 
 const LayoutAuthRouteChildren: LayoutAuthRouteChildren = {
-  LayoutAuthDashboardRoute: LayoutAuthDashboardRouteWithChildren,
+  LayoutAuthProfileRoute: LayoutAuthProfileRouteWithChildren,
+  LayoutAuthDashboardIndexRoute: LayoutAuthDashboardIndexRoute,
 }
 
 const LayoutAuthRouteWithChildren = LayoutAuthRoute._addFileChildren(
@@ -199,17 +213,19 @@ export interface FileRoutesByFullPath {
   '': typeof LayoutAuthRouteWithChildren
   '/about': typeof LayoutAboutRoute
   '/': typeof LayoutIndexRoute
-  '/dashboard': typeof LayoutAuthDashboardUsuarioRouteWithChildren
-  '/dashboard/edit': typeof LayoutAuthDashboardUsuarioEditRoute
-  '/dashboard/': typeof LayoutAuthDashboardUsuarioIndexRoute
+  '/profile': typeof LayoutAuthProfileUsuarioRouteWithChildren
+  '/dashboard': typeof LayoutAuthDashboardIndexRoute
+  '/profile/edit': typeof LayoutAuthProfileUsuarioEditRoute
+  '/profile/': typeof LayoutAuthProfileUsuarioIndexRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof LayoutAuthRouteWithChildren
   '/about': typeof LayoutAboutRoute
   '/': typeof LayoutIndexRoute
-  '/dashboard': typeof LayoutAuthDashboardUsuarioIndexRoute
-  '/dashboard/edit': typeof LayoutAuthDashboardUsuarioEditRoute
+  '/profile': typeof LayoutAuthProfileUsuarioIndexRoute
+  '/dashboard': typeof LayoutAuthDashboardIndexRoute
+  '/profile/edit': typeof LayoutAuthProfileUsuarioEditRoute
 }
 
 export interface FileRoutesById {
@@ -218,10 +234,11 @@ export interface FileRoutesById {
   '/_layout/_auth': typeof LayoutAuthRouteWithChildren
   '/_layout/about': typeof LayoutAboutRoute
   '/_layout/': typeof LayoutIndexRoute
-  '/_layout/_auth/dashboard': typeof LayoutAuthDashboardRouteWithChildren
-  '/_layout/_auth/dashboard/_usuario': typeof LayoutAuthDashboardUsuarioRouteWithChildren
-  '/_layout/_auth/dashboard/_usuario/edit': typeof LayoutAuthDashboardUsuarioEditRoute
-  '/_layout/_auth/dashboard/_usuario/': typeof LayoutAuthDashboardUsuarioIndexRoute
+  '/_layout/_auth/profile': typeof LayoutAuthProfileRouteWithChildren
+  '/_layout/_auth/profile/_usuario': typeof LayoutAuthProfileUsuarioRouteWithChildren
+  '/_layout/_auth/dashboard/': typeof LayoutAuthDashboardIndexRoute
+  '/_layout/_auth/profile/_usuario/edit': typeof LayoutAuthProfileUsuarioEditRoute
+  '/_layout/_auth/profile/_usuario/': typeof LayoutAuthProfileUsuarioIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -230,21 +247,23 @@ export interface FileRouteTypes {
     | ''
     | '/about'
     | '/'
+    | '/profile'
     | '/dashboard'
-    | '/dashboard/edit'
-    | '/dashboard/'
+    | '/profile/edit'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/about' | '/' | '/dashboard' | '/dashboard/edit'
+  to: '' | '/about' | '/' | '/profile' | '/dashboard' | '/profile/edit'
   id:
     | '__root__'
     | '/_layout'
     | '/_layout/_auth'
     | '/_layout/about'
     | '/_layout/'
-    | '/_layout/_auth/dashboard'
-    | '/_layout/_auth/dashboard/_usuario'
-    | '/_layout/_auth/dashboard/_usuario/edit'
-    | '/_layout/_auth/dashboard/_usuario/'
+    | '/_layout/_auth/profile'
+    | '/_layout/_auth/profile/_usuario'
+    | '/_layout/_auth/dashboard/'
+    | '/_layout/_auth/profile/_usuario/edit'
+    | '/_layout/_auth/profile/_usuario/'
   fileRoutesById: FileRoutesById
 }
 
@@ -281,7 +300,8 @@ export const routeTree = rootRoute
       "filePath": "_layout._auth.tsx",
       "parent": "/_layout",
       "children": [
-        "/_layout/_auth/dashboard"
+        "/_layout/_auth/profile",
+        "/_layout/_auth/dashboard/"
       ]
     },
     "/_layout/about": {
@@ -292,28 +312,32 @@ export const routeTree = rootRoute
       "filePath": "_layout.index.tsx",
       "parent": "/_layout"
     },
-    "/_layout/_auth/dashboard": {
-      "filePath": "_layout._auth/dashboard",
+    "/_layout/_auth/profile": {
+      "filePath": "_layout._auth/profile",
       "parent": "/_layout/_auth",
       "children": [
-        "/_layout/_auth/dashboard/_usuario"
+        "/_layout/_auth/profile/_usuario"
       ]
     },
-    "/_layout/_auth/dashboard/_usuario": {
-      "filePath": "_layout._auth/dashboard/_usuario.tsx",
-      "parent": "/_layout/_auth/dashboard",
+    "/_layout/_auth/profile/_usuario": {
+      "filePath": "_layout._auth/profile/_usuario.tsx",
+      "parent": "/_layout/_auth/profile",
       "children": [
-        "/_layout/_auth/dashboard/_usuario/edit",
-        "/_layout/_auth/dashboard/_usuario/"
+        "/_layout/_auth/profile/_usuario/edit",
+        "/_layout/_auth/profile/_usuario/"
       ]
     },
-    "/_layout/_auth/dashboard/_usuario/edit": {
-      "filePath": "_layout._auth/dashboard/_usuario/edit.tsx",
-      "parent": "/_layout/_auth/dashboard/_usuario"
+    "/_layout/_auth/dashboard/": {
+      "filePath": "_layout._auth/dashboard/index.tsx",
+      "parent": "/_layout/_auth"
     },
-    "/_layout/_auth/dashboard/_usuario/": {
-      "filePath": "_layout._auth/dashboard/_usuario/index.tsx",
-      "parent": "/_layout/_auth/dashboard/_usuario"
+    "/_layout/_auth/profile/_usuario/edit": {
+      "filePath": "_layout._auth/profile/_usuario/edit.tsx",
+      "parent": "/_layout/_auth/profile/_usuario"
+    },
+    "/_layout/_auth/profile/_usuario/": {
+      "filePath": "_layout._auth/profile/_usuario/index.tsx",
+      "parent": "/_layout/_auth/profile/_usuario"
     }
   }
 }

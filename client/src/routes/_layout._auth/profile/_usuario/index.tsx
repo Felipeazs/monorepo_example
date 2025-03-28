@@ -4,7 +4,7 @@ import { useStore } from "@/client/store"
 
 import { UsuarioCard } from "./-components/usuario"
 
-export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario/")({
+export const Route = createFileRoute("/_layout/_auth/profile/_usuario/")({
 	component: RouteComponent,
 })
 

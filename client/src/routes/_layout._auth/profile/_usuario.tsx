@@ -1,11 +1,10 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect } from "react"
 
-import { Breadcrumbs } from "@/client/components/breadbrumbs"
 import { meQueryOptions } from "@/client/lib/queries"
 import { useStore } from "@/client/store"
 
-export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario")({
+export const Route = createFileRoute("/_layout/_auth/profile/_usuario")({
 	loader: async ({ context: { queryClient, usuario } }) => ({
 		usuario: await queryClient.fetchQuery(meQueryOptions(usuario?.id)),
 	}),
@@ -13,7 +12,7 @@ export const Route = createFileRoute("/_layout/_auth/dashboard/_usuario")({
 })
 
 function RouteComponent() {
-	const { setUsuario, paths } = useStore()
+	const { setUsuario } = useStore()
 	const { usuario } = Route.useLoaderData()
 
 	useEffect(() => {
@@ -25,7 +24,6 @@ function RouteComponent() {
 	return (
 		usuario && (
 			<div className="flex flex-col p-1">
-				<Breadcrumbs breadcrumbs={paths?.links} current={paths?.current} />
 				<Outlet />
 			</div>
 		)
