@@ -12,5 +12,12 @@ function RouteComponent() {
 	const { usuario: usuarioCtx } = Route.useRouteContext()
 	const { usuario: usuarioData } = useStore()
 
-	return usuarioData && usuarioCtx && <UsuarioCard data={usuarioData} ctx={usuarioCtx} />
+	return (
+		usuarioData &&
+		usuarioCtx && (
+			<div className="flex items-baseline justify-baseline">
+				<UsuarioCard data={usuarioData} ctx={usuarioCtx} />
+			</div>
+		)
+	)
 }

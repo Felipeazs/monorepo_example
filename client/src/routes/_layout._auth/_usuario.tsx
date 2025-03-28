@@ -21,11 +21,5 @@ function RouteComponent() {
 		}
 	}, [usuario])
 
-	return (
-		usuario && (
-			<div className="flex flex-col p-1">
-				<Outlet />
-			</div>
-		)
-	)
+	return usuario && <Outlet />
 }

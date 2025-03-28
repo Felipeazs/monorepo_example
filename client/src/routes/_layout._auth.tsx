@@ -41,9 +41,9 @@ function AuthRoute() {
 			<SidebarProvider>
 				<AppSidebar usuario={usuarioCtx!} />
 				<SidebarTrigger />
-				<div className="flex flex-col p-1">
+				<div className="flex w-full flex-col p-1">
 					<Breadcrumbs breadcrumbs={paths?.links} current={paths?.current} />
-					<main className="flex items-center justify-center p-5 text-2xl">
+					<main className="flex w-full items-center justify-baseline p-5">
 						<Outlet />
 					</main>
 				</div>

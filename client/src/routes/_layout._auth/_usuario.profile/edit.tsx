@@ -56,89 +56,87 @@ function RouteComponent() {
 	})
 
 	return (
-		<main className="w-full">
-			<div className="flex items-center justify-center p-5 text-2xl">
-				<Card className="w-[500px]">
-					<CardHeader>
-						<CardTitle>Editar</CardTitle>
-						<CardDescription>editar propiedades</CardDescription>
-					</CardHeader>
-					<CardContent className="w-full">
-						<form
-							className="flex flex-col gap-5"
-							onSubmit={(e) => {
-								e.preventDefault()
-								e.stopPropagation()
-								form.handleSubmit()
-							}}>
-							<form.AppField
-								name="nombre"
-								validators={{ onChange: editUsuarioSchema.shape.nombre }}
-								children={(field) => <field.TextField label="Nombre" />}
+		<main className="w-full p-5">
+			<Card className="w-[500px]">
+				<CardHeader>
+					<CardTitle>Editar</CardTitle>
+					<CardDescription>editar propiedades</CardDescription>
+				</CardHeader>
+				<CardContent className="w-full">
+					<form
+						className="flex flex-col gap-5"
+						onSubmit={(e) => {
+							e.preventDefault()
+							e.stopPropagation()
+							form.handleSubmit()
+						}}>
+						<form.AppField
+							name="nombre"
+							validators={{ onChange: editUsuarioSchema.shape.nombre }}
+							children={(field) => <field.TextField label="Nombre" />}
+						/>
+						<form.AppField
+							name="apellido"
+							validators={{ onChange: editUsuarioSchema.shape.apellido }}
+							children={(field) => <field.TextField label="Apellido" />}
+						/>
+						<form.AppField
+							name="email"
+							validators={{ onChange: editUsuarioSchema.shape.email }}
+							children={(field) => <field.TextField label="Email" />}
+						/>
+						<form.AppField
+							name="organizacion"
+							validators={{ onChange: editUsuarioSchema.shape.organizacion }}
+							children={(field) => <field.TextField label="Organización" />}
+						/>
+						<form.AppField
+							name="rut"
+							validators={{ onChange: editUsuarioSchema.shape.rut }}
+							children={(field) => <field.TextField label="Rut" />}
+						/>
+						<div>
+							<Label>Imagen</Label>
+							<Input
+								type="file"
+								accept="image/*"
+								onChange={(e) => {
+									const file = e.target.files?.[0]
+									if (file) {
+										setImageFile(file)
+										form.setFieldValue("image", file)
+									}
+								}}
 							/>
-							<form.AppField
-								name="apellido"
-								validators={{ onChange: editUsuarioSchema.shape.apellido }}
-								children={(field) => <field.TextField label="Apellido" />}
-							/>
-							<form.AppField
-								name="email"
-								validators={{ onChange: editUsuarioSchema.shape.email }}
-								children={(field) => <field.TextField label="Email" />}
-							/>
-							<form.AppField
-								name="organizacion"
-								validators={{ onChange: editUsuarioSchema.shape.organizacion }}
-								children={(field) => <field.TextField label="Organización" />}
-							/>
-							<form.AppField
-								name="rut"
-								validators={{ onChange: editUsuarioSchema.shape.rut }}
-								children={(field) => <field.TextField label="Rut" />}
-							/>
-							<div>
-								<Label>Imagen</Label>
-								<Input
-									type="file"
-									accept="image/*"
-									onChange={(e) => {
-										const file = e.target.files?.[0]
-										if (file) {
-											setImageFile(file)
-											form.setFieldValue("image", file)
-										}
-									}}
-								/>
-							</div>
-							<div>
-								{hasPermission(usuarioCtx!, "userRoles", "update") && (
-									<>
-										<Label>Roles</Label>
-										<div className="flex flex-col gap-2">
-											{[
-												{ id: 1, name: "Super Admin", value: "super_admin" },
-												{ id: 2, name: "Admin", value: "admin" },
-												{ id: 3, name: "Usuario", value: "user" },
-											].map((rol) => (
-												<form.AppField
-													key={rol.id}
-													name="roles"
-													children={(field) => (
-														<field.CheckboxField value={rol.value} label={rol.name} />
-													)}
-												/>
-											))}
-										</div>
-									</>
-								)}
-							</div>
-							<form.AppForm>
-								<form.SubscribeButton label="Aceptar" />
-							</form.AppForm>
-						</form>
-					</CardContent>
-				</Card>
-			</div>
+						</div>
+						<div>
+							{hasPermission(usuarioCtx!, "userRoles", "update") && (
+								<>
+									<Label>Roles</Label>
+									<div className="flex flex-col gap-2">
+										{[
+											{ id: 1, name: "Super Admin", value: "super_admin" },
+											{ id: 2, name: "Admin", value: "admin" },
+											{ id: 3, name: "Usuario", value: "user" },
+										].map((rol) => (
+											<form.AppField
+												key={rol.id}
+												name="roles"
+												children={(field) => (
+													<field.CheckboxField value={rol.value} label={rol.name} />
+												)}
+											/>
+										))}
+									</div>
+								</>
+							)}
+						</div>
+						<form.AppForm>
+							<form.SubscribeButton label="Aceptar" />
+						</form.AppForm>
+					</form>
+				</CardContent>
+			</Card>
 		</main>
 	)
 }
