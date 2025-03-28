@@ -13,7 +13,6 @@ type RouterContext = {
 	queryClient: QueryClient
 	usuario: AuthUsuario | undefined
 	store: StoreState
-	logout: () => Promise<void>
 }
 
 const TanStackRouterDevtools = import.meta.env.PROD

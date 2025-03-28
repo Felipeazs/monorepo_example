@@ -9,7 +9,6 @@ import { createRoot } from "react-dom/client"
 import { ErrorComponent } from "./components/error-component"
 import { NotFoundComponent } from "./components/notfound-component"
 import { TIMER } from "./lib/api-utils"
-import { logout } from "./lib/queries"
 import { routeTree } from "./route-tree.gen"
 import { useStore } from "./store"
 
@@ -23,7 +22,7 @@ const queryClient = new QueryClient({
 
 const router = createRouter({
 	routeTree,
-	context: { queryClient, usuario: undefined, store: undefined!, logout },
+	context: { queryClient, usuario: undefined, store: undefined! },
 	defaultPreload: "intent",
 	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
 	defaultNotFoundComponent: () => <NotFoundComponent />,
