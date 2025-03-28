@@ -18,7 +18,7 @@ import { hasPermission } from "@/client/lib/permission"
 import { editMe } from "@/client/lib/queries"
 import { useStore } from "@/client/store"
 
-export const Route = createFileRoute("/_layout/_auth/profile/_usuario/edit")({
+export const Route = createFileRoute("/_layout/_auth/_usuario/profile/edit")({
 	component: RouteComponent,
 })
 

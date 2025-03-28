@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { meQueryOptions } from "@/client/lib/queries"
 import { useStore } from "@/client/store"
 
-export const Route = createFileRoute("/_layout/_auth/profile/_usuario")({
+export const Route = createFileRoute("/_layout/_auth/_usuario")({
 	loader: async ({ context: { queryClient, usuario } }) => ({
 		usuario: await queryClient.fetchQuery(meQueryOptions(usuario?.id)),
 	}),
