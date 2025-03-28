@@ -6,8 +6,14 @@ export const Route = createFileRoute("/_layout/")({
 
 function Index() {
 	return (
-		<div className="flex items-center justify-center p-2 text-2xl">
-			<h3>{"Welcome "}</h3>
+		<div className="flex h-[500px] flex-col items-center justify-center bg-slate-800">
+			<h1 className="bg-gradient-to-r from-yellow-800 to-yellow-100 bg-clip-text text-4xl font-bold text-transparent uppercase">
+				Monorepo Template
+			</h1>
+			<div className="flex gap-2">
+				<img src="/hono.svg" width={30} />
+				<img src="/vite.svg" width={30} />
+			</div>
 		</div>
 	)
 }

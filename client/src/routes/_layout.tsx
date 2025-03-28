@@ -40,50 +40,46 @@ function RouteComponent() {
 	}
 
 	return (
-		<>
-			<div className="flex items-center justify-end gap-4 px-8 py-2">
-				<Link to="/" activeProps={{ className: "font-bold" }} viewTransition>
-					Inicio
+		<div className="max-h-screen overflow-y-hidden bg-slate-300">
+			<div className="flex items-center justify-between gap-4 px-20 py-2">
+				<Link to="/" className="font-bold uppercase" viewTransition>
+					Monorepo
 				</Link>
 				{!isLoggedIn && (
 					<Link to="/about" activeProps={{ className: "font-bold" }} viewTransition>
-						Entrar
+						Login
 					</Link>
 				)}
 				{isLoggedIn && (
-					<>
-						<Avatar>
-							<DropdownMenu>
-								<DropdownMenuTrigger className="hover:cursor-pointer">
-									<AvatarImage src={data?.image} alt="profile-image"></AvatarImage>
-									<AvatarFallback>
-										{data?.nombre?.substring(0, 1)?.toUpperCase() ?? "N"}
-										{data?.apellido?.substring(0, 1)?.toUpperCase() ?? "N"}
-									</AvatarFallback>
-									<DropdownMenuContent>
-										<DropdownMenuItem>
-											<Link to="/profile" className="w-full">
-												Profile
-											</Link>
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											className="w-full hover:cursor-pointer"
-											onClick={handleLogout}>
-											Logout
-										</DropdownMenuItem>
-									</DropdownMenuContent>
-								</DropdownMenuTrigger>
-							</DropdownMenu>
-						</Avatar>
-					</>
+					<Avatar>
+						<DropdownMenu>
+							<DropdownMenuTrigger className="hover:cursor-pointer">
+								<AvatarImage src={data?.image} alt="profile-image"></AvatarImage>
+								<AvatarFallback>
+									{data?.nombre?.substring(0, 1)?.toUpperCase() ?? "N"}
+									{data?.apellido?.substring(0, 1)?.toUpperCase() ?? "N"}
+								</AvatarFallback>
+								<DropdownMenuContent>
+									<DropdownMenuItem>
+										<Link to="/profile" className="w-full">
+											Profile
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem className="w-full hover:cursor-pointer" onClick={handleLogout}>
+										Logout
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenuTrigger>
+						</DropdownMenu>
+					</Avatar>
 				)}
 			</div>
-			<hr />
-
 			<div className="h-1">
 				<ProgressBar status={isFetching || isMutating} min={isLoggedIn ? 25 : 0} />
 			</div>
-			<Outlet />
-		</>
+			<div className="min-h-screen bg-slate-50">
+				<Outlet />
+			</div>
+		</div>
 	)
 }

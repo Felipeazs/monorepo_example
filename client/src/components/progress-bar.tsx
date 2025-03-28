@@ -32,7 +32,7 @@ export function ProgressBar({ status, min }: ProgressProps) {
 	return (
 		<Progress
 			max={100}
-			className={progress === 100 ? "bg-white" : "bg-blue-300"}
+			className={progress === 100 ? "bg-slate-300" : "bg-slate-600"}
 			value={progress}
 		/>
 	)
