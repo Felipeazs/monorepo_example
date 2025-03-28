@@ -15,8 +15,8 @@ export function Login() {
 		mutationKey: ["login"],
 		mutationFn: async (data: LoginUsuario) =>
 			await login({ email: data.email, password: data.password }),
-		onSuccess: () => {
-			enter()
+		onSuccess: (data) => {
+			enter(data)
 			toast("Bienvenido")
 
 			navigate({ to: "/dashboard" })

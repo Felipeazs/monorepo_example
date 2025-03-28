@@ -27,7 +27,10 @@ function RouteComponent() {
 		mutationFn: logout,
 		onSuccess: () => {
 			quit()
-
+			navigate({ to: "/" })
+		},
+		onError: () => {
+			quit()
 			navigate({ to: "/" })
 		},
 	})

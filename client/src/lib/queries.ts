@@ -58,7 +58,7 @@ export async function login({ email, password }: LoginUsuario) {
 				throw new Error(json.message as string)
 			}
 
-			localStorage.setItem("access_token", json.access_token)
+			return json.access_token
 		})
 }
 
@@ -80,14 +80,11 @@ export async function signup({ email, password, repeat_password }: SignupUsuario
 		})
 }
 
-export async function logout(): Promise<void> {
-	return fetchWithAuth().then((token) =>
-		client.api.logout
-			.$post({}, { headers: { Authorization: `Bearer ${token}` } })
-			.then(async () => {
-				localStorage.removeItem("access_token")
-			}),
-	)
+export async function logout(): Promise<{ status: string }> {
+	return client.api.logout.$post({}).then(async (res) => {
+		const json = await res.json()
+		return json
+	})
 }
 
 async function refreshAccessToken() {
@@ -95,18 +92,10 @@ async function refreshAccessToken() {
 		const json = await res.json()
 
 		if (!res.ok && "status" in json && "message" in json) {
-			if (json.status === 401) {
-				localStorage.removeItem("access_token")
-
-				return await logout()
-			}
-
 			throw new Error(json.message as string)
 		}
 
 		localStorage.setItem("access_token", json.access_token)
-
-		return json.access_token
 	})
 }
 

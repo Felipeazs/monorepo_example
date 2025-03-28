@@ -1,22 +1,27 @@
-import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router"
+import { createFileRoute, Outlet, redirect, useLocation } from "@tanstack/react-router"
 import { useEffect } from "react"
 
 import { AppSidebar } from "../components/app-sidebar"
 import { Breadcrumbs } from "../components/breadbrumbs"
 import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar"
-import { authMeQueryOptions } from "../lib/queries"
+import { authMeQueryOptions, logout } from "../lib/queries"
 import { useStore } from "../store"
-import { About } from "./_layout.about"
 
 export const Route = createFileRoute("/_layout/_auth")({
 	beforeLoad: async ({ context: { queryClient, store } }) => {
 		try {
 			const data = await queryClient.fetchQuery(authMeQueryOptions())
-			store.enter()
 
 			return data
 		} catch {
-			return { usuario: null }
+			store.quit()
+
+			await logout().then(() =>
+				redirect({
+					to: "/about",
+					throw: true,
+				}),
+			)
 		}
 	},
 	component: AuthRoute,
@@ -31,18 +36,16 @@ function AuthRoute() {
 		store.setPaths(pathname)
 	}, [pathname])
 
-	if (!usuarioCtx) {
-		return <About />
-	}
-
 	return (
 		<>
 			<SidebarProvider>
-				<AppSidebar usuario={usuarioCtx} />
+				<AppSidebar usuario={usuarioCtx!} />
 				<SidebarTrigger />
 				<div className="flex flex-col p-1">
 					<Breadcrumbs breadcrumbs={paths?.links} current={paths?.current} />
-					<Outlet />
+					<main className="flex items-center justify-center p-5 text-2xl">
+						<Outlet />
+					</main>
 				</div>
 			</SidebarProvider>
 		</>
