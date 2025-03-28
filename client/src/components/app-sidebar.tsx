@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router"
-import { Calendar, Home, Inbox, Search, Settings, User } from "lucide-react"
+import { Calendar, Construction, Home, Inbox, Settings, User } from "lucide-react"
 
 import type { AuthUsuario } from "../lib/queries"
 
@@ -18,19 +18,9 @@ import {
 
 const items = [
 	{
-		title: "Inbox",
+		title: "Console",
 		url: "#",
-		icon: Inbox,
-	},
-	{
-		title: "Calendar",
-		url: "#",
-		icon: Calendar,
-	},
-	{
-		title: "Search",
-		url: "#",
-		icon: Search,
+		icon: Construction,
 	},
 ]
 
@@ -65,6 +55,18 @@ export function AppSidebar({ usuario }: { usuario: AuthUsuario }) {
 									)}
 								</SidebarMenuButton>
 							))}
+							<SidebarMenuButton asChild>
+								<Link to="/">
+									<Inbox />
+									<span>Inbox</span>
+								</Link>
+							</SidebarMenuButton>
+							<SidebarMenuButton asChild>
+								<Link to="/">
+									<Calendar />
+									<span>Calendar</span>
+								</Link>
+							</SidebarMenuButton>
 							<SidebarMenuButton asChild>
 								<Link to="/">
 									<Settings />

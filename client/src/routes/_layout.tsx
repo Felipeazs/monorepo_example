@@ -41,7 +41,7 @@ function RouteComponent() {
 
 	return (
 		<div className="max-h-screen overflow-y-hidden bg-slate-300">
-			<div className="flex items-center justify-between gap-4 px-20 py-2">
+			<div className="flex h-[48px] items-center justify-between gap-4 px-20 py-2">
 				<Link to="/" className="font-bold uppercase" viewTransition>
 					Monorepo
 				</Link>
@@ -54,7 +54,7 @@ function RouteComponent() {
 					<Avatar>
 						<DropdownMenu>
 							<DropdownMenuTrigger className="hover:cursor-pointer">
-								<AvatarImage src={data?.image} alt="profile-image"></AvatarImage>
+								<AvatarImage src={data?.image} width={32} height={32} alt="profile-image" />
 								<AvatarFallback>
 									{data?.nombre?.substring(0, 1)?.toUpperCase() ?? "N"}
 									{data?.apellido?.substring(0, 1)?.toUpperCase() ?? "N"}
