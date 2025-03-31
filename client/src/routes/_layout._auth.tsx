@@ -12,6 +12,10 @@ export const Route = createFileRoute("/_layout/_auth")({
 		try {
 			const data = await queryClient.fetchQuery(authMeQueryOptions())
 
+			if (data && !store.isLoggedIn) {
+				store.reenter()
+			}
+
 			return data
 		} catch {
 			store.quit()

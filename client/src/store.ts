@@ -14,6 +14,7 @@ type BreadcrumbLinks = {
 export interface StoreState {
 	isLoggedIn: boolean
 	enter: (access_token: string) => void
+	reenter: () => void | undefined
 	quit: () => void
 	paths?: BreadcrumbLinks
 	setPaths: (paths: string) => void
@@ -47,6 +48,13 @@ export const useStore = create<StoreState>()((set) => ({
 		set(() => {
 			localStorage.setItem("access_token", access_token)
 			return { isLoggedIn: true }
+		}),
+	reenter: () =>
+		set(() => {
+			if (localStorage.getItem("access_token")) {
+				return { isLoggedIn: true }
+			}
+			return { isLoggedIn: false }
 		}),
 	quit: () =>
 		set(() => {
