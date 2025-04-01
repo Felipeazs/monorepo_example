@@ -9,11 +9,15 @@ cloudinary.config({
 	secure: env.NODE_ENV === "production",
 })
 
-export async function uploadImage(image: string, id: string): Promise<UploadApiResponse> {
+export async function uploadImage(
+	image: string,
+	id: string,
+	subfolder: string,
+): Promise<UploadApiResponse> {
 	const res = await cloudinary.uploader.upload(`data:image/webp;base64,${image}`, {
 		resource_type: "image",
 		public_id: id,
-		folder: "profiles",
+		folder: `${env.CLOUDINARY_FOLDER}/${subfolder}`,
 		overwrite: true,
 		transformation: [
 			{

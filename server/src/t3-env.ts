@@ -17,6 +17,7 @@ export const env = createEnv({
 		CLOUDINARY_API_KEY: z.string().optional(),
 		CLOUDINARY_API_SECRET: z.string().optional(),
 		CLOUDINARY_NAME: z.string().optional(),
+		CLOUDINARY_FOLDER: z.string().optional(),
 	},
 	runtimeEnv: process.env,
 	skipValidation: false,

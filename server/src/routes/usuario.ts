@@ -66,7 +66,7 @@ const app = new Hono<AppEnv>()
 			if (image instanceof File) {
 				const arrayBuf = await image.arrayBuffer()
 				const buffer = Buffer.from(arrayBuf).toString("base64")
-				const { data: cloud, error } = await tryCatch(uploadImage(buffer!, usuario.id))
+				const { data: cloud, error } = await tryCatch(uploadImage(buffer!, usuario.id, "profile"))
 				if (error) {
 					throw new HTTPException(ERROR_CODE.INTERNAL_SERVER_ERROR, { message: error.message })
 				}

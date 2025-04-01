@@ -15,8 +15,5 @@
 	"workspaces": ["client", "server", "packages/*"],
 	"packageManager": "bun",
 	"author": "Felipe Zapata <felipeazs@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"zustand": "^5.0.3"
-	}
+	"license": "MIT"
 }
